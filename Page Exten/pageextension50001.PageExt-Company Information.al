@@ -8,6 +8,7 @@ pageextension 50001 pageextension50001 extends "Company Information"
             {
                 field("Registration Address"; Rec."Registration Address")
                 {
+                    Caption = 'Registeration Address';
                 }
                 field("Registration Address 2"; Rec."Registration Address 2")
                 {
