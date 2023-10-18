@@ -6,7 +6,6 @@ pageextension 50001 pageextension50001 extends "Company Information"
         {
             group("Company Registered Adress")
             {
-                Caption = 'Company Registered Adress';
                 field("Registration Address"; Rec."Registration Address")
                 {
                 }
