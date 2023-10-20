@@ -106,7 +106,7 @@ table 50000 "E-Way Bill & E-Invoice"
             //12887 field is removed CalcFormula = Sum("Sales Invoice Line"."Amount To Customer" WHERE("Document No." = FIELD("No.")));
             Caption = 'Amount to Customer';
             Editable = false;
-            FieldClass = FlowField;
+            //FieldClass = FlowField;
         }
         field(18; "Vehicle Type"; Option)
         {
@@ -533,7 +533,7 @@ table 50000 "E-Way Bill & E-Invoice"
             //12887 field is removed  CalcFormula = Sum("Purch. Cr. Memo Line"."Amount To Vendor" WHERE("Document No." = FIELD("No.")));
             Caption = 'Amount to Vendor';
             Editable = false;
-            FieldClass = FlowField;
+            //FieldClass = FlowField;
         }
         field(59; "Order Address Code"; Code[10])
         {

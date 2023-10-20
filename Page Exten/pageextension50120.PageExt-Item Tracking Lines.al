@@ -233,7 +233,6 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
 
 
     var
-        recSalesPrice: Record 7002;
         Expire: Boolean;
         recLotInfoInsert: Record 6505;
         recLotInfo: Record 6505;
