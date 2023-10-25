@@ -4,9 +4,9 @@ report 50062 "AcxCD Scheme Calc Batch Report"
 
     dataset
     {
-        dataitem(DataItem1000000000; Table2000000026)
+        dataitem(DataItem1000000000; 2000000026)
         {
-            DataItemTableView = WHERE (Number = CONST (1));
+            DataItemTableView = WHERE(Number = CONST(1));
 
             trigger OnAfterGetRecord()
             begin
@@ -70,10 +70,10 @@ report 50062 "AcxCD Scheme Calc Batch Report"
     end;
 
     var
-        CalcScheme: Codeunit "50011";
+        CalcScheme: Codeunit 50011;
         ToDt: Date;
         ScheCome: Code[20];
-        ValidateCal: Record "50020";
+        ValidateCal: Record 50020;
         FrDt: Date;
 }
 

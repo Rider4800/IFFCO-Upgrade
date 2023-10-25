@@ -14,6 +14,13 @@ pageextension 50069 pageextension50069 extends "Sales Invoice Subform"
             {
             }
         }
+        //12887----> change in table field property Ediatble is handeled here as this is not allowed in table extension
+        modify("Qty. to Invoice")
+        {
+            Editable = false;
+        }
+
+        //12887<---- change in table field property Ediatble is handeled here as this is not allowed in table extension
     }
 }
 

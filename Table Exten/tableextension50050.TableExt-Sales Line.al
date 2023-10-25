@@ -5,12 +5,6 @@ tableextension 50050 tableextension50050 extends "Sales Line"
     fields
     {
 
-        //Unsupported feature: Property Insertion (Editable) on ""Qty. to Invoice"(Field 17)".
-
-
-        //Unsupported feature: Property Insertion (Editable) on ""Qty. to Ship"(Field 18)".
-
-
         modify("No.")
         {
             trigger OnAfterValidate()
@@ -51,25 +45,6 @@ tableextension 50050 tableextension50050 extends "Sales Line"
             end;
         }
 
-        //12887---> MRP Price field is removed
-        //Unsupported feature: Code Modification on ""MRP Price"(Field 16537).OnValidate".
-
-        //trigger OnValidate()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        TestStatusOpen;
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        TestStatusOpen;
-        UpdateUnitPrice(FIELDNO("No."));
-        */
-        //end;
-        //<----12887 MRP Price field is removed
         field(50000; "Excess/Short Qty."; Decimal)
         {
             DataClassification = ToBeClassified;
@@ -92,6 +67,17 @@ tableextension 50050 tableextension50050 extends "Sales Line"
         {
             DataClassification = ToBeClassified;
         }
+        //12887---> custom "MRP Price" field is added
+        field(50006; "MRP Price"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            trigger OnValidate()
+            begin
+                TestStatusOpen;
+                UpdateUnitPrice(FIELDNO("No."));
+            end;
+        }
+        //12887<---custom "MRP Price" field is added
     }
 
 

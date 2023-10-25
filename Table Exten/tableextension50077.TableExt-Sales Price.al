@@ -1,5 +1,14 @@
 tableextension 50077 tableextension50077 extends "Sales Price"
 {
+    fields
+    {
+        //12887 custom field added by TCPL--->
+        field(50000; "MRP Price"; Decimal)
+        {
+
+        }
+        //<---12887 custom field added by TCPL
+    }
     keys
     {
         /*12887----> need to review as change in Primary Key is no allowed
