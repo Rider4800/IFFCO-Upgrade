@@ -3,6 +3,12 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
 
     layout
     {
+        //12887---> In-transit code is made non editable on transfer header table but change in editable propert not possible in table ext
+        modify("In-Transit Code")
+        {
+            Editable = false;
+        }
+        //<---12887
         addafter("Transfer-from Code")
         {
             field("Transfer-from Bin Code"; Rec."Transfer-from Bin Code")

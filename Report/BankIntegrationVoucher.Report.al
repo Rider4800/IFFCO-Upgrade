@@ -4,11 +4,11 @@ report 50010 "Bank Integration Voucher"
 
     dataset
     {
-        dataitem(DataItem1000000000; Table50004)
+        dataitem("Bank Statement Upload"; 50004)
         {
-            DataItemTableView = SORTING (Entry No.)
+            DataItemTableView = SORTING("Entry No.")
                                 ORDER(Ascending)
-                                WHERE (Status = FILTER (New));
+                                WHERE(Status = FILTER(New));
 
             trigger OnAfterGetRecord()
             begin
@@ -158,17 +158,17 @@ report 50010 "Bank Integration Voucher"
 
     var
         blStatus: Boolean;
-        recCust: Record "18";
+        recCust: Record 18;
         txtErrorMessage: Text[250];
-        recDefaultDim: Record "352";
+        recDefaultDim: Record 352;
         LineNo: Integer;
-        recGJL: Record "81";
-        recGJB: Record "232";
-        NoSeries: Codeunit "396";
-        recGJL1: Record "81";
+        recGJL: Record 81;
+        recGJB: Record 232;
+        NoSeries: Codeunit 396;
+        recGJL1: Record 81;
         DocNo: Code[20];
         cdPostNo: Code[20];
-        recGenTemp: Record "80";
-        recGenBatch: Record "232";
+        recGenTemp: Record 80;
+        recGenBatch: Record 232;
 }
 

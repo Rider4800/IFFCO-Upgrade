@@ -3,7 +3,7 @@ tableextension 50052 tableextension50052 extends "Purchase Header"
     // //ACXCP_210721 //capture creation date time
     fields
     {
-        /*12887----> event not found for this
+        /*12887----> event not found for this in codeunit 18080
                 //Unsupported feature: Code Modification on ""Invoice Type"(Field 16611).OnValidate".
 
                 //trigger OnValidate()
@@ -44,7 +44,7 @@ tableextension 50052 tableextension50052 extends "Purchase Header"
         //acxcp_10122021 end
 
         #9..16
-        <-----12887 event not found for this*/
+        <-----12887 event not found for this in codeunit 18080*/
         //end;
 
         field(50000; "Certificate of Analysis"; Boolean)
@@ -78,7 +78,7 @@ tableextension 50052 tableextension50052 extends "Purchase Header"
     }
 
 
-    trigger OnAfterInsert()
+    trigger OnBeforeInsert()
     begin
         //ACXCP_210721+
         "Creation DateTime" := CURRENTDATETIME;

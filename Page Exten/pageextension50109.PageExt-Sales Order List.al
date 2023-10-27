@@ -160,6 +160,43 @@ pageextension 50109 pageextension50109 extends "Sales Order List"
                 end;
             }
         }
+        modify(PostAndSend)
+        {
+            trigger OnBeforeAction()
+            var
+                Cu50200: Codeunit 50200;
+            begin
+                Clear(Cu50200);
+                //acxcp_28102022 - //campaign code validation check
+                TotalAmt := 0;
+                IF Rec."Campaign No." <> '' THEN BEGIN
+                    TotalAmt := 0;
+                    recSaleL.RESET;
+                    recSaleL.SETRANGE("Document No.", Rec."No.");
+                    IF recSaleL.FINDFIRST THEN BEGIN
+                        REPEAT
+                            TotalAmt += Cu50200.AmttoCustomerSalesLine(recSaleL);
+                        UNTIL recSaleL.NEXT = 0;
+                        BalAmt := 0;
+                        recCust.RESET;
+                        recCust.SETRANGE("No.", recSaleL."Sell-to Customer No.");
+                        IF recCust.FINDFIRST THEN BEGIN
+                            recCust.CALCFIELDS("Balance (LCY)");
+                            BalAmt := recCust."Balance (LCY)";
+                            AbsBalAmt := 0;
+                            IF BalAmt < 0 THEN
+                                AbsBalAmt := ABS(BalAmt);
+                            IF NOT (AbsBalAmt >= TotalAmt) THEN BEGIN
+                                MESSAGE('Customer balance is - %1', FORMAT(ABS(BalAmt)));
+                                ERROR('Amount to Customer is lower then Available Credit Balance for Super Cash. Customer Balance= %1 and Invoice Amount -%2', AbsBalAmt, TotalAmt);
+                            END;
+                        END;
+                    END;
+                END;
+                //acxcp_28102022 + //campaign code
+
+            end;
+        }
         modify("Preview Posting")
         {
             trigger OnBeforeAction()

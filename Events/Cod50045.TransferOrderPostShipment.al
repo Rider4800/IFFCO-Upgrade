@@ -69,11 +69,9 @@ codeunit 50045 TransferOrderPostShipment
         recEwayEinvoice."Transporter GSTIN" := TransHeader."Transporter GSTIN";//RK 22May21
         recEwayEinvoice."E-way Bill Part" := recEwayEinvoice."E-way Bill Part"::Registered;//RK 05May22
         //RK 29Mar21 Begin
-        /*   //->Team-17783  Commented as "Trans Mode" field not present in BC
         IF recTransportMenthod.GET(TransShptHeader."Transport Method") THEN
             TransMethd := FORMAT(recTransportMenthod."Trans Mode");
         EVALUATE(recEwayEinvoice."Transportation Mode", TransMethd);
-        */
         //RK End
         recEwayEinvoice.INSERT;
         //HT (For E-Way Bill and E-Invoice Integration)+

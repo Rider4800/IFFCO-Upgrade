@@ -6,9 +6,9 @@ report 50015 "Branch transfer"
 
     dataset
     {
-        dataitem(DataItem1170000000; Table2000000026)
+        dataitem(Integer; 2000000026)
         {
-            DataItemTableView = SORTING (Number);
+            DataItemTableView = SORTING(Number);
             MaxIteration = 3;
             column(intNO; Integer.Number)
             {
@@ -28,7 +28,7 @@ report 50015 "Branch transfer"
             column(Counter; Counter)
             {
             }
-            dataitem(DataItem1000000000; Table5744)
+            dataitem("Transfer Shipment Header"; 5744)
             {
                 PrintOnlyIfDetail = false;
                 RequestFilterFields = "No.";
@@ -216,9 +216,9 @@ report 50015 "Branch transfer"
                 column(TransporterName; TransporterName)
                 {
                 }
-                dataitem(DataItem1000000043; Table5745)
+                dataitem("Transfer Shipment Line"; 5745)
                 {
-                    DataItemLink = Document No.=FIELD(No.);
+                    DataItemLink = "Document No." = FIELD("No.");
                     column(SrNo; SrNo)
                     {
                     }
@@ -327,52 +327,53 @@ report 50015 "Branch transfer"
                     column(DocNo; "Transfer Shipment Line"."Document No.")
                     {
                     }
-                    dataitem(DataItem1000000097; Table32)
+                    dataitem("Item Ledger Entry"; 32)
                     {
-                        DataItemLink = Document No.=FIELD(Document No.),
-                                       Document Line No.=FIELD(Line No.);
-                        DataItemTableView = SORTING(Entry No.);
-                        column(Lot;"Item Ledger Entry"."Lot No.")
+                        DataItemLink = "Document No." = FIELD("Document No."),
+                                       "Document Line No." = FIELD("Line No.");
+                        DataItemTableView = SORTING("Entry No.");
+                        column(Lot; "Item Ledger Entry"."Lot No.")
                         {
                         }
-                        column(LotQty;ABS("Item Ledger Entry".Quantity))
+                        column(LotQty; ABS("Item Ledger Entry".Quantity))
                         {
                         }
-                        column(ExpDt;"Item Ledger Entry"."Expiration Date")
+                        column(ExpDt; "Item Ledger Entry"."Expiration Date")
                         {
                         }
-                        column(Mfg_Dt;dtMfgDate)
+                        column(Mfg_Dt; dtMfgDate)
                         {
                         }
-                        column(BatchMRP;BMRP)
+                        column(BatchMRP; BMRP)
                         {
                         }
-                        column(AlternateQty;ABS(AlternateQty))
+                        column(AlternateQty; ABS(AlternateQty))
                         {
                         }
 
                         trigger OnAfterGetRecord()
                         begin
                             //Unit of Measure Conversion
-                            AlternateQty :=0;
+                            AlternateQty := 0;
                             recItemUOM.RESET();
-                            recItemUOM.SETRANGE("Item No.","Item Ledger Entry"."Item No.");
-                               IF recItemUOM.FIND('-') THEN
-                                 IF recItemUOM.Code = 'CTN' THEN BEGIN
-                                   AlternateQty := "Item Ledger Entry".Quantity / recItemUOM."Qty. per Unit of Measure";
-                                 END ELSE IF recItemUOM.Code = 'BAG' THEN BEGIN
-                                   AlternateQty := "Item Ledger Entry".Quantity / recItemUOM."Qty. per Unit of Measure";
-                                END;
+                            recItemUOM.SETRANGE("Item No.", "Item Ledger Entry"."Item No.");
+                            IF recItemUOM.FIND('-') THEN
+                                IF recItemUOM.Code = 'CTN' THEN BEGIN
+                                    AlternateQty := "Item Ledger Entry".Quantity / recItemUOM."Qty. per Unit of Measure";
+                                END ELSE
+                                    IF recItemUOM.Code = 'BAG' THEN BEGIN
+                                        AlternateQty := "Item Ledger Entry".Quantity / recItemUOM."Qty. per Unit of Measure";
+                                    END;
 
-                            dtMfgDate:=0D;
-                            BMRP:=0;
+                            dtMfgDate := 0D;
+                            BMRP := 0;
                             recLotNoInfo.RESET;
-                            recLotNoInfo.SETRANGE("Lot No.","Item Ledger Entry"."Lot No.");
-                            recLotNoInfo.SETRANGE("Item No.","Item Ledger Entry"."Item No.");
-                            IF recLotNoInfo.FINDFIRST THEN  BEGIN
-                              dtMfgDate:=recLotNoInfo."MFG Date";
-                              BMRP := recLotNoInfo."Batch MRP";
-                              END;
+                            recLotNoInfo.SETRANGE("Lot No.", "Item Ledger Entry"."Lot No.");
+                            recLotNoInfo.SETRANGE("Item No.", "Item Ledger Entry"."Item No.");
+                            IF recLotNoInfo.FINDFIRST THEN BEGIN
+                                dtMfgDate := recLotNoInfo."MFG Date";
+                                BMRP := recLotNoInfo."Batch MRP";
+                            END;
                         end;
                     }
 
@@ -386,72 +387,72 @@ report 50015 "Branch transfer"
                         MfgDt := 0D;
                         ExpiryDt := 0D;
                         MRPPrice := 0;
-                        recILE.SETRANGE("Document No.","Transfer Shipment Line"."Document No.");
-                          IF recILE.FINDFIRST THEN BEGIN
+                        recILE.SETRANGE("Document No.", "Transfer Shipment Line"."Document No.");
+                        IF recILE.FINDFIRST THEN BEGIN
                             LotNo := recILE."Lot No.";
-                        //    MfgDt := recILE."Manufacturing Date";
+                            //    MfgDt := recILE."Manufacturing Date";
                             ExpiryDt := recILE."Expiration Date";
-                        //    MRPPrice := recILE."Batch MRP";
-                          END;
+                            //    MRPPrice := recILE."Batch MRP";
+                        END;
 
 
                         recItemUOM.RESET();
-                        recItemUOM.SETRANGE("Item No.","Transfer Shipment Line"."Item No.");
-                        recItemUOM.SETFILTER(Code,'<>%1',"Transfer Shipment Line"."Unit of Measure Code");
-                          IF recItemUOM.FIND('-') THEN BEGIN
-                              decQtyper := recItemUOM."Qty. per Unit of Measure" * "Transfer Shipment Line".Quantity;
-                              TotlQtyBag += "Transfer Shipment Line".Quantity * recItemUOM."Qty. per Unit of Measure";
-                          END;
+                        recItemUOM.SETRANGE("Item No.", "Transfer Shipment Line"."Item No.");
+                        recItemUOM.SETFILTER(Code, '<>%1', "Transfer Shipment Line"."Unit of Measure Code");
+                        IF recItemUOM.FIND('-') THEN BEGIN
+                            decQtyper := recItemUOM."Qty. per Unit of Measure" * "Transfer Shipment Line".Quantity;
+                            TotlQtyBag += "Transfer Shipment Line".Quantity * recItemUOM."Qty. per Unit of Measure";
+                        END;
 
 
                         //Total Invoic value
                         recTransShipLine.RESET();
-                        recTransShipLine.SETRANGE("Document No.","Transfer Shipment Line"."Document No.");
-                          IF recTransShipLine.FINDFIRST THEN BEGIN
+                        recTransShipLine.SETRANGE("Document No.", "Transfer Shipment Line"."Document No.");
+                        IF recTransShipLine.FINDFIRST THEN BEGIN
                             REPEAT
-                              TotalInvvalue += recTransShipLine."Total GST Amount" + recTransShipLine.Amount;
-                              TotLineQty += recTransShipLine.Quantity;
+                                TotalInvvalue += recTransShipLine."Total GST Amount" + recTransShipLine.Amount;
+                                TotLineQty += recTransShipLine.Quantity;
                             UNTIL recTransShipLine.NEXT = 0;
-                          END;
+                        END;
                         //
                         //Round of Calculation
-                        TotalInvvalueRoundOff := ROUND(TotalInvvalue,1);
+                        TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
                         RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
                         repCheck.InitTextVariable();
-                        repCheck.FormatNoText(NotoWord,TotalInvvalue,'');
+                        repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
 
                         IGSTamt := 0;
                         IGSTper := 0;
                         recDetGSTLedAntry.RESET();
-                        recDetGSTLedAntry.SETRANGE("Document No.","Transfer Shipment Header"."No.");
-                        recDetGSTLedAntry.SETFILTER("GST Component Code",'IGST');
-                        recDetGSTLedAntry.SETRANGE("Document Line No.","Transfer Shipment Line"."Line No.");
-                          IF recDetGSTLedAntry.FIND('-') THEN BEGIN
-                              IGSTamt := ABS(recDetGSTLedAntry."GST Amount");
-                              IGSTper := recDetGSTLedAntry."GST %";
-                          END;
+                        recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
+                        recDetGSTLedAntry.SETFILTER("GST Component Code", 'IGST');
+                        recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
+                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                            IGSTamt := ABS(recDetGSTLedAntry."GST Amount");
+                            IGSTper := recDetGSTLedAntry."GST %";
+                        END;
 
                         CGSTamt := 0;
                         CGSTper := 0;
                         recDetGSTLedAntry.RESET();
-                        recDetGSTLedAntry.SETRANGE("Document No.","Transfer Shipment Header"."No.");
-                        recDetGSTLedAntry.SETFILTER("GST Component Code",'CGST');
-                        recDetGSTLedAntry.SETRANGE("Document Line No.","Transfer Shipment Line"."Line No.");
-                          IF recDetGSTLedAntry.FIND('-') THEN BEGIN
-                              CGSTamt := ABS(recDetGSTLedAntry."GST Amount");
-                              CGSTper := recDetGSTLedAntry."GST %";
-                          END;
+                        recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
+                        recDetGSTLedAntry.SETFILTER("GST Component Code", 'CGST');
+                        recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
+                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                            CGSTamt := ABS(recDetGSTLedAntry."GST Amount");
+                            CGSTper := recDetGSTLedAntry."GST %";
+                        END;
 
                         SGSTamt := 0;
                         SGSTper := 0;
                         recDetGSTLedAntry.RESET();
-                        recDetGSTLedAntry.SETRANGE("Document No.","Transfer Shipment Header"."No.");
-                        recDetGSTLedAntry.SETFILTER("GST Component Code",'SGST');
-                        recDetGSTLedAntry.SETRANGE("Document Line No.","Transfer Shipment Line"."Line No.");
-                          IF recDetGSTLedAntry.FIND('-') THEN BEGIN
-                              SGSTamt := ABS(recDetGSTLedAntry."GST Amount");
-                              SGSTper := recDetGSTLedAntry."GST %";
-                          END;
+                        recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
+                        recDetGSTLedAntry.SETFILTER("GST Component Code", 'SGST');
+                        recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
+                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                            SGSTamt := ABS(recDetGSTLedAntry."GST Amount");
+                            SGSTper := recDetGSTLedAntry."GST %";
+                        END;
                         //
                     end;
                 }
@@ -459,11 +460,11 @@ report 50015 "Branch transfer"
                 trigger OnAfterGetRecord()
                 begin
                     //Transfer From Location Details
-                    TotalInvvalue:=0;
+                    TotalInvvalue := 0;
                     recLoc.RESET();
                     CLEAR(arrLoc);
-                    recLoc.SETRANGE(Code,"Transfer Shipment Header"."Transfer-from Code");
-                      IF recLoc.FIND('-') THEN BEGIN
+                    recLoc.SETRANGE(Code, "Transfer Shipment Header"."Transfer-from Code");
+                    IF recLoc.FIND('-') THEN BEGIN
                         arrLoc[1] := recLoc.Name;
                         arrLoc[2] := recLoc."Name 2";
                         arrLoc[3] := recLoc.Address;
@@ -474,22 +475,22 @@ report 50015 "Branch transfer"
                         arrLoc[11] := recLoc."Phone No.";
                         arrLoc[12] := recLoc."E-Mail";
                         recState.RESET();
-                        recState.SETRANGE(Code,recLoc."State Code");
-                          IF recState.FIND('-') THEN BEGIN
+                        recState.SETRANGE(Code, recLoc."State Code");
+                        IF recState.FIND('-') THEN BEGIN
                             arrLoc[8] := recState.Description;
                             arrLoc[9] := recState."State Code (GST Reg. No.)";
-                          END;
+                        END;
                         recCountry.RESET();
-                        recCountry.SETRANGE(Code,recLoc."Country/Region Code");
-                          IF recCountry.FIND('-') THEN
+                        recCountry.SETRANGE(Code, recLoc."Country/Region Code");
+                        IF recCountry.FIND('-') THEN
                             arrLoc[10] := recCountry.Name;
-                       END;
+                    END;
 
                     //Transfer-to Location Details
                     recLoc.RESET();
                     CLEAR(arrLoc2);
-                    recLoc.SETRANGE(Code,"Transfer Shipment Header"."Transfer-to Code");
-                      IF recLoc.FIND('-') THEN BEGIN
+                    recLoc.SETRANGE(Code, "Transfer Shipment Header"."Transfer-to Code");
+                    IF recLoc.FIND('-') THEN BEGIN
                         arrLoc2[1] := recLoc.Name;
                         arrLoc2[2] := recLoc."Name 2";
                         arrLoc2[3] := recLoc.Address;
@@ -500,94 +501,98 @@ report 50015 "Branch transfer"
                         arrLoc2[11] := recLoc."Phone No.";
                         arrLoc2[12] := recLoc."E-Mail";
                         recState.RESET();
-                        recState.SETRANGE(Code,recLoc."State Code");
-                          IF recState.FIND('-') THEN BEGIN
+                        recState.SETRANGE(Code, recLoc."State Code");
+                        IF recState.FIND('-') THEN BEGIN
                             arrLoc2[8] := recState.Description;
                             arrLoc2[9] := recState."State Code (GST Reg. No.)";
-                          END;
+                        END;
                         recCountry.RESET();
-                        recCountry.SETRANGE(Code,recLoc."Country/Region Code");
-                          IF recCountry.FIND('-') THEN
+                        recCountry.SETRANGE(Code, recLoc."Country/Region Code");
+                        IF recCountry.FIND('-') THEN
                             arrLoc2[10] := recCountry.Name;
-                       END;
+                    END;
 
                     //E Way E Invoice Details
                     recEWayBill.RESET();
-                    recEWayBill.SETRANGE("No.","Transfer Shipment Header"."No.");
-                        IF recEWayBill.FINDFIRST THEN BEGIN
-                          AcknowledgeNo:= recEWayBill."E-Invoice Acknowledge No.";
-                          AcknowledgeDt := recEWayBill."E-Invoice Acknowledge Date";
-                          IRNNo := recEWayBill."E-Invoice IRN No";
-                          VehivleNo := recEWayBill."Vehicle No.";
-                          GRNo := recEWayBill."LR/RR No.";
-                          GRDt := recEWayBill."LR/RR Date";
-                          TransporterName := recEWayBill."Transporter Name";
-                          EWayBillNo := recEWayBill."E-Way Bill No.";
-                          EWayBillDttxt := recEWayBill."E-Way Bill Date";
-                          recEWayBill.CALCFIELDS("QR Code");
-                        END;
+                    recEWayBill.SETRANGE("No.", "Transfer Shipment Header"."No.");
+                    IF recEWayBill.FINDFIRST THEN BEGIN
+                        AcknowledgeNo := recEWayBill."E-Invoice Acknowledge No.";
+                        AcknowledgeDt := recEWayBill."E-Invoice Acknowledge Date";
+                        IRNNo := recEWayBill."E-Invoice IRN No";
+                        VehivleNo := recEWayBill."Vehicle No.";
+                        GRNo := recEWayBill."LR/RR No.";
+                        GRDt := recEWayBill."LR/RR Date";
+                        TransporterName := recEWayBill."Transporter Name";
+                        EWayBillNo := recEWayBill."E-Way Bill No.";
+                        EWayBillDttxt := recEWayBill."E-Way Bill Date";
+                        recEWayBill.CALCFIELDS("QR Code");
+                    END;
                     //E-Way Bill Date
                     IF EWayBillNo <> '' THEN BEGIN
-                      Year := 0;
-                      Day := 0;
-                      Month := 0;
-                      EVALUATE(Year,COPYSTR(EWayBillDttxt,7,4));
-                      EVALUATE(Month,COPYSTR(EWayBillDttxt,4,2));
-                      EVALUATE(Day,COPYSTR(EWayBillDttxt,1,2));
-                      EWayBillDt := DMY2DATE(Day,Month,Year);
+                        Year := 0;
+                        Day := 0;
+                        Month := 0;
+                        EVALUATE(Year, COPYSTR(EWayBillDttxt, 7, 4));
+                        EVALUATE(Month, COPYSTR(EWayBillDttxt, 4, 2));
+                        EVALUATE(Day, COPYSTR(EWayBillDttxt, 1, 2));
+                        EWayBillDt := DMY2DATE(Day, Month, Year);
                     END;
                     //22/05/2021 11:28:00 AM
                     //E-Invoice Date
                     IF AcknowledgeNo <> '' THEN BEGIN
-                      EVALUATE(Year,COPYSTR(AcknowledgeDt,1,4));
-                      EVALUATE(Month,COPYSTR(AcknowledgeDt,6,2));
-                      EVALUATE(Day,COPYSTR(AcknowledgeDt,9,2));
-                      AckDateandTime := DMY2DATE(Day,Month,Year);
+                        EVALUATE(Year, COPYSTR(AcknowledgeDt, 1, 4));
+                        EVALUATE(Month, COPYSTR(AcknowledgeDt, 6, 2));
+                        EVALUATE(Day, COPYSTR(AcknowledgeDt, 9, 2));
+                        AckDateandTime := DMY2DATE(Day, Month, Year);
                     END;
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     SrNo := 0;
-                    TotLineQty:=0;
+                    TotLineQty := 0;
                     decQtyper := 0;
-                    TotlQtyBag:=0;
+                    TotlQtyBag := 0;
                 end;
             }
 
             trigger OnAfterGetRecord()
             begin
 
-                Counter+=1;
-                IF Counter=1 THEN
-                 Txt001:='Original For Buyer'
-                ELSE IF Counter = 2 THEN
-                 Txt001:='Duplicate for Transporter'
-                ELSE IF Counter=3 THEN
-                 Txt001:='Triplicate for Supplier'
+                Counter += 1;
+                IF Counter = 1 THEN
+                    Txt001 := 'Original For Buyer'
                 ELSE
-                 Txt001:='Extra Copy';
+                    IF Counter = 2 THEN
+                        Txt001 := 'Duplicate for Transporter'
+                    ELSE
+                        IF Counter = 3 THEN
+                            Txt001 := 'Triplicate for Supplier'
+                        ELSE
+                            Txt001 := 'Extra Copy';
 
-                IF Counter=1 THEN
-                   pageint+=1
-                ELSE IF Counter=2 THEN
-                   pageint1+=1
-                ELSE IF Counter=3 THEN
-                  pageint2+=1;
+                IF Counter = 1 THEN
+                    pageint += 1
+                ELSE
+                    IF Counter = 2 THEN
+                        pageint1 += 1
+                    ELSE
+                        IF Counter = 3 THEN
+                            pageint2 += 1;
 
-                IF (Counter<>1) AND (NOT "Duplicate For Transporter") AND (NOT AllCopies)
+                IF (Counter <> 1) AND (NOT "Duplicate For Transporter") AND (NOT AllCopies)
                   AND (NOT "Triplicate For Assee") AND (NOT "Extra Copy") THEN
                     CurrReport.SKIP;
 
 
-                IF ("Duplicate For Transporter") AND (Counter<>2)  THEN
+                IF ("Duplicate For Transporter") AND (Counter <> 2) THEN
                     CurrReport.SKIP;
 
-                 IF ("Triplicate For Assee") AND (Counter<>3) THEN
-                     CurrReport.SKIP;
+                IF ("Triplicate For Assee") AND (Counter <> 3) THEN
+                    CurrReport.SKIP;
 
-                 IF  "Extra Copy" AND  (Counter<4) THEN
-                   CurrReport.SKIP;
+                IF "Extra Copy" AND (Counter < 4) THEN
+                    CurrReport.SKIP;
             end;
         }
     }
@@ -602,19 +607,19 @@ report 50015 "Branch transfer"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(AllCopies;AllCopies)
+                    field(AllCopies; AllCopies)
                     {
                         Caption = 'All Copies';
                     }
-                    field("Duplicate For Transporter";"Duplicate For Transporter")
+                    field("Duplicate For Transporter"; "Duplicate For Transporter")
                     {
                         Caption = 'Duplicate For Transporter';
                     }
-                    field("Triplicate For Assee";"Triplicate For Assee")
+                    field("Triplicate For Assee"; "Triplicate For Assee")
                     {
                         Caption = 'Triplicate For Assee';
                     }
-                    field("Extra Copy";"Extra Copy")
+                    field("Extra Copy"; "Extra Copy")
                     {
                         Caption = 'Extra Copy';
                     }
@@ -638,27 +643,27 @@ report 50015 "Branch transfer"
     end;
 
     var
-        recCompInfo: Record "79";
-        recLoc: Record "14";
-        arrLoc: array [12] of Text;
-        recState: Record "13762";
-        recCountry: Record "9";
-        recEWayBill: Record "50000";
+        recCompInfo: Record 79;
+        recLoc: Record 14;
+        arrLoc: array[12] of Text;
+        recState: Record State;
+        recCountry: Record 9;
+        recEWayBill: Record 50000;
         IRNNo: Text;
         AcknowledgeNo: Code[20];
         AcknowledgeDt: Text;
         VehivleNo: Code[20];
         GRNo: Code[10];
         GRDt: Date;
-        arrLoc2: array [12] of Text;
+        arrLoc2: array[12] of Text;
         SrNo: Integer;
-        recILE: Record "32";
+        recILE: Record 32;
         LotNo: Code[15];
         MfgDt: Date;
         ExpiryDt: Date;
         MRPPrice: Decimal;
         TransporterName: Text;
-        recDetGSTLedAntry: Record "16419";
+        recDetGSTLedAntry: Record "Detailed GST Ledger Entry";
         IGSTamt: Decimal;
         CGSTamt: Decimal;
         SGSTamt: Decimal;
@@ -666,46 +671,46 @@ report 50015 "Branch transfer"
         CGSTper: Decimal;
         SGSTper: Decimal;
         decQtyper: Decimal;
-        recItemUOM: Record "5404";
-        repCheck: Report "1401";
-                      NotoWord: array [1] of Text;
-                      TotlQtyBag: Decimal;
-                      recTransShipLine: Record "5745";
-                      TotalInvvalue: Decimal;
-                      TimeFormat: Text;
-                      Year: Integer;
-                      Month: Integer;
-                      Day: Integer;
-                      Hour: Integer;
-                      Minute: Integer;
-                      Sec: Integer;
-                      text: Text;
-                      Timee: Time;
-                      AckDateandTime: Date;
-                      LRNoLRDt: Text;
-                      Counter: Integer;
-                      Txt001: Text;
-                      AllCopies: Boolean;
-                      "Duplicate For Transporter": Boolean;
-                      "Triplicate For Assee": Boolean;
-                      "Extra Copy": Boolean;
-                      pageint: Integer;
-                      pageint1: Integer;
-                      pageint2: Integer;
-                      EWayBillNo: Code[15];
-                      EWayBillDt: Date;
-                      EWayBillDttxt: Text;
-                      TotalInvvalueRoundOff: Decimal;
-                      RoundOffValue: Decimal;
-                      AlternateQty: Decimal;
-                      CGSTTax: Decimal;
-                      SGSTTax: Decimal;
-                      IGSTTax: Decimal;
-                      TotLineQty: Decimal;
-                      dtMfgDate: Date;
-                      recLotNoInfo: Record "6505";
-                      decMRP: Decimal;
-                      BMRP: Decimal;
-                      recVendor: Record "23";
+        recItemUOM: Record 5404;
+        repCheck: Report 1401;
+        NotoWord: array[1] of Text;
+        TotlQtyBag: Decimal;
+        recTransShipLine: Record 5745;
+        TotalInvvalue: Decimal;
+        TimeFormat: Text;
+        Year: Integer;
+        Month: Integer;
+        Day: Integer;
+        Hour: Integer;
+        Minute: Integer;
+        Sec: Integer;
+        text: Text;
+        Timee: Time;
+        AckDateandTime: Date;
+        LRNoLRDt: Text;
+        Counter: Integer;
+        Txt001: Text;
+        AllCopies: Boolean;
+        "Duplicate For Transporter": Boolean;
+        "Triplicate For Assee": Boolean;
+        "Extra Copy": Boolean;
+        pageint: Integer;
+        pageint1: Integer;
+        pageint2: Integer;
+        EWayBillNo: Code[15];
+        EWayBillDt: Date;
+        EWayBillDttxt: Text;
+        TotalInvvalueRoundOff: Decimal;
+        RoundOffValue: Decimal;
+        AlternateQty: Decimal;
+        CGSTTax: Decimal;
+        SGSTTax: Decimal;
+        IGSTTax: Decimal;
+        TotLineQty: Decimal;
+        dtMfgDate: Date;
+        recLotNoInfo: Record 6505;
+        decMRP: Decimal;
+        BMRP: Decimal;
+        recVendor: Record 23;
 }
 

@@ -199,6 +199,12 @@ tableextension 50049 tableextension50049 extends "Sales Header"
             Editable = false;
             TableRelation = "Salesperson/Purchaser".Code WHERE("Designation Code" = CONST('HOD'));
         }
+        //12887----->
+        field(50118; "Run Statistics"; Boolean)
+        {
+            Description = '12887 26th oct 23 added to run statistics page mandatory';
+        }
+        //<--12887
     }
     trigger OnBeforeInsert()
     begin

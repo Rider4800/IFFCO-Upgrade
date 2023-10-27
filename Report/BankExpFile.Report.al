@@ -4,7 +4,7 @@ report 50060 BankExpFile
 
     dataset
     {
-        dataitem(DataItem1000000000; Table50023)
+        dataitem(DataItem1000000000; 50023)
         {
         }
     }
@@ -77,26 +77,26 @@ report 50060 BankExpFile
     end;
 
     var
-        FileMgt: Codeunit "419";
+        FileMgt: Codeunit 419;
         FileName: Text;
         OutFile: File;
         OutS: OutStream;
-        Xmlp: XMLport "50001";
-        recGLSetup: Record "98";
+        Xmlp: XMLport 50001;
+        recGLSetup: Record 98;
         filepath: Text;
         fileLastNo: Integer;
         DateText: Text;
-        recBankIntEntry: Record "50001";
+        recBankIntEntry: Record 50001;
         FilePrefix: Text;
         SNO: Integer;
         SNO1: Text;
         Date1: Date;
         Date2: Text;
         Date3: Date;
-        recble: Record "271";
+        recble: Record 271;
         ReportCount: Integer;
         ReportCounttxt: Text;
-        recbinentr: Record "50023";
+        recbinentr: Record 50023;
         suffix: Text;
 }
 

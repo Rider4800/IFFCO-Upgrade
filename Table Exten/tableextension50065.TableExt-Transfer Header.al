@@ -2,33 +2,6 @@ tableextension 50065 tableextension50065 extends "Transfer Header"
 {
     fields
     {
-        //Unsupported feature: Property Insertion (Editable) on ""In-Transit Code"(Field 27)".
-
-        modify("Transfer-to Code")
-        {
-            trigger OnAfterValidate()
-            begin
-                /*12887--->Custom changes for structure is commented as Structure field is removed
-                VALIDATE(Structure, TransferStructure("Transfer-from Code", "Transfer-to Code"));//KM
-                                                                                                 //KM
-
-                Location.RESET();
-                FromState := '';
-                Location.SETRANGE(Code, "Transfer-from Code");
-                IF Location.FINDFIRST THEN
-                    FromState := Location."State Code";
-                //KM
-                Location.RESET();
-                ToState := '';
-                Location.SETRANGE(Code, "Transfer-to Code");
-                IF Location.FINDFIRST THEN
-                    ToState := Location."State Code";
-                IF FromState <> ToState THEN
-                    TESTFIELD(Structure);
-              <----12887*/
-            end;
-        }
-
         field(50000; "Transporter Code"; Code[20])
         {
             DataClassification = ToBeClassified;

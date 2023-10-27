@@ -6,9 +6,9 @@ report 50014 "Customer Ledger Bal Confrm."
 
     dataset
     {
-        dataitem(DataItem1000000000; Table18)
+        dataitem(Customer; 18)
         {
-            DataItemTableView = SORTING (No.)
+            DataItemTableView = SORTING("No.")
                                 ORDER(Ascending);
             column(CompanyName; recCompanyInfo.Name)
             {
@@ -85,11 +85,11 @@ report 50014 "Customer Ledger Bal Confrm."
             column(FA_name; FAname)
             {
             }
-            dataitem(DataItem1000000001; Table21)
+            dataitem("Cust. Ledger Entry"; 21)
             {
-                CalcFields = Debit Amount (LCY),Credit Amount (LCY),Remaining Amt. (LCY),Amount (LCY);
-                DataItemLink = Customer No.=FIELD(No.);
-                DataItemTableView = SORTING (Customer No., Posting Date, Currency Code)
+                CalcFields = "Debit Amount (LCY)", "Credit Amount (LCY)", "Remaining Amt. (LCY)", "Amount (LCY)";
+                DataItemLink = "Customer No." = FIELD("No.");
+                DataItemTableView = SORTING("Customer No.", "Posting Date", "Currency Code")
                                     ORDER(Ascending);
                 column(CustomerCode; "Cust. Ledger Entry"."Customer No.")
                 {
@@ -372,13 +372,13 @@ report 50014 "Customer Ledger Bal Confrm."
                     {
                         CaptionClass = '1,2,1';
                         Caption = 'Global Dimension 1 Code';
-                        TableRelation = "Dimension Value".Code WHERE (Global Dimension No.=CONST(1));
+                        TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
                     }
                     field(txtGlobalDim2Filter; txtGlobalDim2Filter)
                     {
                         CaptionClass = '1,2,2';
                         Caption = 'Global Dimension 2 Code';
-                        TableRelation = "Dimension Value".Code WHERE (Global Dimension No.=CONST(2));
+                        TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
                     }
                     field(dtInputDate; dtInputDate)
                     {
@@ -406,41 +406,41 @@ report 50014 "Customer Ledger Bal Confrm."
     }
 
     var
-        recCompanyInfo: Record "79";
+        recCompanyInfo: Record 79;
         decOpeningBalance: Decimal;
         decRunningBalance: Decimal;
-        recDetCustLedgerEntry: Record "379";
+        recDetCustLedgerEntry: Record 379;
         txtDateRange: Text[100];
-        recPostedNarration: Record "16548";
+        recPostedNarration: Record "Posted Narration";
         txtNarration: Text;
         decTotalDebit: Decimal;
         decTotalCredit: Decimal;
-        rptVoucher: Report "16567";
+        rptVoucher: Report "Posted Voucher";
         dtStartDate: Date;
         dtEndDate: Date;
         txtGlobalDim1Filter: Text;
         txtGlobalDim2Filter: Text;
         blnPrintFooter: Boolean;
         cdAccountCode: Code[20];
-        recBankLedgerEntry: Record "271";
+        recBankLedgerEntry: Record 271;
         txtChequeNo: Text[20];
         dtCehqueDt: Date;
         txtSaleComnt: Text;
-        recSalesComnt: Record "44";
+        recSalesComnt: Record 44;
         DocumentNo: Code[20];
-        recResCntr: Record "5714";
+        recResCntr: Record 5714;
         RegisterAddr: array[20] of Text;
         dtInputDate: Date;
         FAname: Text;
         TMEName: Text;
-        recSalesHierarchy: Record "50014";
+        recSalesHierarchy: Record 50014;
         cdCustPG: Code[20];
         cdSalePerson: Code[20];
-        recDefaultDim: Record "352";
+        recDefaultDim: Record 352;
         cdFA: Code[20];
         cdFO: Code[20];
         cdRME: Code[20];
         cdTME: Code[20];
-        recDimValue: Record "349";
+        recDimValue: Record 349;
 }
 

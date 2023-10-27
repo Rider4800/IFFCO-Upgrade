@@ -72,6 +72,16 @@ pageextension 50061 pageextension50061 extends "Sales Order"
         {
             Visible = false;
         }
+        //12887---> f7 mandatory
+        modify(Statistics)
+        {
+            trigger OnAfterAction()
+            begin
+                Rec."Run Statistics" := true;
+                Rec.Modify();
+            end;
+        }
+        //f7 mandatory<---12887
         addbefore(PostAndNew)
         {
             action(PostNew)
@@ -96,14 +106,8 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                     TotalAmt := 0;
                     IF Rec."Campaign No." <> '' THEN BEGIN
 
-                        /*12887----> structure functionality is removed
-                         recSaleL.RESET;
-                         recSaleL.SETRANGE("Document No.", Rec."No.");
-                         IF recSaleL.FINDSET THEN
-                             REPEAT
-                                 recSaleL.CalculateStructures(Rec);
-                             UNTIL recSaleL.NEXT = 0;
-                         <----12887*/
+                        if not Rec."Run Statistics" then
+                            Error('Please run Statistics page');
                         TotalAmt := 0;
                         recSaleL.RESET;
                         recSaleL.SETRANGE("Document No.", Rec."No.");
@@ -135,14 +139,9 @@ pageextension 50061 pageextension50061 extends "Sales Order"
 
                     //acxcp_30122022 << //Credit balance check
 
-                    /*12887----> structure functionality is removed
-                    recSaleL.RESET;
-                    recSaleL.SETRANGE("Document No.", Rec."No.");
-                    IF recSaleL.FINDSET THEN
-                        REPEAT
-                            recSaleL.CalculateStructures(Rec);
-                        UNTIL recSaleL.NEXT = 0;
-                   <---12887*/
+                    if not Rec."Run Statistics" then
+                        Error('Please run Statistics page');
+
                     //OpenSalesOrderStatistics;
                     cuSalePost.CheckCustBalance(Rec);
 
@@ -201,14 +200,9 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                 //acxcp //credit balance check in Campaign Code
 
                 //acxcp_30122022 << //Credit balance check
-                /*12887----> structure functionality is removed
-               recSaleL.RESET;
-               recSaleL.SETRANGE("Document No.", Rec."No.");
-               IF recSaleL.FINDSET THEN
-                   REPEAT
-                       recSaleL.CalculateStructures(Rec);
-                   UNTIL recSaleL.NEXT = 0;
-               <---12887*/
+                if not Rec."Run Statistics" then
+                    Error('Please run Statistics page');
+
                 //OpenSalesOrderStatistics;
                 cuSalePost.CheckCustBalance(Rec);
 
