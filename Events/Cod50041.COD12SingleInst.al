@@ -6,6 +6,13 @@ codeunit 50041 COD12SingleInst
         Clear(Codeunit12Glb);
     end;
 
+    procedure ClearPostDtldCustLedgEntries()
+    begin
+        clear(TotalAmountLCYDtldCustEntry);
+        clear(TotalAmountAddCurrDtldCustEntry);
+        Clear(GenJnlLineDtldCustEntry);
+    end;
+
     procedure ClearPostDtldVendLedgEntries()
     begin
         TotalAmountLCY := 0;
@@ -38,6 +45,21 @@ codeunit 50041 COD12SingleInst
         GenJnlLinePara := GenJnlLine;
     end;
 
+    procedure SetDataPostDtldCustLedgEntries(TotalAmountLCYPara: Decimal; TotalAmountAddCurrPara: Decimal; GenJnlLinePara: Record 81)
+    begin
+        TotalAmountLCYDtldCustEntry += TotalAmountLCYPara;
+        TotalAmountAddCurrDtldCustEntry += TotalAmountAddCurrPara;
+        GenJnlLineDtldCustEntry := GenJnlLinePara;
+    end;
+
+    procedure GetDataPostDtldCustLedgEntries(var TotalAmountLCYPara: Decimal; var TotalAmountAddCurrPara: Decimal; var GenJnlLinePara: Record 81)
+    begin
+        TotalAmountLCYPara := TotalAmountLCYDtldCustEntry;
+        TotalAmountAddCurrPara := TotalAmountAddCurrDtldCustEntry;
+        GenJnlLinePara := GenJnlLineDtldCustEntry;
+    end;
+
+
     procedure ClearFinanceDimCode()
     begin
         Clear(strFinanceDimensionCode);
@@ -54,10 +76,30 @@ codeunit 50041 COD12SingleInst
         strFinanceDimensionCodePara := strFinanceDimensionCode;
     end;
 
+    procedure ClearEntryNo()
+    begin
+        clear(EntryNo);
+    end;
+
+    procedure SetOldCVLedgEntryBufEntryNo(EntryNoPara: Integer)
+    begin
+        EntryNo := EntryNoPara;
+
+    end;
+
+    procedure GetOldCVLedgEntryBufEntryNo(var EntryNoPara: Integer)
+    begin
+        EntryNoPara := EntryNo;
+    end;
+
     var
         Codeunit12Glb: Codeunit 12;
         TotalAmountLCY: Decimal;
         TotalAmountAddCurr: Decimal;
+        TotalAmountLCYDtldCustEntry: Decimal;
+        TotalAmountAddCurrDtldCustEntry: Decimal;
+        GenJnlLineDtldCustEntry: Record 81;
         GenJnlLine: Record 81;
         strFinanceDimensionCode: Code[20];
+        EntryNo: Integer;
 }
