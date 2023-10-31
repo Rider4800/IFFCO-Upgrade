@@ -1,15 +1,15 @@
-page 50053 Acx_purchase
+page 50055 Acx_Sales
 {
     APIGroup = 'apiGroup';
     APIPublisher = 'TCPL';
     APIVersion = 'v1.0';
     ApplicationArea = All;
-    Caption = 'Acx_purchase';
+    Caption = 'Acx_Sales';
     DelayedInsert = true;
-    EntityName = 'Acx_purchase';
-    EntitySetName = 'Acx_purchase';
+    EntityName = 'Acx_Sales';
+    EntitySetName = 'Acx_Sales';
     PageType = API;
-    SourceTable = "Purch. Inv. Line";
+    SourceTable = "G/L Entry";
     SourceTableTemporary = true;
 
     layout
