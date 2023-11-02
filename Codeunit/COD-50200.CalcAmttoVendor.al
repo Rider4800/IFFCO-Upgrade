@@ -574,6 +574,80 @@ codeunit 50200 CalcAmttoVendor
         exit(GSTper3);
     end;
 
+    procedure PostedLineIGST(RecordIdPAra: RecordId): Decimal
+    var
+        igst: Decimal;
+        GSTper3: Decimal;
+        ReccPurchaseLine: Record "Purchase Line";
+        TotalAmt: Decimal;
+        GSTSetup: Record "GST Setup";
+        ComponentName: Text;
+        TaxTransactionValue: Record "Tax Transaction Value";
+        sgstTOTAL: Decimal;
+        TDSSetup: Record "TDS Setup";
+        TDSAmt: Decimal;
+    begin
+        Clear(igst);
+
+
+        GSTSetup.Get();
+        TDSSetup.Get();
+        TaxTransactionValue.Reset();
+        TaxTransactionValue.SetRange("Tax Record ID", RecordIdPAra);
+        // TaxTransactionValue.SetRange("Tax Type", GSTSetup."GST Tax Type");
+        TaxTransactionValue.SetRange("Value Type", TaxTransactionValue."Value Type"::COMPONENT);
+        TaxTransactionValue.SetFilter(Percent, '<>%1', 0);
+        TaxTransactionValue.SetRange("Value ID", 3);
+        if TaxTransactionValue.FindFirst() then begin
+            ComponentName := 'IGST';
+            igst := abs(Round(TaxTransactionValue.Amount, GetGSTRoundingPrecision(ComponentName)));
+        end;
+
+        exit(igst);
+    end;
+
+    procedure PostedLineIGSTPerc(RecordIDPara: RecordId): Decimal
+    var
+        igst: Decimal;
+        igstTotal: Decimal;
+        sgst: Decimal;
+        GSTper3: Decimal;
+        cgst: Decimal;
+        GSTper1: Decimal;
+        GSTper2: Decimal;
+        cgstTOTAL: Decimal;
+        ReccPurchaseLine: Record "Purchase Line";
+        TotalAmt: Decimal;
+        GSTSetup: Record "GST Setup";
+        ComponentName: Text;
+        TaxTransactionValue: Record "Tax Transaction Value";
+        sgstTOTAL: Decimal;
+        TDSSetup: Record "TDS Setup";
+        TDSAmt: Decimal;
+    begin
+        Clear(igst);
+        Clear(sgst);
+        Clear(cgst);
+        Clear(TotalAmt);
+        Clear(TDSAmt);
+
+        GSTSetup.Get();
+        TDSSetup.Get();
+        TaxTransactionValue.Reset();
+        TaxTransactionValue.SetRange("Tax Record ID", RecordIDPara);
+        //TaxTransactionValue.SetRange("Tax Type", GSTSetup."GST Tax Type");
+        TaxTransactionValue.SetRange("Value Type", TaxTransactionValue."Value Type"::COMPONENT);
+        TaxTransactionValue.SetFilter(Percent, '<>%1', 0);
+        TaxTransactionValue.SetRange("Value ID", 3);
+        if TaxTransactionValue.FindFirst() then
+            GSTper3 := TaxTransactionValue.Percent;
+
+
+
+        exit(GSTper3);
+    end;
+
+
     procedure PurchLineCGST(T39: Record 39): Decimal
     var
         igst: Decimal;
