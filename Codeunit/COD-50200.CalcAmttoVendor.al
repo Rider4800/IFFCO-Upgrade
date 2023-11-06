@@ -285,6 +285,23 @@ codeunit 50200 CalcAmttoVendor
 
     end;
 
+    procedure GetTCSBaseAmtLine(Recordidpara: RecordId): Decimal
+    var
+        TaxTransactionValue: Record "Tax Transaction Value";
+    begin
+        TaxTransactionValue.Reset();
+        TaxTransactionValue.SetRange("Tax Record ID", Recordidpara);
+        // TaxTransactionValue.SetRange("Tax Type", 'TCS');
+        TaxTransactionValue.SetRange("Value Type", TaxTransactionValue."Value Type"::COMPONENT);
+        TaxTransactionValue.SetRange("Value ID", 7);
+        if TaxTransactionValue.FindFirst() then
+            exit(TaxTransactionValue.Amount)
+        else
+            exit(0);
+
+    end;
+
+
     procedure AmttoVendorPurchCrMemoHdr(T124: Record 124): Decimal
     var
         igst: Decimal;

@@ -207,12 +207,64 @@ page 50055 Acx_Sales
                 field(IGST_Amount; IGSTAmt)
                 {
                 }
-                field(Total_GST_Per; Codunit50200.PurchLineGSTPerc(Rec.RECORDID))
+                field(Total_GST_Per; TotGSTPer)
+                {
+                }
+                field(Total_GST_Amount; TotGSTAmt)
+                {
+                }
+                field(TCS_Nature_Of_Collection; TCSNatureofCollection)
+                {
+                }
+                field(TDS_TCS_; TDSTCSAmt)
+                {
+                }
+                field(TDS_TCS_Base_Amount; TDSTCSBaseAmount)
+                {
+                }
+                field(TCS_Amount; TCSAmount)
+                {
+                }
+                field(Amount_To_Customer; AmtToCustomer)
+                {
+                }
+                field(Posting_Group; PostingGrp)
+                {
+                }
+                field(Gen_Prod_Posting_Group; GenProdPostGrp)
+                {
+                }
+                field(Line_No; LineNo)
+                {
+                }
+                field(Item_Category_Code; ItemCatCode)
+                {
+                }
+                field(Product_Group_Code; ProductGrpCode)
+                {
+                }
+                field(Cross_Reference_No; CrossRefNo)
+                {
+                }
+                field(Nature_Of_Supply; NatureOfSupply)
+                {
+                }
+                field(GST_Customer_Type; GSTCustomerType)
+                {
+                }
+                field(Location_GST_Reg_No; LocGSTRegNo)
+                {
+                }
+                field(Location_State_Code; LocStateCode)
+                {
+                }
+                field(Customer_GST_Reg_No; CustGSTRegNo)
                 {
                 }
             }
         }
     }
+
 
     trigger OnOpenPage()
     begin
@@ -382,6 +434,75 @@ page 50055 Acx_Sales
                     IGSTAmt := DetailedGSTLedgEntryRec."GST Amount";
                 end;
 
+                TotGSTPer := Codunit50200.PurchLineGSTPerc(Rec.RECORDID);
+                if SIHRec."Currency Factor" = 0 then
+                    TotGSTAmt := Codunit50200.GetTotalGSTAmtPostedLine(Rec."Document No.", Rec."Line No.")
+                else begin
+                    if ((Codunit50200.GetTotalGSTAmtPostedLine(Rec."Document No.", Rec."Line No.")) <> 0) AND (SIHRec."Currency Factor" <> 0) then
+                        TotGSTAmt := (Codunit50200.GetTotalGSTAmtPostedLine(Rec."Document No.", Rec."Line No.")) / SIHRec."Currency Factor";
+                end;
+
+                TCSNatureofCollection := Rec."TCS Nature of Collection";
+                TDSTCSAmt := Codunit50200.TDSTCSAmt(Rec.RecordId);
+
+                if SIHRec."Currency Factor" = 0 then
+                    TDSTCSBaseAmount := Codunit50200.GetTCSBaseAmtLine(Rec.RecordId)
+                else begin
+                    if ((Codunit50200.GetTCSBaseAmtLine(Rec.RecordId)) <> 0) AND (SIHRec."Currency Factor" <> 0) then
+                        TDSTCSBaseAmount := (Codunit50200.GetTCSBaseAmtLine(Rec.RecordId)) / SIHRec."Currency Factor";
+                end;
+
+                if SIHRec."Currency Factor" = 0 then
+                    TCSAmount := Codunit50200.TDSTCSAmt(Rec.RecordId)
+                else begin
+                    if ((Codunit50200.TDSTCSAmt(Rec.RecordId)) <> 0) AND (SIHRec."Currency Factor" <> 0) then
+                        TCSAmount := (Codunit50200.TDSTCSAmt(Rec.RecordId)) / SIHRec."Currency Factor";
+                end;
+
+                if SIHRec."Currency Factor" = 0 then
+                    AmtToCustomer := Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")
+                else begin
+                    if ((Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) <> 0) AND (SIHRec."Currency Factor" <> 0) then
+                        AmtToCustomer := (Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) / SIHRec."Currency Factor";
+                end;
+
+                PostingGrp := Rec."Posting Group";
+                GenProdPostGrp := Rec."Gen. Prod. Posting Group";
+                LineNo := Rec."Line No.";
+                if ItemRec.Get(Rec."No.") then begin
+                    if ItemCatRec.Get(ItemRec."Item Category Code") then begin
+                        ItemCatCode := ItemCatRec."Parent Category";
+                        ProductGrpCode := ItemCatRec.Code;
+                    end;
+                end;
+                CrossRefNo := Rec."Item Reference No.";
+                if SIHRec."Nature of Supply" = SIHRec."Nature of Supply"::B2B then
+                    NatureOfSupply := 'B2B'
+                else
+                    NatureOfSupply := 'B2C';
+
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::" " then
+                    GSTCustomerType := '';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::Registered then
+                    GSTCustomerType := 'Registered';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::Unregistered then
+                    GSTCustomerType := 'Unregistered';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::Export then
+                    GSTCustomerType := 'Export';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::"Deemed Export" then
+                    GSTCustomerType := 'Deemed Export';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::Exempted then
+                    GSTCustomerType := 'Exempted';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::"SEZ Development" then
+                    GSTCustomerType := 'SEZ Development';
+                if SIHRec."GST Customer Type" = SIHRec."GST Customer Type"::"SEZ Unit" then
+                    GSTCustomerType := 'SEZ Unit';
+
+                LocGSTRegNo := SIHRec."Location GST Reg. No.";
+                LocStateCode := SIHRec."Location State Code";
+                CustGSTRegNo := SIHRec."Customer GST Reg. No.";
+
+                //if LocationRec.Get()
             end;
         end;
     end;
@@ -441,8 +562,21 @@ page 50055 Acx_Sales
         Clear(GSTPlaceofSupply);
         Clear(HSNSACCode);
         GSTBaseAmt := 0;
-        TotalGSTAmt := 0;
         Clear(GSTGrpType);
+        TotGSTPer := 0;
+        TotGSTAmt := 0;
+        Clear(TCSNatureofCollection);
+        TDSTCSAmt := 0;
+        TDSTCSBaseAmount := 0;
+        TCSAmount := 0;
+        AmtToCustomer := 0;
+        Clear(PostingGrp);
+        Clear(GenProdPostGrp);
+        LineNo := 0;
+        Clear(ItemCatCode);
+        Clear(ProductGrpCode);
+        Clear(LocName);
+        Clear(LocationStateCode);
     end;
 
     var
@@ -505,7 +639,6 @@ page 50055 Acx_Sales
         GSTPlaceofSupply: Code[20];
         HSNSACCode: Code[20];
         GSTBaseAmt: Decimal;
-        TotalGSTAmt: Decimal;
         GSTGrpType: Text[20];
         DetailedGSTLedgEntryRec: Record "Detailed GST Ledger Entry";
         CGSTPer: Decimal;
@@ -514,4 +647,26 @@ page 50055 Acx_Sales
         SGSTAmt: Decimal;
         IGSTPer: Decimal;
         IGSTAmt: Decimal;
+        TotGSTPer: Decimal;
+        TotGSTAmt: Decimal;
+        TCSNatureofCollection: Code[10];
+        TDSTCSAmt: Decimal;
+        TDSTCSBaseAmount: Decimal;
+        TCSAmount: Decimal;
+        AmtToCustomer: Decimal;
+        PostingGrp: Code[20];
+        GenProdPostGrp: Code[20];
+        LineNo: Integer;
+        ItemCatCode: Code[20];
+        ProductGrpCode: Code[20];
+        CrossRefNo: Code[20];
+        NatureOfSupply: Code[20];
+        GSTCustomerType: Code[20];
+        LocGSTRegNo: Code[20];
+        LocStateCode: Code[20];
+        CustGSTRegNo: Code[20];
+        ItemCatRec: Record "Item Category";
+        LocationRec: Record Location;
+        LocName: Text[100];
+        LocationStateCode: Code[20];
 }
