@@ -90,9 +90,9 @@ page 50053 Acx_purchase
                 field(GST_Group_Code; Rec."GST Group Code")
                 {
                 }
-                // field(GST_Base_Amount; Rec."GST Base Amount")        //field not found
-                // {
-                // }
+                field(GST_Base_Amount; GSTBaseAmt)
+                {
+                }
                 field(GST_Group_Type; GSTGrpType)
                 {
                 }
@@ -129,9 +129,9 @@ page 50053 Acx_purchase
                 field(IGST_Amount; IGSTAmt)
                 {
                 }
-                // field(GST;Rec.GST)                                                       //field not found
-                // {
-                // }
+                field(GST; TotGSTPer)
+                {
+                }
                 field(Total_GST_Amount; TotGSTAmt)
                 {
                 }
@@ -377,6 +377,12 @@ page 50053 Acx_purchase
                     LineAmount := Rec."Line Amount" / PurchInvoiceHeaderRec."Currency Factor";
             end;
 
+            if PurchInvoiceHeaderRec."Currency Factor" = 0 then
+                GSTBaseAmt := Codunit50200.GetGSTBaseAmtPostedLine(Rec."Document No.", Rec."Line No.")
+            else begin
+                if ((Codunit50200.GetGSTBaseAmtPostedLine(Rec."Document No.", Rec."Line No.")) <> 0) AND (PurchInvoiceHeaderRec."Currency Factor" <> 0) then
+                    GSTBaseAmt := (Codunit50200.GetGSTBaseAmtPostedLine(Rec."Document No.", Rec."Line No.")) / PurchInvoiceHeaderRec."Currency Factor";
+            end;
             if Rec."GST Jurisdiction Type" = Rec."GST Jurisdiction Type"::Intrastate then
                 GSTJurisdiction := 'Intrastate'
             else
@@ -589,6 +595,8 @@ page 50053 Acx_purchase
             else
                 GSTReverseCharge := 'TRUE';
 
+            TotGSTPer := Codunit50200.PurchLineGSTPerc(Rec.RECORDID);
+
             // if PurchInvoiceHeaderRec."Currency Factor" = 0 then                      field not found
             //     TotGSTAmt := Rec."Total GST Amount"
             // else begin
@@ -787,4 +795,7 @@ page 50053 Acx_purchase
         BillOfEntryValue: Decimal;
         RcptNo: Code[20];
         RetShpmntHdr: Record "Return Shipment Header";
+        GSTBaseAmt: Decimal;
+        TotGSTPer: Decimal;
+        Codunit50200: Codeunit 50200;
 }
