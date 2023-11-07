@@ -332,26 +332,51 @@ page 50055 Acx_Sales
                 CLERec.SetRange("Document No.", GLRec."Document No.");
                 if CLERec.FindFirst() then begin
                     Rec.Reset();
-                    Rec.SetRange("TCS Nature of Collection", GLRec."Source Code");
                     Rec.SetRange("Document No.", GLRec."Document No.");
                     Rec.SetRange("Posting Date", GLRec."Posting Date");
+                    Rec.SetRange("Sell-to Customer No.", CLERec."Customer No.");
+                    Rec.SetRange("Location Code", GLRec."Location Code");
+                    Rec.SetRange("Scheme Code", GLRec."External Document No.");
+                    Rec.SetRange("TCS Nature of Collection", GLRec."Source Code");
                     Rec.Setrange("FA Posting Date", GLRec."Document Date");
-                    Rec.SetRange("Sell-to Customer No.", GLRec."Source No.");
+                    Rec.SetRange(Description, CLERec.Description);
+                    Rec.SetRange("Shipment Date", CLERec."Due Date");
+                    Rec.SetRange("Deferral Code", CLERec."Seller State Code");
+                    Rec.SetRange("Bin Code", Format(CLERec."Applies-to Doc. Type"));
+                    Rec.SetRange("Customer Disc. Group", CLERec."Applies-to Doc. No.");
+                    Rec.SetRange("Job No.", CLERec."Location State Code");
+                    Rec.SetRange("Customer Price Group", CLERec."Customer Posting Group");
+                    if not Rec.FindFirst() then begin
+                        Rec.Init();
+                        Rec."Document No." := GLRec."Document No."; //DocumentNo
+                        Rec."Line No." := linenum;
+                        Rec."Assessee Code" := 'GLE';
+                        Rec."TCS Nature of Collection" := GLRec."Source Code";  //SourceCode
+                        Rec."Posting Date" := GLRec."Posting Date";   //PostingDate
+                        Rec."FA Posting Date" := GLRec."Document Date"; //DocumentDate
+                        Rec."Deferral Code" := CLERec."Seller State Code";  //SellerStateCode
+                        Rec."Shipment Date" := Clerec."Due Date";   //DueDate
+                        Rec."Sell-to Customer No." := CLERec."Customer No.";    //SellToCustomerNo
+                        Rec.Description := CLERec.Description;  //SellToCustomerName
+                        Rec."Deferral Code" := CLERec."Seller State Code";  //StateCode
+                        Rec."Scheme Code" := GLRec."External Document No."; //ExternalDocumentNo
+                        Rec."Location Code" := GLRec."Location Code";   //LocationCode
+                        Rec."Customer Price Group" := CLERec."Customer Posting Group";  //CustomerPostingGroup
+                        Rec."Bin Code" := Format(CLERec."Applies-to Doc. Type");    //AppliesToDocType
+                        Rec."Customer Disc. Group" := CLERec."Applies-to Doc. No."; //AppliesToDocNo
+                        //Assign GLDescription as 'Product Discount' directly in OnAfterGetRecord()
+                        Rec."Line Amount" := GLRec.Amount;  //LineAmount
+                        Rec.Amount := GLRec.Amount;     //Amount
+                        Rec."Total UPIT Amount" := GLRec.Amount;    //AmountToCustomer
+                        Rec."Job No." := CLERec."Location State Code";  //LocationStateCode
+                        Rec.Insert();
+                        linenum := linenum + 10000;
+                    end else begin
+                        Rec."Line Amount" := Rec."Line Amount" + GLRec.Amount;  //LineAmount
+                        Rec.Amount := -1 * (Rec.Amount + GLRec.Amount); //Amount
+                        Rec."Total UPIT Amount" := Rec."Total UPIT Amount" + GLRec.Amount;  //AmounttoCustomer
+                    end;
                 end;
-                Rec.Init();
-                Rec."Document No." := GLRec."Document No."; //DocumentNo
-                Rec."Line No." := linenum;
-                Rec."Assessee Code" := 'GLE';
-                Rec."TCS Nature of Collection" := GLRec."Source Code";  //sourcecode
-                Rec."Price description" := 'Adjustment';    //trnType
-                Rec."Posting Date" := GLRec."Posting Date";   //PostDate
-                Rec."FA Posting Date" := GLRec."Document Date"; //DocDate
-                CLERec.Reset();
-                CLERec.setrange("Document No.", GLRec."Document No.");
-                if clerec.findfirst then
-                    Rec."Shipment Date" := Clerec."Due Date";
-                Rec.Insert();
-                linenum := linenum + 10000;
             until GlRec.Next() = 0;
         end;
     end;
@@ -901,6 +926,146 @@ page 50055 Acx_Sales
             if (DATE2DMY(SCrMHRec."Posting Date", 2) = 10) OR (DATE2DMY(SCrMHRec."Posting Date", 2) = 11) OR (DATE2DMY(SCrMHRec."Posting Date", 2) = 12) then
                 Quarter := 'Qtr 3';
             if (DATE2DMY(SCrMHRec."Posting Date", 2) = 1) OR (DATE2DMY(SCrMHRec."Posting Date", 2) = 2) OR (DATE2DMY(SCrMHRec."Posting Date", 2) = 3) then
+                Quarter := 'Qtr 4';
+        end;
+
+        if Rec."Assessee Code" = 'GLE' then begin
+            SourceCode := Rec."TCS Nature of Collection";
+            TrnType := 'Adjustment';
+            SIHNo := Rec."Document No.";
+            PostDate := SCrMHRec."Posting Date";
+            DocDate := SCrMHRec."Document Date";
+            OrderNo := '';
+            OrderDate := 0D;
+            DueDate := SCrMHRec."Due Date";
+            SellToCustNo := SCrMHRec."Sell-to Customer No.";
+            SellToCustName := SCrMHRec."Sell-to Customer Name";
+            SellToCustAddr := '';
+            SellToCustAddr2 := '';
+            SellToCity := '';
+            StateSellToState := SCrMHRec.State;
+            BillToCustNo := '';
+            BillToName := '';
+            BillToAddr := '';
+            BillToAddr2 := '';
+            BillToCity := '';
+            CountryName := '';
+            ShipToCode := '';
+            ShipToName := '';
+            ShipToAddr := '';
+            ShipToAddr2 := '';
+            PmntTermsCode := '';
+            ShpmntTermsCode := '';
+            ExtDocNo := SCrMHRec."External Document No.";
+            LoCode := Rec."Location Code";
+            SalesPersonCode := SCrMHRec."Salesperson Code";
+            CustPostGrp := SCrMHRec."Customer Posting Group";
+            GenBusPostGrp := '';
+            GblDim1 := '';
+            GblDim2 := '';
+            AppliesToDocType := Format(SCrMHRec."Applies-to Doc. Type");
+            AppliesToDocNo := Format(SCrMHRec."Applies-to Doc. No.");
+            ItemNo := '';
+            GLDesc := 'Product Discount';
+            VariantCode := '';
+            Desc := '';
+            Desc2 := '';
+            ItemName := '';
+            UOM := '';
+            ShpmntDate := 0D;
+            Qty := 0;
+            CurrCode := '';
+            UnitPrice := 0;
+            LineDiscount := 0;
+
+            if SCrMHRec."Currency Factor" = 0 then
+                LineAmount := Rec."Line Amount"
+            else begin
+                if (Rec."Line Amount" <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
+                    LineAmount := Rec."Line Amount" / SCrMHRec."Currency Factor";
+            end;
+
+            LineDiscountAmount := 0;
+
+            if SCrMHRec."Currency Factor" = 0 then
+                Amout := -Rec.Amount
+            else begin
+                if (Rec.Amount <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
+                    Amout := -Rec.Amount / SCrMHRec."Currency Factor";
+            end;
+
+            InvDiscountAmount := 0;
+
+            GSTJurisdiction := '';
+
+            GSTPlaceofSupply := '';
+
+            GSTGrpType := '';
+
+            HSNSACCode := Rec."HSN/SAC Code";
+
+            GSTBaseAmt := 0;
+
+            CGSTPer := 0;
+            CGSTAmt := 0;
+            SGSTPer := 0;
+            SGSTAmt := 0;
+            IGSTPer := 0;
+            IGSTAmt := 0;
+
+            TotGSTPer := 0;
+            TotGSTAmt := 0;
+
+            TCSNatureofCollection := '';
+            TDSTCSAmt := 0;
+
+            TDSTCSBaseAmount := 0;
+
+            TCSAmount := 0;
+
+            if SCrMHRec."Currency Factor" = 0 then
+                AmtToCustomer := -Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")
+            else begin
+                if ((Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
+                    AmtToCustomer := -(Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) / SCrMHRec."Currency Factor";
+            end;
+
+            PostingGrp := '';
+            GenProdPostGrp := '';
+            LineNo := 0;
+            ItemCatCode := '';
+            ProductGrpCode := '';
+            CrossRefNo := '';
+            NatureOfSupply := '';
+
+            GSTCustomerType := '';
+
+            LocGSTRegNo := '';
+            LocStateCode := SCrMHRec."Location State Code";
+            CustGSTRegNo := '';
+
+            if LocationRec.Get(Rec."Location Code") then begin
+                LocName := LocationRec.Name;
+                LocationStateCode := LocationRec."State Code";
+            end;
+            SalespersonPurchName := '';
+
+            Dayvar := DATE2DMY(Rec."Posting Date", 1);
+            MonthVar := FORMAT(Rec."Posting Date", 0, '<Month Text>');
+            YearVar := DATE2DMY(Rec."Posting Date", 3);
+
+            if DATE2DMY(Rec."Posting Date", 2) >= 4 then
+                FinancialYear := Format(DATE2DMY(Rec."Posting Date", 3) + '-' + (DATE2DMY(Rec."Posting Date", 3) + 1))
+            else
+                FinancialYear := Format((DATE2DMY(Rec."Posting Date", 3) - 1) + '-' + DATE2DMY(Rec."Posting Date", 3));
+
+            if (DATE2DMY(Rec."Posting Date", 2) = 4) OR (DATE2DMY(Rec."Posting Date", 2) = 5) OR (DATE2DMY(Rec."Posting Date", 2) = 6) then
+                Quarter := 'Qtr 1';
+            if (DATE2DMY(Rec."Posting Date", 2) = 7) OR (DATE2DMY(Rec."Posting Date", 2) = 8) OR (DATE2DMY(Rec."Posting Date", 2) = 9) then
+                Quarter := 'Qtr 2';
+            if (DATE2DMY(Rec."Posting Date", 2) = 10) OR (DATE2DMY(Rec."Posting Date", 2) = 11) OR (DATE2DMY(Rec."Posting Date", 2) = 12) then
+                Quarter := 'Qtr 3';
+            if (DATE2DMY(Rec."Posting Date", 2) = 1) OR (DATE2DMY(Rec."Posting Date", 2) = 2) OR (DATE2DMY(Rec."Posting Date", 2) = 3) then
                 Quarter := 'Qtr 4';
         end;
     end;
