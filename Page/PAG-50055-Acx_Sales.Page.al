@@ -364,7 +364,6 @@ page 50055 Acx_Sales
                         Rec."Customer Price Group" := CLERec."Customer Posting Group";  //CustomerPostingGroup
                         Rec."Bin Code" := Format(CLERec."Applies-to Doc. Type");    //AppliesToDocType
                         Rec."Customer Disc. Group" := CLERec."Applies-to Doc. No."; //AppliesToDocNo
-                        //Assign GLDescription as 'Product Discount' directly in OnAfterGetRecord()
                         Rec."Line Amount" := GLRec.Amount;  //LineAmount
                         Rec.Amount := GLRec.Amount;     //Amount
                         Rec."Total UPIT Amount" := GLRec.Amount;    //AmountToCustomer
@@ -384,7 +383,7 @@ page 50055 Acx_Sales
     trigger OnAfterGetRecord()
     begin
         ClearVariables();
-        CalculateInvoiceAndCreditMemoLines();
+        CalculateInvoiceAndCreditMemoLinesAndGLEntries();
     end;
 
     procedure ClearVariables()
@@ -467,7 +466,7 @@ page 50055 Acx_Sales
         Clear(AppliesToDocNo);
     end;
 
-    procedure CalculateInvoiceAndCreditMemoLines()
+    procedure CalculateInvoiceAndCreditMemoLinesAndGLEntries()
     begin
         if (Rec."Assessee Code" = 'SIL') AND (SIHRec.Get(Rec."Document No.")) then begin
             SourceCode := SIHRec."Source Code";
@@ -978,22 +977,11 @@ page 50055 Acx_Sales
             UnitPrice := 0;
             LineDiscount := 0;
 
-            if SCrMHRec."Currency Factor" = 0 then
-                LineAmount := Rec."Line Amount"
-            else begin
-                if (Rec."Line Amount" <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
-                    LineAmount := Rec."Line Amount" / SCrMHRec."Currency Factor";
-            end;
+            LineAmount := Rec."Line Amount";
 
             LineDiscountAmount := 0;
 
-            if SCrMHRec."Currency Factor" = 0 then
-                Amout := -Rec.Amount
-            else begin
-                if (Rec.Amount <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
-                    Amout := -Rec.Amount / SCrMHRec."Currency Factor";
-            end;
-
+            Amout := -Rec.Amount;
             InvDiscountAmount := 0;
 
             GSTJurisdiction := '';
@@ -1023,13 +1011,7 @@ page 50055 Acx_Sales
 
             TCSAmount := 0;
 
-            if SCrMHRec."Currency Factor" = 0 then
-                AmtToCustomer := -Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")
-            else begin
-                if ((Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) <> 0) AND (SCrMHRec."Currency Factor" <> 0) then
-                    AmtToCustomer := -(Codunit50200.GetAmttoCustomerPostedLine(Rec."Document No.", Rec."Line No.")) / SCrMHRec."Currency Factor";
-            end;
-
+            AmtToCustomer := Rec."Total UPIT Amount";
             PostingGrp := '';
             GenProdPostGrp := '';
             LineNo := 0;
