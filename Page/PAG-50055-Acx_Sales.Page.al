@@ -374,6 +374,7 @@ page 50055 Acx_Sales
                         Rec."Line Amount" := Rec."Line Amount" + GLRec.Amount;  //LineAmount
                         Rec.Amount := -1 * (Rec.Amount + GLRec.Amount); //Amount
                         Rec."Total UPIT Amount" := Rec."Total UPIT Amount" + GLRec.Amount;  //AmounttoCustomer
+                        Rec.modify();
                     end;
                 end;
             until GlRec.Next() = 0;

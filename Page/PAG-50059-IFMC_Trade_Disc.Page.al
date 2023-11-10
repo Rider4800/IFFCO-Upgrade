@@ -18,10 +18,22 @@ page 50059 IFMC_Trade_Disc
         {
             repeater(General)
             {
-                field(Source_Code; SourceCode)
+                field(Transaction_Type; TrnType)
                 {
                 }
-                field(Transaction_Type; TrnType)
+                field(G_L_Description; GLDesc)
+                {
+                }
+                field(Line_No; LineNo)
+                {
+                }
+                field(Document_No; DocNo)
+                {
+                }
+                field(Order_No; OrderNo)
+                {
+                }
+                field(Order_Date; OrderDate)
                 {
                 }
             }
@@ -44,8 +56,99 @@ page 50059 IFMC_Trade_Disc
                 if SCrMLRec.FindFirst() then begin
                     GLAccRec.Get(GLRec."G/L Account No.");
                     SCrMHRec.Get(GLRec."Document No.");
+                    LocationRec.Get(GLRec."Location Code");
+                    ItemRec.Get(SCrMLRec."No.");
+                    DGSTLedEntryRec.reset();
+                    DGSTLedEntryRec.setrange("Document No.", SCrMLRec."Document No.");
+                    DGSTLedEntryRec.setrange("Document Line No.", SCrMLRec."Line No.");
+                    DGSTLedEntryRec.setrange("GST Component Code", 'IGST');
+                    if DGSTLedEntryRec.FindFirst() then;
                     Rec.Reset();
-                    //Rec.SetRange();
+                    Rec.SetRange("G/L Account Name", GLAccRec.Name);
+                    Rec.Setrange("G/L Account No.", GLRec."G/L Account No.");
+                    Rec.Setrange("Dimension Changes Count", SCrMLRec."Line No.");
+                    Rec.Setrange("Document No.", GLRec."Document No.");
+                    Rec.Setrange("Posting Date", GLRec."Posting Date");
+                    Rec.Setrange("External Document No.", GLRec."External Document No.");
+                    Rec.Setrange("Source No.", GLRec."Source No.");
+                    Rec.Setrange("Location Code", GLRec."Location Code");
+                    Rec.Setrange(Comment, LocationRec.Name);
+                    Rec.SetRange("Reason Code", LocationRec."State Code");
+                    Rec.SetRange("IC Partner Code", SCrMLRec."Item Category Code");
+                    Rec.SetRange("Gen. Prod. Posting Group", SCrMLRec."Gen. Prod. Posting Group");
+                    Rec.Setrange("VAT Prod. Posting Group", SCrMLRec."Posting Group");
+                    Rec.Setrange("VAT Bus. Posting Group", ItemRec."Item Category Code");       //ProductGroupCode
+                    Rec.SetRange("Document Type", GLRec."Document Type");
+                    Rec.SetRange("Prod. Order No.", SCrMLRec."No.");
+                    Rec.SetRange(Description, SCrMHRec."Sell-to Customer Name");
+                    Rec.SetRange("Tax Group Code", SCrMHRec."Customer Posting Group");
+                    Rec.SetRange(Amount, SCrMLRec.Amount);
+                    Rec.SetRange("VAT Amount", SCrMLRec."Line Discount %");
+                    Rec.SetRange("Non-Deductible VAT Amount", SCrMLRec."Inv. Discount Amount");
+                    Rec.Setrange("Non-Deductible VAT Amount ACY", SCrMLRec."Line Discount Amount");
+                    Rec.SetRange("Business Unit Code", SCrMLRec.Description);
+                    Rec.SetRange(Quantity, SCrMLRec."Unit Cost");
+                    Rec.SetRange("Source Branch", SCrMHRec."Payment Terms Code");
+                    Rec.SetRange("Gen. Posting Type", SCrMLRec."GST Group Type");
+                    Rec.setrange("Bal. Account Type", SCrMLRec."GST Jurisdiction Type");
+                    Rec.SetRange("Source Type", SCrMHRec."GST Customer Type");
+                    Rec.SetRange("Additional-Currency Amount", Codunit50200.GetGSTBaseAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No."));
+                    Rec.Setrange("Add.-Currency Debit Amount", DGSTLedEntryRec."GST Amount");
+                    Rec.Setrange("Add.-Currency Credit Amount", DGSTLedEntryRec."GST %");
+                    Rec.SetRange("Debit Amount", SCrMLRec.Quantity);
+                    if not Rec.FindFirst() then begin
+                        Rec.Init();
+                        Rec.TransferFields(GLRec);
+                        Rec."G/L Account Name" := GLAccRec.Name;
+                        Rec."G/L Account No." := GLRec."G/L Account No.";
+                        Rec."Dimension Changes Count" := SCrMLRec."Line No.";
+                        Rec."Document No." := GLRec."Document No.";
+                        Rec."Posting Date" := GLRec."Posting Date";
+                        Rec."External Document No." := GLRec."External Document No.";
+                        Rec."Source No." := GLRec."Source No.";
+                        Rec."Location Code" := GLRec."Location Code";
+                        Rec.Comment := LocationRec.Name;
+                        Rec."Reason Code" := LocationRec."State Code";
+                        Rec."IC Partner Code" := SCrMLRec."Item Category Code";
+                        Rec."Gen. Prod. Posting Group" := SCrMLRec."Gen. Prod. Posting Group";
+                        Rec."VAT Prod. Posting Group" := SCrMLRec."Posting Group";
+                        Rec."VAT Bus. Posting Group" := ItemRec."Item Category Code";       //ProductGroupCode
+                        Rec."Document Type" := GLRec."Document Type";
+                        Rec."Prod. Order No." := SCrMLRec."No.";
+                        Rec.Description := SCrMHRec."Sell-to Customer Name";
+                        Rec."Tax Group Code" := SCrMHRec."Customer Posting Group";
+                        Rec.Amount := SCrMLRec.Amount;
+                        Rec."VAT Amount" := SCrMLRec."Line Discount %";
+                        Rec."Non-Deductible VAT Amount" := SCrMLRec."Inv. Discount Amount";
+                        Rec."Non-Deductible VAT Amount ACY" := SCrMLRec."Line Discount Amount";
+                        Rec."Business Unit Code" := SCrMLRec.Description;
+                        Rec."Source Branch" := SCrMHRec."Payment Terms Code";
+                        Rec."Gen. Posting Type" := SCrMLRec."GST Group Type";
+                        Rec."User ID" := Format(SCrMLRec."GST Jurisdiction Type");
+                        Rec."Source Type" := SCrMHRec."GST Customer Type";
+                        Rec."Additional-Currency Amount" := Codunit50200.GetGSTBaseAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
+                        Rec."Add.-Currency Debit Amount" := DGSTLedEntryRec."GST Amount";
+                        Rec."Add.-Currency Credit Amount" := DGSTLedEntryRec."GST %";
+                        Rec."Debit Amount" := SCrMLRec.Quantity;
+                        Rec.Quantity := SCrMLRec."Unit Cost";    //UnitCost
+                        Rec.Amount := -1 * (SCrMLRec.Amount); //Amount
+                        Rec."Non-Deductible VAT Amount" := -1 * (SCrMLRec."Inv. Discount Amount");    //InvDiscAmt
+                        Rec."Non-Deductible VAT Amount ACY" := -1 * (SCrMLRec."Line Discount Amount");    //LineDiscAmt
+                        Rec."Add.-Currency Debit Amount" := DGSTLedEntryRec."GST Amount";   //GSTAmt
+                        Rec."Debit Amount" := SCrMLRec.Quantity;   //Qty
+                        Rec."Credit Amount" := GLRec.Amount;    //GLAmt
+                        Rec."Finance Branch A/c Code" := 'SCrML';
+                        Rec.Insert();
+                    end else begin
+                        Rec.Quantity := Rec.Quantity + SCrMLRec."Unit Cost";    //UnitCost
+                        Rec.Amount := -1 * (Rec.Amount + SCrMLRec.Amount); //Amount
+                        Rec."Non-Deductible VAT Amount" := -1 * (Rec."Non-Deductible VAT Amount" + SCrMLRec."Inv. Discount Amount");    //InvDiscAmt
+                        Rec."Non-Deductible VAT Amount ACY" := -1 * (Rec."Non-Deductible VAT Amount ACY" + SCrMLRec."Line Discount Amount");    //LineDiscAmt
+                        Rec."Add.-Currency Debit Amount" := Rec."Add.-Currency Debit Amount" + DGSTLedEntryRec."GST Amount";   //GSTAmt
+                        Rec."Credit Amount" := Rec."Credit Amount" + GLRec.Amount;  //GLAmt
+                        Rec."Debit Amount" := Rec."Debit Amount" + SCrMLRec.Quantity;   //Qty
+                        Rec.Modify();
+                    end;
                 end;
             until GlRec.Next() = 0;
         end;
@@ -135,11 +238,74 @@ page 50059 IFMC_Trade_Disc
         Clear(Quarter);
         Clear(AppliesToDocType);
         Clear(AppliesToDocNo);
+        Clear(NameVar);
+        clear(DocNo);
+        Clear(SourceNo);
+        Clear(DocType);
+        UnitCost := 0;
+        GLAmount := 0;
     end;
 
     procedure CalculateGLEntries()
     begin
+        if Rec."Finance Branch A/c Code" = 'SCrML' then begin
+            TrnType := 'Credit Note';
+            NameVar := Rec."G/L Account Name";
+            LineNo := Rec."Dimension Changes Count";
+            DocNo := Rec."Document No.";
+            OrderNo := '';
+            OrderDate := 0D;
+            PostDate := Rec."Posting Date";
+            ExtDocNo := Rec."External Document No.";
+            SourceNo := Rec."Source No.";
+            PmntTermsCode := Rec."Source Branch";
+            LoCode := Rec."Location Code";
+            LocName := Rec.Comment;
+            LocStateCode := Rec."Reason Code";
+            ItemCatCode := Rec."IC Partner Code";
+            GenProdPostGrp := Rec."Gen. Prod. Posting Group";
+            PostingGrp := Rec."VAT Prod. Posting Group";
+            ProductGrpCode := Rec."VAT Bus. Posting Group";
+            DocType := Format(Rec."Document Type");
+            ItemNo := Rec."Prod. Order No.";
+            Desc := Rec."Business Unit Code";
+            SellToCustName := Rec.Description;
+            CustPostGrp := Rec."Tax Group Code";
+            UnitCost := Rec.Quantity;
+            LineAmount := Rec.Amount;
+            LineDiscountAmount := Rec."VAT Amount";
+            InvDiscountAmount := Rec."Non-Deductible VAT Amount";
+            LineDiscountAmount := Rec."Non-Deductible VAT Amount ACY";
+            GSTBaseAmt := Rec."Additional-Currency Amount";
+            GSTGrpType := Format(Rec."Gen. Posting Type");
+            GLAmount := Rec."Credit Amount";
+            TotGSTPer := Rec."Add.-Currency Credit Amount";
+            TotGSTAmt := Rec."Add.-Currency Debit Amount";
+            Qty := Rec."Debit Amount";
 
+            if Rec."User ID" = 'Intrastate' then
+                GSTJurisdiction := 'Intrastate';
+            if Rec."User ID" = 'Interstate' then
+                GSTJurisdiction := 'Interstate';
+
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::" " then
+                GSTCustomerType := '';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Registered then
+                GSTCustomerType := 'Registered';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Unregistered then
+                GSTCustomerType := 'Unregistered';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export then
+                GSTCustomerType := 'Export';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::"Deemed Export" then
+                GSTCustomerType := 'Deemed Export';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Exempted then
+                GSTCustomerType := 'Exempted';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::"SEZ Development" then
+                GSTCustomerType := 'SEZ Development';
+            if SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::"SEZ Unit" then
+                GSTCustomerType := 'SEZ Unit';
+
+        end;
     end;
 
     var
@@ -148,6 +314,7 @@ page 50059 IFMC_Trade_Disc
         SIHRec: Record "Sales Invoice Header";
         SCrMHRec: Record "Sales Cr.Memo Header";
         GLRec: Record "G/L Entry";
+        GLEntryRec: Record "G/L Entry";
         CountryRec: Record "Country/Region";
         GLAccRec: Record "G/L Account";
         Codunit50200: Codeunit 50200;
@@ -246,4 +413,11 @@ page 50059 IFMC_Trade_Disc
         AppliesToDocNo: Code[20];
         linenum: Integer;
         CLERec: Record "Cust. Ledger Entry";
+        DGSTLedEntryRec: Record "Detailed GST Ledger Entry";
+        NameVar: Text[30];
+        DocNo: Code[20];
+        SourceNo: Code[20];
+        DocType: Code[20];
+        UnitCost: Decimal;
+        GLAmount: Decimal;
 }
