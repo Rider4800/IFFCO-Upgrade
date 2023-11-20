@@ -9,6 +9,7 @@ codeunit 50035 "Cod-80-Event"
         dcCustDrBal: Decimal;
         recSalesLine: Record "Sales Line";
         Cu50200: Codeunit 50200;
+        BillAmt: Decimal;
     begin
         IF RecSaleH."Campaign No." = '' THEN BEGIN
             recCustomer.RESET;
@@ -27,7 +28,8 @@ codeunit 50035 "Cod-80-Event"
                     recSalesLine.SETRANGE("Document No.", RecSaleH."No.");
                     IF recSalesLine.FINDSET THEN
                         REPEAT
-                            dcBillAmt += (Cu50200.AmttoCustomerSalesLine(recSalesLine) + Cu50200.TotalGSTAmtLineSales(recSalesLine));
+                            //dcBillAmt += (Cu50200.AmttoCustomerSalesLine(recSalesLine) + Cu50200.TotalGSTAmtLineSales(recSalesLine));
+                            dcBillAmt += Cu50200.AmttoCustomerSalesLine(recSalesLine);
                         UNTIL recSalesLine.NEXT = 0;
 
 
@@ -37,6 +39,7 @@ codeunit 50035 "Cod-80-Event"
                     //dcCustBal:=dcCustCrBal+recCustomer."Credit Limit (LCY)";
                     //dcCustBal:=dcCustDrBal+recCustomer."Credit Limit (LCY)";
 
+                    BillAmt := ROUND(dcBillAmt, 1);
                     IF dcCustBal < dcBillAmt THEN
                         ERROR('Billing Amount : %1 is greater then Available Balance and Credit Balance : %2', dcBillAmt, dcCustBal)
                     ELSE
@@ -271,7 +274,17 @@ codeunit 50035 "Cod-80-Event"
         EwayBillandEinvoice: Record "E-Way Bill & E-Invoice";
         Location: Record Location;
         Cust: Record Customer;
+        CustLedgerEntryL: Record 21;
     begin
+        //Team 7739 Start-
+        CustLedgerEntryL.RESET;
+        CustLedgerEntryL.SETRANGE("External Document No.", SalesInvHeader."Order No.");
+        IF CustLedgerEntryL.FINDSET THEN
+            REPEAT
+                CustLedgerEntryL."External Document No." := SalesInvHeader."No.";
+                CustLedgerEntryL.MODIFY;
+            UNTIL CustLedgerEntryL.NEXT = 0;
+        //Team 7739 End-
         //HT
         //ACX-RK 210421 Begin
         EwayBillandEinvoice.INIT;

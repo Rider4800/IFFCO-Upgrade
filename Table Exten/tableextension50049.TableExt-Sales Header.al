@@ -13,10 +13,26 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                 UddateSalesHierarchy//Sales Hierarchy
             end;
         }
+        modify("Bill-to Customer No.")
+        {
+            trigger OnAfterValidate()
+            var
+                CustRecTab: Record Customer;
+            begin
+                //9509 Start
+                CustRecTab.RESET;
+                IF CustRecTab.GET(Rec."Bill-to Customer No.") THEN BEGIN
+                    Rec."Campaign No." := CustRecTab."Preferred Campaign No.";
+                    Rec.MODIFY;
+                END;
+            end;
+        }
         modify("Campaign No.")
         {
             TableRelation = Campaign WHERE("Status Code" = FILTER(<> 'CLOSE'));
             trigger OnBeforeValidate()
+            var
+                ParentCustomerL: Record Customer;
             begin
                 //acxcp_300622_CampaignCode +
                 //acxcp_230921 //campaign super cash customization
@@ -25,8 +41,18 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                 recCust.CALCFIELDS("Balance (LCY)");
                 dcCustomerBalance := recCust."Balance (LCY)";
                 IF dcCustomerBalance >= 0 THEN
-                    ERROR('Customer doent have Credit Balance');
-
+                    //Team 7739 Start-
+                    BEGIN
+                    IF "Parent Customer" <> '' THEN BEGIN
+                        CLEAR(ParentCustomerL);
+                        ParentCustomerL.GET("Parent Customer");
+                        ParentCustomerL.CALCFIELDS("Balance (LCY)");
+                        IF ParentCustomerL."Balance (LCY)" >= 0 THEN
+                            ERROR('Parent Customer %1 doent have Credit Balance and Customer %1 doent have Credit Balance.');
+                    END ELSE
+                        //Team 7739 End-
+                        ERROR('Customer doent have Credit Balance');
+                END; //Team 7739
                 //----------Campaign Code delete check
                 IF ("Document Type" = "Document Type"::Order) AND
                    (xRec."Campaign No." <> "Campaign No.")
@@ -163,6 +189,15 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                 TESTFIELD("Sell-to Customer No.", '');
             end;
         }
+        //->E-Bazaar Customization
+        field(50037; "Parent Customer"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            TableRelation = Customer;
+            Description = 'Team';
+            Editable = false;
+        }
+        //<-E-Bazaar Customization
         field(50112; "FO Code"; Code[10])
         {
             DataClassification = ToBeClassified;
@@ -205,6 +240,12 @@ tableextension 50049 tableextension50049 extends "Sales Header"
             Description = '12887 26th oct 23 added to run statistics page mandatory';
         }
         //<--12887
+        //->E-Bazaar Customization
+        field(50119; "JV Posted"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //<-E-Bazaar Customization
     }
     trigger OnBeforeInsert()
     begin

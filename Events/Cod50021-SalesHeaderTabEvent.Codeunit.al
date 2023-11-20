@@ -87,4 +87,13 @@ codeunit 50021 SalesHeaderTabEvent
         SalesHeader.VALIDATE("Scheme Code", Customer."Scheme Code");//Sales Hierarchy
         SalesHeader.UddateSalesHierarchy();//Sales Hierarch
     end;
+
+    //->E-Bazaar Customization
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnCopySellToCustomerAddressFieldsFromCustomerOnAfterAssignSellToCustomerAddress', '', false, false)]
+    procedure OnCopySellToCustomerAddressFieldsFromCustomerOnAfterAssignSellToCustomerAddress(var SalesHeader: Record "Sales Header"; Customer: Record Customer)
+    begin
+        SalesHeader."Parent Customer" := Customer."Parent Customer";//acxvg
+        SalesHeader."Campaign No." := Customer."Preferred Campaign No.";//9509 03112023
+    end;
+    //<-E-Bazaar Customization
 }

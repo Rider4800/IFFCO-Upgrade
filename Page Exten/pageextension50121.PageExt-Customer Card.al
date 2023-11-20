@@ -18,6 +18,12 @@ pageextension 50121 CustomerCard extends "Customer Card"
             {
                 ApplicationArea = all;
             }
+            //->E-Bazaar Customization
+            field("Parent Customer"; Rec."Parent Customer")
+            {
+                ApplicationArea = all;
+            }
+            //<-E-Bazaar Customization
         }
         addafter("Search Name")
         {
@@ -61,6 +67,13 @@ pageextension 50121 CustomerCard extends "Customer Card"
             {
                 ApplicationArea = all;
             }
+            //->E-Bazaar Customization
+            field("Preferred Campaign No."; Rec."Preferred Campaign No.")
+            {
+                ApplicationArea = All;
+                CaptionML = ENU = 'Preferred Campaign No.', ENN = 'Campaign No.';
+            }
+            //<-E-Bazaar Customization
             group("KYC Documents")
             {
                 Caption = 'KYC Documents';

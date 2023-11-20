@@ -248,6 +248,20 @@ tableextension 50031 tableextension50031 extends Customer
             Description = 'ACXCP';
             Editable = false;
         }
+        //->E-Bazaar Customization
+        field(50037; "Parent Customer"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Description = 'Team';
+            TableRelation = Customer;
+        }
+        field(50038; "Preferred Campaign No."; Code[20])
+        {
+            TableRelation = Campaign."No." WHERE("Status Code" = FILTER(<> 'CLOSE'));
+            CaptionML = ENU = 'Campaign No.', ENN = 'Campaign No.';
+            Description = 'Team 9509';
+        }
+        //<-E-Bazaar Customization
     }
 
     trigger OnAfterInsert()
