@@ -1,5 +1,7 @@
 codeunit 50035 "Cod-80-Event"
 {
+    Permissions = TableData "Cust. Ledger Entry" = rimd,
+                  TableData "TDS Entry" = rim;
     procedure CheckCustBalance(RecSaleH: Record "Sales Header") dcCustBal: Decimal
     var
         recCustomer: Record Customer;

@@ -41,6 +41,7 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                 recCust.CALCFIELDS("Balance (LCY)");
                 dcCustomerBalance := recCust."Balance (LCY)";
                 IF dcCustomerBalance >= 0 THEN
+                    //->E-Bazaar Customization
                     //Team 7739 Start-
                     BEGIN
                     IF "Parent Customer" <> '' THEN BEGIN
@@ -51,6 +52,7 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                             ERROR('Parent Customer %1 doent have Credit Balance and Customer %1 doent have Credit Balance.');
                     END ELSE
                         //Team 7739 End-
+                        //<-E-Bazaar Customization
                         ERROR('Customer doent have Credit Balance');
                 END; //Team 7739
                 //----------Campaign Code delete check

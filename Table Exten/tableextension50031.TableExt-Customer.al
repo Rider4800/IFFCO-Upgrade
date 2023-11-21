@@ -257,9 +257,10 @@ tableextension 50031 tableextension50031 extends Customer
         }
         field(50038; "Preferred Campaign No."; Code[20])
         {
-            TableRelation = Campaign."No." WHERE("Status Code" = FILTER(<> 'CLOSE'));
+            DataClassification = ToBeClassified;
             CaptionML = ENU = 'Campaign No.', ENN = 'Campaign No.';
             Description = 'Team 9509';
+            TableRelation = Campaign."No." WHERE("Status Code" = FILTER(<> 'CLOSE'));
         }
         //<-E-Bazaar Customization
     }
