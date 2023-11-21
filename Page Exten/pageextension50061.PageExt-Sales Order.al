@@ -425,16 +425,16 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                     //COMMIT;
                     SLEEP(1000);
 
-                    // //ACXVG
-                    // IF NOT CONFIRM('Do You Want To Preview Before Post') THEN BEGIN
-                    //     //acxcp_30122022 >>
-                    //     PostSalesOrder(CODEUNIT::"Sales-Post (Yes/No)", "Navigate After Posting"::"Posted Document");
-                    // END ELSE BEGIN
-                    //     COMMIT();
-                    //     recSaleH.RESET;
-                    //     recSaleH.SETFILTER("No.", Rec."No.");
-                    //     REPORT.RUNMODAL(50067, TRUE, FALSE, recSaleH);
-                    // END;
+                    //ACXVG
+                    IF NOT CONFIRM('Do You Want To Preview Before Post') THEN BEGIN
+                        //acxcp_30122022 >>
+                        Post(CODEUNIT::"Sales-Post (Yes/No)");
+                    END ELSE BEGIN
+                        COMMIT();
+                        recSaleH.RESET;
+                        recSaleH.SETFILTER("No.", Rec."No.");
+                        REPORT.RUNMODAL(50067, TRUE, FALSE, recSaleH);
+                    END;
                 end;
             }
         }
@@ -482,17 +482,6 @@ pageextension 50061 pageextension50061 extends "Sales Order"
 
                 //OpenSalesOrderStatistics;
                 cuSalePost.CheckCustBalance(Rec);
-
-                //TM 9509 Added 07112023
-                IF NOT CONFIRM('Do You Want To Preview Before Post') THEN BEGIN
-                    //acxcp_30122022 >>
-                    Post(CODEUNIT::"Sales-Post (Yes/No)");
-                END ELSE BEGIN
-                    COMMIT();
-                    recSaleH.RESET;
-                    recSaleH.SETFILTER("No.", Rec."No.");
-                    REPORT.RUNMODAL(50067, TRUE, FALSE, recSaleH);
-                END;
             end;
         }
 
