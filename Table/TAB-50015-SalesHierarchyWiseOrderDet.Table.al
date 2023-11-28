@@ -139,7 +139,7 @@ table 50015 "Sales Hierarchy Wise OrderDet."
             TableRelation = "Dimension Value".Code WHERE("Dimension Code" = CONST('TERR'),
                                                           "Dimension Value Type" = CONST(Standard));
         }
-        field(38; "Territory Dimension Name"; Text[30])
+        field(38; "Territory Dimension Name"; Text[50])
         {
             CalcFormula = Lookup("Dimension Value".Name WHERE("Dimension Code" = CONST('TERR'),
                                                                Code = FIELD("Territory Dimension Code")));

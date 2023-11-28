@@ -1594,6 +1594,26 @@ codeunit 50200 CalcAmttoVendor
         end;
     end;
 
+    procedure GetGSTBaseAmtLine(recordIDPara: RecordId): Decimal
+    var
+        GSTSetup: Record "GST Setup";
+        TaxTransactionValue: Record "Tax Transaction Value";
+
+    begin
+        GSTSetup.Get();
+
+        //if T39.Type <> T39.Type::" " then begin
+
+        TaxTransactionValue.Reset();
+        TaxTransactionValue.SetRange("Tax Record ID", recordIDPara);
+        //  TaxTransactionValue.SetRange("Tax Type", GSTSetup."GST Tax Type");
+        TaxTransactionValue.SetRange("Value Type", TaxTransactionValue."Value Type"::COMPONENT);
+        TaxTransactionValue.SetRange("Value ID", 10);
+        if TaxTransactionValue.FindFirst() then
+            exit(TaxTransactionValue.Amount);
+        //end;
+    end;
+
     procedure GetGSTBaseAmtPostedLine(DocumentNo: Code[20]; DocLineNo: Integer): Decimal
     var
         PstdPurchInv: Record 123;
@@ -2294,5 +2314,56 @@ codeunit 50200 CalcAmttoVendor
         else
             GSTRoundingPrecision := 1;
         exit(GSTRoundingPrecision);
+    end;
+
+    procedure GetIGSTAmount(RecordIDRec: recordid; Type: Option "0","1"): decimal
+    var
+        TaxTransactionRec: Record "Tax Transaction Value";
+        TaxVal: Decimal;
+    begin
+        TaxTransactionRec.reset;
+        TaxTransactionRec.SetRange("Tax Record ID", RecordIDRec);
+        TaxTransactionRec.SetRange("Tax Type", 'GST');
+        TaxTransactionRec.SetRange("Value Type", TaxTransactionRec."Value Type"::COMPONENT);
+        TaxTransactionRec.SetRange("Value ID", 3);
+        if TaxTransactionRec.FindFirst() then begin
+            if type = type::"0" then TaxVal := TaxTransactionRec.Amount;
+            if Type = type::"1" then TaxVal := TaxTransactionRec.Percent;
+        end;
+        exit(TaxVal);
+    end;
+
+    procedure GetCGSTAmount(RecordIDRec: recordid; Type: Option "0","1"): decimal
+    var
+        TaxTransactionRec: Record "Tax Transaction Value";
+        TaxVal: Decimal;
+    begin
+        TaxTransactionRec.reset;
+        TaxTransactionRec.SetRange("Tax Record ID", RecordIDRec);
+        TaxTransactionRec.SetRange("Tax Type", 'GST');
+        TaxTransactionRec.SetRange("Value Type", TaxTransactionRec."Value Type"::COMPONENT);
+        TaxTransactionRec.SetRange("Value ID", 2);
+        if TaxTransactionRec.FindFirst() then begin
+            if type = type::"0" then TaxVal := TaxTransactionRec.Amount;
+            if Type = type::"1" then TaxVal := TaxTransactionRec.Percent;
+        end;
+        exit(TaxVal);
+    end;
+
+    procedure GetSGSTAmount(RecordIDRec: recordid; Type: Option "0","1"): decimal
+    var
+        TaxTransactionRec: Record "Tax Transaction Value";
+        TaxVal: Decimal;
+    begin
+        TaxTransactionRec.reset;
+        TaxTransactionRec.SetRange("Tax Record ID", RecordIDRec);
+        TaxTransactionRec.SetRange("Tax Type", 'GST');
+        TaxTransactionRec.SetRange("Value Type", TaxTransactionRec."Value Type"::COMPONENT);
+        TaxTransactionRec.SetRange("Value ID", 6);
+        if TaxTransactionRec.FindFirst() then begin
+            if type = type::"0" then TaxVal := TaxTransactionRec.Amount;
+            if Type = type::"1" then TaxVal := TaxTransactionRec.Percent;
+        end;
+        exit(TaxVal);
     end;
 }

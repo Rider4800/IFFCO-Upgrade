@@ -1,7 +1,7 @@
 {
   "id": "b6090cbb-41ec-4678-a4ac-61948ccd680f",
   "name": "IFFCO Upgrade",
-  "publisher": "Default Publisher",
+  "publisher": "TCPL",
   "version": "1.0.0.0",
   "brief": "",
   "description": "",
@@ -11,55 +11,6 @@
   "url": "",
   "logo": "",
   "dependencies": [
-    {
-      "id": "c512d720-63b9-4b26-b062-a0c09b4ed322",
-      "publisher": "Microsoft",
-      "name": "Company Hub",
-      "version": "22.5.59966.60300"
-    }
-    ,
-    {
-      "id": "437dbf0e-84ff-417a-965d-ed2bb9650972",
-      "publisher": "Microsoft",
-      "name": "Base Application",
-      "version": "22.5.59966.60699"
-    },
-    {
-      "id": "7819d79d-feea-4f09-bbed-5bbaca4bf323",
-      "publisher": "Microsoft",
-      "name": "Data Archive",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "08d69832-9231-429e-be2c-8bab2c96905b",
-      "publisher": "Microsoft",
-      "name": "Email - Current User Connector",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "aceb66c8-472e-437c-81d3-27e6c07d0f14",
-      "publisher": "Microsoft",
-      "name": "Email - Microsoft 365 Connector",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "e6328152-bb29-4664-9dae-3bc7eaae1fd8",
-      "publisher": "Microsoft",
-      "name": "Email - Outlook REST API",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "68e13fa3-217a-4be0-9141-99e5bf0ca818",
-      "publisher": "Microsoft",
-      "name": "Email - SMTP Connector",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "2a89f298-7ffd-44a5-a7ce-e08dac98abce",
-      "publisher": "Microsoft",
-      "name": "Essential Business Headlines",
-      "version": "22.5.59966.60187"
-    },
     {
       "id": "1150dd8d-51da-485a-bd4a-1ee98d78c21a",
       "publisher": "Microsoft",
@@ -115,51 +66,15 @@
       "version": "22.5.59966.60187"
     },
     {
-      "id": "a53a4bb0-aa53-8ff8-77d6-fe3388db0eb8",
-      "publisher": "Microsoft",
-      "name": "Recommended Apps",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "c526b3e9-b8ca-4683-81ba-fcd5f6b1472a",
-      "publisher": "Microsoft",
-      "name": "Sales and Inventory Forecast",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "8c972578-fe72-4aa5-ae51-cc5575fef2ea",
-      "publisher": "Microsoft",
-      "name": "Send To Email Printer",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "79b1a79a-2f66-4736-bc1b-8abb3537eb51",
-      "publisher": "Microsoft",
-      "name": "Simplified Bank Statement Import",
-      "version": "22.5.59966.60187"
-    },
-    {
       "id": "c1eafb3f-e397-468e-bdb4-ecc5c317ca00",
       "publisher": "Microsoft",
       "name": "Tax Engine",
       "version": "22.5.59966.60187"
-    },
-    {
-      "id": "7961e9dc-a8e5-49b1-839b-3a78803a4cb8",
-      "publisher": "Microsoft",
-      "name": "Troubleshoot FA Ledger Entries",
-      "version": "22.5.59966.60187"
-    },
-    {
-      "id": "2654d7e7-9afd-4947-9e02-6bb8f3e0cd04",
-      "publisher": "Microsoft",
-      "name": "Universal Print Integration",
-      "version": "22.5.59966.60187"
     }
   ],
   "screenshots": [],
-  "platform": "1.0.0.0",
-  "application": "21.0.0.0",
+  "platform": "22.0.0.0",
+  "application": "22.5.59966.60134",
   "idRanges": [
     {
       "from": 50000,
@@ -171,9 +86,7 @@
     "allowDownloadingSource": true,
     "includeSourceInSymbolFile": true
   },
-  "runtime": "10.0",
+  "runtime": "11.0",
   "target": "Cloud",
-  "features": [
-    "NoImplicitWith"
-  ]
+  "features": []
 }

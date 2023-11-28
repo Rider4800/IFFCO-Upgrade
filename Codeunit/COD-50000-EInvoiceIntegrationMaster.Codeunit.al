@@ -1232,7 +1232,6 @@ codeunit 50000 "E-Invoice Integration-Master"
         HttpWebRequestMgt: Codeunit "1297";
         TempBlob: Record "99008535";
         Instr: InStream;
-        [RunOnClient]
         HttpStatusCode: DotNet HttpStatusCode;
         [RunOnClient]
         ResponseHeaders: DotNet NameValueCollection;

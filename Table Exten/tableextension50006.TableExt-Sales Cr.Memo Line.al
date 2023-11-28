@@ -25,6 +25,12 @@ tableextension 50006 tableextension50006 extends "Sales Cr.Memo Line"
         {
             DataClassification = ToBeClassified;
         }
+        //->Team-17783  New field Added as MRP price is std field in NAV, so to use in BC, we created it
+        field(50006; "MRP Price"; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
+        //<-Team-17783
     }
 }
 

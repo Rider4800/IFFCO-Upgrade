@@ -1,17 +1,19 @@
 report 50008 "GSTR-3B New"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './GSTR3BNew.rdlc';
+    RDLCLayout = '.\ReportLayout\GSTR3BNew.rdl';
+    ApplicationArea = all;
+    UsageCategory = ReportsAndAnalysis;
     Caption = 'GSTR-3B New';
     PreviewMode = PrintLayout;
 
     dataset
     {
-        dataitem(DataItem1500700; Table2000000026)
+        dataitem(Integer; Integer)
         {
-            DataItemTableView = SORTING (Number)
+            DataItemTableView = SORTING(Number)
                                 ORDER(Ascending)
-                                WHERE (Number = FILTER (1));
+                                WHERE(Number = FILTER(1));
             column(GSTRLbl; GSTRLbl)
             {
             }
@@ -492,16 +494,16 @@ report 50008 "GSTR-3B New"
                 CalculateValues;
             end;
         }
-        dataitem(SupplyUnreg; Table16419)
+        dataitem(SupplyUnreg; "Detailed GST Ledger Entry")
         {
-            DataItemTableView = WHERE (GST Jurisdiction Type=FILTER(Interstate));
-            column(PlaceOfSupplyUnreg;PlaceOfSupplyUnreg)
+            DataItemTableView = WHERE("GST Jurisdiction Type" = FILTER(Interstate));
+            column(PlaceOfSupplyUnreg; PlaceOfSupplyUnreg)
             {
             }
-            column(SupplyBaseAmtUnreg;-SupplyBaseAmtUnreg)
+            column(SupplyBaseAmtUnreg; -SupplyBaseAmtUnreg)
             {
             }
-            column(SupplyIGSTAmtUnreg;-SupplyIGSTAmtUnreg)
+            column(SupplyIGSTAmtUnreg; -SupplyIGSTAmtUnreg)
             {
             }
 
@@ -510,112 +512,113 @@ report 50008 "GSTR-3B New"
                 CLEAR(PlaceOfSupplyUnreg);
                 CLEAR(SupplyBaseAmtUnreg);
                 CLEAR(SupplyIGSTAmtUnreg);
-                IF NOT ("Component Calc. Type" IN ["Component Calc. Type"::General,
+                /* IF NOT ("Component Calc. Type" IN ["Component Calc. Type"::General,
                                                    "Component Calc. Type"::Threshold,
                                                    "Component Calc. Type"::"Cess %"])
                 THEN
-                  CurrReport.SKIP;
-                CheckComponentReportView("GST Component Code");
+                    CurrReport.SKIP; */ //16767 field not found
+                                        //16767 CheckComponentReportView("GST Component Code");
                 IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
                    (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                   (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                   (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
+                    /* (OriginalDocNo <> "Original Doc. No.") */
+                    (DocumentLineNo <> "Document Line No.") OR
+                   (OriginalInvNo <> "Original Invoice No.") /* (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.") */ //16767 field not found
                 THEN BEGIN
-                  SupplyBaseAmtUnreg := GetBaseAmount(SupplyUnreg);
-                  IF SupplyBaseAmtUnreg <> 0 THEN BEGIN
-                    IF "Shipping Address State Code" <> '' THEN
-                      PlaceOfSupplyUnreg := "Shipping Address State Code"
-                    ELSE
-                      PlaceOfSupplyUnreg := "Buyer/Seller State Code";
-                    SupplyIGSTAmtUnreg := GetSupplyGSTAmountRec(SupplyUnreg,CompReportView::IGST);
-                  END;
-                  EntryType := "Entry Type";
-                  DocumentType := "Document Type";
-                  DocumentNo := "Document No.";
-                  DocumentLineNo := "Document Line No.";
-                  OriginalDocNo := "Original Doc. No.";
-                  TransactionNo := "Transaction No.";
-                  OriginalInvNo := "Original Invoice No.";
-                  ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
+                    SupplyBaseAmtUnreg := GetBaseAmount(SupplyUnreg);
+                    IF SupplyBaseAmtUnreg <> 0 THEN BEGIN
+                        /*  IF "Shipping Address State Code" <> '' THEN
+                             PlaceOfSupplyUnreg := "Shipping Address State Code"
+                         ELSE
+                             PlaceOfSupplyUnreg := "Buyer/Seller State Code"; */ //16767 field not found
+                        SupplyIGSTAmtUnreg := GetSupplyGSTAmountRec(SupplyUnreg, CompReportView::IGST);
+                    END;
+                    EntryType := "Entry Type";
+                    DocumentType := "Document Type";
+                    DocumentNo := "Document No.";
+                    DocumentLineNo := "Document Line No.";
+                    //16767 OriginalDocNo := "Original Doc. No.";field not found
+                    TransactionNo := "Transaction No.";
+                    OriginalInvNo := "Original Invoice No.";
+                    //16767 ItemChargeAssgnLineNo := "Item Charge Assgn. Line No."; field not found
                 END;
             end;
 
             trigger OnPreDataItem()
             begin
-                SETCURRENTKEY("Location  Reg. No.","Source Type","GST Customer Type","Posting Date");
-                SETRANGE("Location  Reg. No.",GSTIN);
-                SETRANGE("Source Type","Source Type"::Customer);
-                SETFILTER("GST Customer Type",'%1',"GST Customer Type"::Unregistered);
-                SETRANGE("Posting Date",StartingDate,EndingDate);
-                SETCURRENTKEY("Transaction Type","Entry Type","Document Type","Document No.",
-                  "Transaction No.","Original Doc. No.","Document Line No.",
-                  "Original Invoice No.","Item Charge Assgn. Line No.");
+                SETCURRENTKEY("Location  Reg. No.", "Source Type", "GST Customer Type", "Posting Date");
+                SETRANGE("Location  Reg. No.", GSTIN);
+                SETRANGE("Source Type", "Source Type"::Customer);
+                SETFILTER("GST Customer Type", '%1', "GST Customer Type"::Unregistered);
+                SETRANGE("Posting Date", StartingDate, EndingDate);
+                SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type", "Document No.",
+                  "Transaction No.",/*  "Original Doc. No.", */ "Document Line No.",
+                  "Original Invoice No." /* "Item Charge Assgn. Line No." */); //16767
                 ClearDocInfo;
             end;
         }
-        dataitem(SupplyUIN;Table16419)
+        dataitem(SupplyUIN; "Detailed GST Ledger Entry")
         {
-            DataItemTableView = WHERE(GST Jurisdiction Type=FILTER(Interstate));
-            column(PlaceOfSupplyUIN;PlaceOfSupplyUIN)
+            DataItemTableView = WHERE("GST Jurisdiction Type" = FILTER(Interstate));
+            column(PlaceOfSupplyUIN; PlaceOfSupplyUIN)
             {
             }
-            column(SupplyBaseAmtUIN;-SupplyBaseAmtUIN)
+            column(SupplyBaseAmtUIN; -SupplyBaseAmtUIN)
             {
             }
-            column(SupplyIGSTAmtUIN;-SupplyIGSTAmtUIN)
+            column(SupplyIGSTAmtUIN; -SupplyIGSTAmtUIN)
             {
             }
 
             trigger OnAfterGetRecord()
             var
-                Customer: Record "18";
+                Customer: Record 18;
             begin
                 CLEAR(PlaceOfSupplyUIN);
                 CLEAR(SupplyBaseAmtUIN);
                 CLEAR(SupplyIGSTAmtUIN);
                 Customer.GET("Source No.");
                 IF Customer."GST Registration Type" <> Customer."GST Registration Type"::UID THEN
-                  CurrReport.SKIP;
-                IF NOT ("Component Calc. Type" IN ["Component Calc. Type"::General,
+                    CurrReport.SKIP;
+                /* IF NOT ("Component Calc. Type" IN ["Component Calc. Type"::General,
                                                    "Component Calc. Type"::Threshold,
-                                                   "Component Calc. Type"::"Cess %"])
+                                                   "Component Calc. Type"::"Cess %"]) 
                 THEN
-                  CurrReport.SKIP;
-                CheckComponentReportView("GST Component Code");
+                    CurrReport.SKIP;*/ //16767 field not found
+                                       //16767  CheckComponentReportView("GST Component Code");
                 IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
                    (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                   (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                   (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
+                   /* (OriginalDocNo <> "Original Doc. No.") */  (DocumentLineNo <> "Document Line No.") OR//16767 field not fund
+                   (OriginalInvNo <> "Original Invoice No.") /* (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.") */ //16767 field not found
                 THEN BEGIN
-                  SupplyBaseAmtUIN := GetBaseAmount(SupplyUIN);
-                  IF SupplyBaseAmtUIN <> 0 THEN BEGIN
-                    IF "Shipping Address State Code" <> '' THEN
-                      PlaceOfSupplyUIN := "Shipping Address State Code"
-                    ELSE
-                      PlaceOfSupplyUIN := "Buyer/Seller State Code";
-                    SupplyIGSTAmtUIN := GetSupplyGSTAmountRec(SupplyUIN,CompReportView::IGST);
-                  END;
-                  EntryType := "Entry Type";
-                  DocumentType := "Document Type";
-                  DocumentNo := "Document No.";
-                  DocumentLineNo := "Document Line No.";
-                  OriginalDocNo := "Original Doc. No.";
-                  TransactionNo := "Transaction No.";
-                  OriginalInvNo := "Original Invoice No.";
-                  ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
+                    SupplyBaseAmtUIN := GetBaseAmount(SupplyUIN);
+                    /* IF SupplyBaseAmtUIN <> 0 THEN BEGIN
+                        IF "Shipping Address State Code" <> '' THEN
+                            PlaceOfSupplyUIN := "Shipping Address State Code"
+                        ELSE
+                            PlaceOfSupplyUIN := "Buyer/Seller State Code"; */ //16767 field not found
+                    SupplyIGSTAmtUIN := GetSupplyGSTAmountRec(SupplyUIN, CompReportView::IGST);
                 END;
-            end;
+                EntryType := "Entry Type";
+                DocumentType := "Document Type";
+                DocumentNo := "Document No.";
+                DocumentLineNo := "Document Line No.";
+                //16767   OriginalDocNo := "Original Doc. No."; field not found
+                TransactionNo := "Transaction No.";
+                OriginalInvNo := "Original Invoice No.";
+                //16767  ItemChargeAssgnLineNo := "Item Charge Assgn. Line No."; field not found
+            END;
+
 
             trigger OnPreDataItem()
             begin
-                SETCURRENTKEY("Location  Reg. No.","Source Type","GST Customer Type","Posting Date");
-                SETRANGE("Location  Reg. No.",GSTIN);
-                SETRANGE("Source Type","Source Type"::Customer);
-                SETFILTER("GST Customer Type",'%1',"GST Customer Type"::Registered);
-                SETRANGE("Posting Date",StartingDate,EndingDate);
-                SETCURRENTKEY("Transaction Type","Entry Type","Document Type",
-                  "Document No.","Transaction No.","Original Doc. No.","Document Line No.",
-                  "Original Invoice No.","Item Charge Assgn. Line No.");
+                SETCURRENTKEY("Location  Reg. No.", "Source Type", "GST Customer Type", "Posting Date");
+                SETRANGE("Location  Reg. No.", GSTIN);
+                SETRANGE("Source Type", "Source Type"::Customer);
+                SETFILTER("GST Customer Type", '%1', "GST Customer Type"::Registered);
+                SETRANGE("Posting Date", StartingDate, EndingDate);
+                SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type",
+                  "Document No.", "Transaction No.", /* "Original Doc. No." */ "Document Line No.",//16767
+                  "Original Invoice No." /* "Item Charge Assgn. Line No." */);//16767
                 ClearDocInfo;
             end;
         }
@@ -628,33 +631,33 @@ report 50008 "GSTR-3B New"
         {
             area(content)
             {
-                field(GSTIN;GSTIN)
+                field(GSTIN; GSTIN)
                 {
                     Caption = 'GSTIN No.';
                     TableRelation = "GST Registration Nos.";
                 }
-                field(PeriodDate;PeriodDate)
+                field(PeriodDate; PeriodDate)
                 {
                     Caption = 'Period Date';
                 }
-                field(AuthorisedPerson;AuthorisedPerson)
+                field(AuthorisedPerson; AuthorisedPerson)
                 {
                     Caption = 'Name of the Authorized Person';
                 }
-                field(Place;Place)
+                field(Place; Place)
                 {
                     Caption = 'Place';
                 }
-                field(PostingDate;PostingDate)
+                field(PostingDate; PostingDate)
                 {
                     Caption = 'Posting Date';
 
                     trigger OnValidate()
                     begin
                         IF PeriodDate = 0D THEN
-                          ERROR(PeriodDateErr);
-                        IF PostingDate <= CALCDATE('<CM>',PeriodDate) THEN
-                          ERROR(PostingDateErr,CALCDATE('<CM>',PeriodDate));
+                            ERROR(PeriodDateErr);
+                        IF PostingDate <= CALCDATE('<CM>', PeriodDate) THEN
+                            ERROR(PostingDateErr, CALCDATE('<CM>', PeriodDate));
                     end;
                 }
             }
@@ -670,11 +673,11 @@ report 50008 "GSTR-3B New"
     }
 
     var
-        DetailedGSTLedgerEntry: Record "16419";
-        PostedGSTLiabilityAdj: Record "16457";
-        CompanyInformation: Record "79";
-        DetailedCrAdjstmntEntry: Record "16451";
-        GSTManagement: Codeunit "16401";
+        DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry";
+        PostedGSTLiabilityAdj: Record "Posted GST Liability Adj.";
+        CompanyInformation: Record 79;
+        DetailedCrAdjstmntEntry: Record "Detailed Cr. Adjstmnt. Entry";
+        //16767   GSTManagement: Codeunit "16401";
         GSTIN: Code[15];
         PeriodDate: Date;
         AuthorisedPerson: Text[100];
@@ -701,6 +704,7 @@ report 50008 "GSTR-3B New"
         CentralLbl: Label 'Central Tax';
         StateTaxLbl: Label 'State/UT Tax';
         CessLbl: Label 'Cess';
+        GSTLbl: Label 'GST', locked = true;
         OutwardTaxableSpplyLbl: Label '(a) Outward taxable supplies (other than zero rated, nil rated and exempted)';
         OutwardTaxableSpplyZeroLbl: Label '(b) Outward taxable supplies (zero rated )';
         OutwardTaxableSpplyNilLbl: Label '(c) Other outward supplies (Nil rated, exempted)';
@@ -830,30 +834,30 @@ report 50008 "GSTR-3B New"
         DocumentLineNo: Integer;
         OriginalDocNo: Code[20];
         TransactionNo: Integer;
-        PostingDateErr: Label 'Posting Date must be after Period End Date %1.', Comment='%1= period date';
+        PostingDateErr: Label 'Posting Date must be after Period End Date %1.', Comment = '%1= period date';
         OriginalInvNo: Code[20];
         ItemChargeAssgnLineNo: Integer;
         Sign: Integer;
         i: Integer;
-        gstinchar: array [15] of Text[1];
-        recDetGSTLedEntry: Record "16419";
+        gstinchar: array[15] of Text[1];
+        recDetGSTLedEntry: Record "Detailed GST Ledger Entry";
         TransferShipmentIGSTamt: Decimal;
 
-    local procedure GetBaseAmount(DetailedGSTLedgerEntry: Record "16419"): Decimal
+    local procedure GetBaseAmount(DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry"): Decimal
     var
         BaseAmount: Decimal;
     begin
         WITH DetailedGSTLedgerEntry DO BEGIN
-          IF "Entry Type" = "Entry Type"::"Initial Entry" THEN
-            IF ("Document Type" = "Document Type"::Invoice) OR
-               ("Document Type" = "Document Type"::"Credit Memo")
-            THEN
-              BaseAmount := "GST Base Amount";
-          IF "Entry Type" = "Entry Type"::"Initial Entry" THEN
-            IF "Document Type" = "Document Type"::Payment THEN
-              BaseAmount := "GST Base Amount";
-          IF "Entry Type" = "Entry Type"::Application THEN
-            BaseAmount := "GST Base Amount";
+            IF "Entry Type" = "Entry Type"::"Initial Entry" THEN
+                IF ("Document Type" = "Document Type"::Invoice) OR
+                   ("Document Type" = "Document Type"::"Credit Memo")
+                THEN
+                    BaseAmount := "GST Base Amount";
+            IF "Entry Type" = "Entry Type"::"Initial Entry" THEN
+                IF "Document Type" = "Document Type"::Payment THEN
+                    BaseAmount := "GST Base Amount";
+            IF "Entry Type" = "Entry Type"::Application THEN
+                BaseAmount := "GST Base Amount";
         END;
         EXIT(BaseAmount);
     end;
@@ -870,41 +874,71 @@ report 50008 "GSTR-3B New"
         CLEAR(ItemChargeAssgnLineNo);
     end;
 
-    local procedure CheckComponentReportView(ComponentCode: Code[10])
-    var
-        GSTComponent: Record "16405";
-    begin
-        GSTComponent.GET(ComponentCode);
-        GSTComponent.TESTFIELD("Report View");
-    end;
+    /*     local procedure CheckComponentReportView(ComponentCode: Code[10])
+        var
+            GSTComponent: Record 16405;
+        begin
+            GSTComponent.GET(ComponentCode);
+            GSTComponent.TESTFIELD("Report View");
+        end; */ //16767 Comment Due table not found
 
-    local procedure GetSupplyGSTAmountLine(DetailedGSTLedgerEntry: Record "16419";ReportView: Option): Decimal
-    var
-        GSTComponent: Record "16405";
-    begin
-        IF GSTComponent.GET(DetailedGSTLedgerEntry."GST Component Code") THEN
-          IF GSTComponent."Report View" = ReportView THEN
-            EXIT(DetailedGSTLedgerEntry."GST Amount");
-    end;
 
-    local procedure GetSupplyGSTAmountISDLine(DetailedGSTDistEntry: Record "16454";ReportView: Option): Decimal
+    //1676 Start
+
+    local procedure GetSupplyGSTAmountLine(DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry"; ComponentCode: Option " ",CGST,"SGST / UTGST",IGST,CESS): Decimal
     var
-        GSTComponent: Record "16405";
+        TaxComponent: Record "Tax Component";
+    begin
+        TaxComponent.SetRange("Tax Type", GSTLbl);
+        TaxComponent.SetRange(Name, DetailedGSTLedgerEntry."GST Component Code");
+        if TaxComponent.FindFirst() then
+            if TaxComponent.Name = Format(ComponentCode) then
+                exit(DetailedGSTLedgerEntry."GST Amount");
+    end;
+    //16767
+
+    /*  local procedure GetSupplyGSTAmountLine(DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry"; ReportView: Option): Decimal
+     var
+         GSTComponent: Record 16405;
+     begin
+         IF GSTComponent.GET(DetailedGSTLedgerEntry."GST Component Code") THEN
+             IF GSTComponent."Report View" = ReportView THEN
+                 EXIT(DetailedGSTLedgerEntry."GST Amount");
+     end; */ //16767
+
+    /* local procedure GetSupplyGSTAmountISDLine(DetailedGSTDistEntry: Record "Detailed GST Dist. Entry"; ReportView: Option): Decimal
+    var
+        GSTComponent: Record 16405;
     begin
         IF GSTComponent.GET(DetailedGSTDistEntry."Rcpt. Component Code") THEN
-          IF GSTComponent."Report View" = ReportView THEN
-            EXIT(DetailedGSTDistEntry."Distribution Amount");
+            IF GSTComponent."Report View" = ReportView THEN
+                EXIT(DetailedGSTDistEntry."Distribution Amount");
+    end; */ //16767
+            //16767 Start
+    local procedure GetSupplyGSTAmountISDLine(DetailedGSTDistEntry: Record "Detailed GST Dist. Entry"; ComponentCode: option " ",CGST,"SGST / UTGST",IGST,CESS): Decimal
+    var
+        TaxComponent: Record "Tax Component";
+    begin
+        TaxComponent.SetRange("Tax Type", GSTLbl);
+        TaxComponent.SetRange(Name, DetailedGSTDistEntry."Rcpt. Component Code");
+        if TaxComponent.FindFirst() then
+            if TaxComponent.Name = format(ComponentCode) then
+                exit(DetailedGSTDistEntry."Distribution Amount");
     end;
 
-    local procedure SameStateCode(LocationCode: Code[10];VendorCode: Code[20]): Boolean
+    //16767End
+
+
+
+    local procedure SameStateCode(LocationCode: Code[10]; VendorCode: Code[20]): Boolean
     var
-        Location: Record "14";
-        Vendor: Record "23";
+        Location: Record 14;
+        Vendor: Record 23;
     begin
         Location.GET(LocationCode);
         Vendor.GET(VendorCode);
         IF Location."State Code" = Vendor."State Code" THEN
-          EXIT(TRUE);
+            EXIT(TRUE);
     end;
 
     local procedure CalculateValues()
@@ -922,270 +956,304 @@ report 50008 "GSTR-3B New"
         NonGSTInwardSupply;
     end;
 
-    local procedure GetSupplyGSTAmountRec(DetailedGSTLedgerEntry: Record "16419";ReportView: Option): Decimal
+    local procedure GetSupplyGSTAmountRec(DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry"; ComponentCode: option " ",CGST,"SGST / UTGST",IGST,CESS): Decimal //16767 ReportView: Option replace component code
     var
-        GSTComponent: Record "16405";
-        DetailedGSTLedgerEntryDummy: Record "16419";
+        //16767 GSTComponent: Record 16405;
+        TaxComponent: Record "Tax Component";
+        DetailedGSTLedgerEntryDummy: Record "Detailed GST Ledger Entry";
         GSTAmount: Decimal;
+        detailgstinfo: Record "Detailed GST Ledger Entry Info";
+        detailedgstinfo1: Record "Detailed GST Ledger Entry Info";
     begin
         DetailedGSTLedgerEntryDummy.COPYFILTERS(DetailedGSTLedgerEntry);
-        DetailedGSTLedgerEntryDummy.SETCURRENTKEY("Entry Type","Document Type","Document No.","Transaction No.",
-          "Original Doc. No.","Document Line No.","Original Invoice No.","Item Charge Assgn. Line No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Entry Type",DetailedGSTLedgerEntry."Entry Type");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Document Type",DetailedGSTLedgerEntry."Document Type");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Document No.",DetailedGSTLedgerEntry."Document No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Transaction No.",DetailedGSTLedgerEntry."Transaction No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Original Doc. No.",DetailedGSTLedgerEntry."Original Doc. No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Document Line No.",DetailedGSTLedgerEntry."Document Line No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Original Invoice No.",DetailedGSTLedgerEntry."Original Invoice No.");
-        DetailedGSTLedgerEntryDummy.SETRANGE("Item Charge Assgn. Line No.",DetailedGSTLedgerEntry."Item Charge Assgn. Line No.");
-        DetailedGSTLedgerEntryDummy.SETFILTER(
-          "Component Calc. Type",'%1|%2|%3',DetailedGSTLedgerEntryDummy."Component Calc. Type"::General,
+        DetailedGSTLedgerEntryDummy.SETCURRENTKEY("Entry Type", "Document Type", "Document No.", "Transaction No.",
+          /* "Original Doc. No." */ "Document Line No.", "Original Invoice No."/*  "Item Charge Assgn. Line No." */); //16767
+        DetailedGSTLedgerEntryDummy.SETRANGE("Entry Type", DetailedGSTLedgerEntry."Entry Type");
+        DetailedGSTLedgerEntryDummy.SETRANGE("Document Type", DetailedGSTLedgerEntry."Document Type");
+        DetailedGSTLedgerEntryDummy.SETRANGE("Document No.", DetailedGSTLedgerEntry."Document No.");
+        DetailedGSTLedgerEntryDummy.SETRANGE("Transaction No.", DetailedGSTLedgerEntry."Transaction No.");
+        //16767  DetailedGSTLedgerEntryDummy.SETRANGE("Original Doc. No.", DetailedGSTLedgerEntry."Original Doc. No.");
+        DetailedGSTLedgerEntryDummy.SETRANGE("Document Line No.", DetailedGSTLedgerEntry."Document Line No.");
+        DetailedGSTLedgerEntryDummy.SETRANGE("Original Invoice No.", DetailedGSTLedgerEntry."Original Invoice No.");
+        //16767  DetailedGSTLedgerEntryDummy.SETRANGE("Item Charge Assgn. Line No.", DetailedGSTLedgerEntry."Item Charge Assgn. Line No.");
+        /* DetailedGSTLedgerEntryDummy.SETFILTER(
+          "Component Calc. Type", '%1|%2|%3', DetailedGSTLedgerEntryDummy."Component Calc. Type"::General,
           DetailedGSTLedgerEntryDummy."Component Calc. Type"::Threshold,
-          DetailedGSTLedgerEntryDummy."Component Calc. Type"::"Cess %");
+          DetailedGSTLedgerEntryDummy."Component Calc. Type"::"Cess %"); */ //16767
         IF DetailedGSTLedgerEntryDummy.FINDSET THEN
-          REPEAT
-            IF GSTComponent.GET(DetailedGSTLedgerEntryDummy."GST Component Code") THEN
-              IF GSTComponent."Report View" = ReportView THEN
-                GSTAmount += DetailedGSTLedgerEntryDummy."GST Amount";
-          UNTIL DetailedGSTLedgerEntryDummy.NEXT = 0;
+            REPEAT
+                detailedgstinfo1.Get(DetailedGSTLedgerEntryDummy."Entry No.");
+                if (detailgstinfo.Get(DetailedGSTLedgerEntryDummy."Entry No."))
+                and (detailgstinfo."Original Doc. No." = detailedgstinfo1."Original Doc. No.")
+                and (detailgstinfo."Item Charge Assgn. Line No." = detailedgstinfo1."Item Charge Assgn. Line No.")
+                and (detailgstinfo."Component Calc. Type" In [detailgstinfo."Component Calc. Type"::General, detailgstinfo."Component Calc. Type"::Threshold, detailgstinfo."Component Calc. Type"::"Cess %"]) then begin
+                    /*  IF GSTComponent.GET(DetailedGSTLedgerEntryDummy."GST Component Code") THEN
+                         IF GSTComponent."Report View" = ReportView THEN */ //16767 
+                                                                            //16767 Start
+                    TaxComponent.SetRange("Tax Type", GSTLbl);
+                    TaxComponent.SetRange(Name, DetailedGSTLedgerEntryDummy."GST Component Code");
+                    if TaxComponent.FindFirst() then
+                        if TaxComponent.Name = format(ComponentCode) then
+
+                            //16767 End
+                            GSTAmount += DetailedGSTLedgerEntryDummy."GST Amount";
+                end;
+            UNTIL DetailedGSTLedgerEntryDummy.NEXT = 0;
         EXIT(GSTAmount);
     end;
+
 
     local procedure OutwardTaxableSupplies()
     var
         OtwrdTaxableAmt: Decimal;
+        detailgstinfo: Record "Detailed GST Ledger Entry Info";
     begin
         // Outward taxable supplies (other than zero rated, nil rated and exempted)
         WITH DetailedGSTLedgerEntry DO BEGIN
-          ClearDocInfo;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Source Type","GST Customer Type",
-            "Entry Type","Document Type","Document No.","Component Calc. Type","GST %","GST Exempted Goods");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Transaction Type","Transaction Type"::Sales);
-          SETFILTER("GST Customer Type",'%1|%2|%3',"GST Customer Type"::Unregistered,
-            "GST Customer Type"::Registered,"GST Customer Type"::" ");
-          SETFILTER("Component Calc. Type",'%1|%2|%3',"Component Calc. Type"::General,
-            "Component Calc. Type"::Threshold,"Component Calc. Type"::"Cess %");
-          SETFILTER("GST %",'<>%1',0);
-          SETRANGE("GST Exempted Goods",FALSE);
-          SETCURRENTKEY("Transaction Type","Entry Type","Document Type","Document No.",
-            "Transaction No.","Original Doc. No.","Document Line No.",
-            "Original Invoice No.","Item Charge Assgn. Line No.");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
-                 (DocumentNo <> "Document No.") OR
-                 (TransactionNo <> "Transaction No.") OR (OriginalDocNo <> "Original Doc. No.") OR
-                 (DocumentLineNo <> "Document Line No.") OR
-                 (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
-              THEN BEGIN
-                CLEAR(OtwrdTaxableAmt);
-                OtwrdTaxableAmt := GetBaseAmount(DetailedGSTLedgerEntry);
-                IF OtwrdTaxableAmt <> 0 THEN BEGIN
-                  OwrdtaxableTotalAmount += OtwrdTaxableAmt;
-                  OwrdtaxableIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::IGST);
-                  OwrdtaxableCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CGST);
-                  OwrdtaxableSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST");
-                  OwrdtaxableCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CESS);
-                END;
-                EntryType := "Entry Type";
-                DocumentType := "Document Type";
-                DocumentNo := "Document No.";
-                DocumentLineNo := "Document Line No.";
-                OriginalDocNo := "Original Doc. No.";
-                TransactionNo := "Transaction No.";
-                OriginalInvNo := "Original Invoice No.";
-                ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
-              END;
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Source Type", "GST Customer Type",
+              "Entry Type", "Document Type", "Document No." /* "Component Calc. Type" */, "GST %", "GST Exempted Goods");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Transaction Type", "Transaction Type"::Sales);
+            SETFILTER("GST Customer Type", '%1|%2|%3', "GST Customer Type"::Unregistered,
+              "GST Customer Type"::Registered, "GST Customer Type"::" ");
+            /*  SETFILTER("Component Calc. Type", '%1|%2|%3', "Component Calc. Type"::General,
+               "Component Calc. Type"::Threshold, "Component Calc. Type"::"Cess %"); */ //16767
+            SETFILTER("GST %", '<>%1', 0);
+            SETRANGE("GST Exempted Goods", FALSE);
+            SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type", "Document No.",
+              "Transaction No."/*  "Original Doc. No." */, "Document Line No.", //16767
+              "Original Invoice No."/*  "Item Charge Assgn. Line No." */);//16767
+            IF FINDSET THEN
+                REPEAT
+                    if (detailgstinfo.Get(DetailedGSTLedgerEntry."Entry No."))
+                     and (detailgstinfo."Component Calc. Type" In [detailgstinfo."Component Calc. Type"::General, detailgstinfo."Component Calc. Type"::Threshold, detailgstinfo."Component Calc. Type"::"Cess %"]) then begin
+
+                        //16767  CheckComponentReportView("GST Component Code"); function  not found
+                        IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
+                           (DocumentNo <> "Document No.") OR
+                           (TransactionNo <> "Transaction No.") OR (OriginalDocNo <> detailgstinfo."Original Doc. No.") OR
+                           (DocumentLineNo <> "Document Line No.") OR
+                           (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> detailgstinfo."Item Charge Assgn. Line No.")
+                        THEN BEGIN
+                            CLEAR(OtwrdTaxableAmt);
+                            OtwrdTaxableAmt := GetBaseAmount(DetailedGSTLedgerEntry);
+                            IF OtwrdTaxableAmt <> 0 THEN BEGIN
+                                OwrdtaxableTotalAmount += OtwrdTaxableAmt;
+                                OwrdtaxableIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::IGST);
+                                OwrdtaxableCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CGST);
+                                OwrdtaxableSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                                OwrdtaxableCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CESS);
+                            END;
+                            EntryType := "Entry Type";
+                            DocumentType := "Document Type";
+                            DocumentNo := "Document No.";
+                            DocumentLineNo := "Document Line No.";
+                            OriginalDocNo := detailgstinfo."Original Doc. No.";
+                            TransactionNo := "Transaction No.";
+                            OriginalInvNo := "Original Invoice No.";
+                            ItemChargeAssgnLineNo := detailgstinfo."Item Charge Assgn. Line No.";
+                        end;
+                    END;
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure OutwardTaxableSuppliesZeroRated()
     var
         OwrdZeroAmt: Decimal;
+        detailgstinfo: Record "Detailed GST Ledger Entry Info";
     begin
         // Outward taxable supplies (zero rated )
         WITH DetailedGSTLedgerEntry DO BEGIN
-          ClearDocInfo;
-          SETFILTER("GST Customer Type",'%1|%2|%3|%4',"GST Customer Type"::Export,
-            "GST Customer Type"::"Deemed Export","GST Customer Type"::"SEZ Development",
-            "GST Customer Type"::"SEZ Unit");
-          SETFILTER("Component Calc. Type",'%1|%2|%3',"Component Calc. Type"::General,
-            "Component Calc. Type"::Threshold,"Component Calc. Type"::"Cess %");
-          SETRANGE("GST %");
-          SETRANGE("GST Exempted Goods");
-          SETCURRENTKEY("Transaction Type","Entry Type","Document Type",
-            "Document No.","Transaction No.","Original Doc. No.","Document Line No.",
-            "Original Invoice No.","Item Charge Assgn. Line No.");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
-                 (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                 (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                 (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
-              THEN BEGIN
-                CLEAR(OwrdZeroAmt);
-                OwrdZeroAmt := GetBaseAmount(DetailedGSTLedgerEntry);
-                IF OwrdZeroAmt <> 0 THEN BEGIN
-                  OwrdZeroTotalAmount += OwrdZeroAmt;
-                  OwrdZeroIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::IGST);
-                  OwrdZeroCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CGST);
-                  OwrdZeroSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST");
-                  OwrdZeroCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CESS);
-                END;
-                EntryType := "Entry Type";
-                DocumentType := "Document Type";
-                DocumentNo := "Document No.";
-                DocumentLineNo := "Document Line No.";
-                OriginalDocNo := "Original Doc. No.";
-                TransactionNo := "Transaction No.";
-                OriginalInvNo := "Original Invoice No.";
-                ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
-              END;
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            SETFILTER("GST Customer Type", '%1|%2|%3|%4', "GST Customer Type"::Export,
+              "GST Customer Type"::"Deemed Export", "GST Customer Type"::"SEZ Development",
+              "GST Customer Type"::"SEZ Unit");
+            /* SETFILTER("Component Calc. Type", '%1|%2|%3', "Component Calc. Type"::General,
+              "Component Calc. Type"::Threshold, "Component Calc. Type"::"Cess %"); */ //16767
+            SETRANGE("GST %");
+            SETRANGE("GST Exempted Goods");
+            SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type",
+              "Document No.", "Transaction No."/*  "Original Doc. No.", */, "Document Line No.",
+              "Original Invoice No."/* "Item Charge Assgn. Line No." */); //16767
+            IF FINDSET THEN
+                REPEAT
+                    if (detailgstinfo.Get(DetailedGSTLedgerEntry."Entry No."))
+                    and (detailgstinfo."Component Calc. Type" in [detailgstinfo."Component Calc. Type"::General, detailgstinfo."Component Calc. Type"::Threshold,
+                    detailgstinfo."Component Calc. Type"::"Cess %"]) then begin
+                        //16767     CheckComponentReportView("GST Component Code");
+                        IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
+                           (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
+                           (OriginalDocNo <> detailgstinfo."Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR //16767
+                           (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> detailgstinfo."Item Charge Assgn. Line No.")//16767
+                        THEN BEGIN
+                            CLEAR(OwrdZeroAmt);
+                            OwrdZeroAmt := GetBaseAmount(DetailedGSTLedgerEntry);
+                            IF OwrdZeroAmt <> 0 THEN BEGIN
+                                OwrdZeroTotalAmount += OwrdZeroAmt;
+                                OwrdZeroIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::IGST);
+                                OwrdZeroCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CGST);
+                                OwrdZeroSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                                OwrdZeroCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CESS);
+                            END;
+                        end;
+                        EntryType := "Entry Type";
+                        DocumentType := "Document Type";
+                        DocumentNo := "Document No.";
+                        DocumentLineNo := "Document Line No.";
+                        OriginalDocNo := detailgstinfo."Original Doc. No.";
+                        TransactionNo := "Transaction No.";
+                        OriginalInvNo := "Original Invoice No.";
+                        ItemChargeAssgnLineNo := detailgstinfo."Item Charge Assgn. Line No.";
+                    END;
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure OutwardSuppliesNilRated()
     var
         OwrdNilAmt: Decimal;
+        detailedinfo: Record "Detailed GST Ledger Entry Info";
     begin
         // Other outward supplies (Nil rated, exempted)
         WITH DetailedGSTLedgerEntry DO BEGIN
-          ClearDocInfo;
-          SETFILTER("GST Customer Type",'%1|%2|%3',"GST Customer Type"::Unregistered,
-            "GST Customer Type"::Registered,"GST Customer Type"::" ");
-          SETFILTER("Component Calc. Type",'%1|%2|%3',"Component Calc. Type"::General,
-            "Component Calc. Type"::Threshold,"Component Calc. Type"::"Cess %");
-          SETFILTER("GST %",'%1',0);
-          SETCURRENTKEY("Transaction Type","Entry Type","Document Type",
-            "Document No.","Transaction No.","Original Doc. No.","Document Line No.",
-            "Original Invoice No.","Item Charge Assgn. Line No.");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
-                 (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                 (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                 (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
-              THEN BEGIN
-                CLEAR(OwrdNilAmt);
-                OwrdNilAmt := GetBaseAmount(DetailedGSTLedgerEntry);
-                IF OwrdNilAmt <> 0 THEN BEGIN
-                  OwrdNilTotalAmount += OwrdNilAmt;
-                  OwrdNilIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::IGST);
-                  OwrdNilCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CGST);
-                  OwrdNilSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST");
-                  OwrdNilCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CESS);
-                END;
-                EntryType := "Entry Type";
-                DocumentType := "Document Type";
-                DocumentNo := "Document No.";
-                DocumentLineNo := "Document Line No.";
-                OriginalDocNo := "Original Doc. No.";
-                TransactionNo := "Transaction No.";
-                OriginalInvNo := "Original Invoice No.";
-                ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
-              END;
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            SETFILTER("GST Customer Type", '%1|%2|%3', "GST Customer Type"::Unregistered,
+              "GST Customer Type"::Registered, "GST Customer Type"::" ");
+            /*  SETFILTER("Component Calc. Type", '%1|%2|%3', "Component Calc. Type"::General,
+               "Component Calc. Type"::Threshold, "Component Calc. Type"::"Cess %"); */ //16767
+            SETFILTER("GST %", '%1', 0);
+            SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type",
+              "Document No.", "Transaction No."/*  "Original Doc. No." */, "Document Line No.",
+              "Original Invoice No." /* "Item Charge Assgn. Line No." */);
+            IF FINDSET THEN
+                REPEAT
+                    if (detailedinfo.Get(DetailedGSTLedgerEntry."Entry No."))
+                    and (detailedinfo."Component Calc. Type" in [detailedinfo."Component Calc. Type"::General, detailedinfo."Component Calc. Type"::Threshold,
+                    detailedinfo."Component Calc. Type"::"Cess %"]) then
+                        //16767    CheckComponentReportView("GST Component Code");
+                        IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
+                       (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
+                       (OriginalDocNo <> detailedinfo."Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
+                       (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> detailedinfo."Item Charge Assgn. Line No.")  //16767
+                    THEN BEGIN
+                            CLEAR(OwrdNilAmt);
+                            OwrdNilAmt := GetBaseAmount(DetailedGSTLedgerEntry);
+                            IF OwrdNilAmt <> 0 THEN BEGIN
+                                OwrdNilTotalAmount += OwrdNilAmt;
+                                OwrdNilIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::IGST);
+                                OwrdNilCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CGST);
+                                OwrdNilSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                                OwrdNilCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CESS);
+                            END;
+                            EntryType := "Entry Type";
+                            DocumentType := "Document Type";
+                            DocumentNo := "Document No.";
+                            DocumentLineNo := "Document Line No.";
+                            OriginalDocNo := detailedinfo."Original Doc. No.";
+                            TransactionNo := "Transaction No.";
+                            OriginalInvNo := "Original Invoice No.";
+                            ItemChargeAssgnLineNo := detailedinfo."Item Charge Assgn. Line No.";
+                        END;
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure InwardSuppliesReverseCharge()
+    var
+        detailedgstinfo: Record "Detailed GST Ledger Entry Info";
     begin
         // Inward supplies (liable to reverse charge)
         WITH DetailedGSTLedgerEntry DO BEGIN
-          ClearDocInfo;
-          RESET;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Reverse Charge","Liable to Pay",
-            "Entry Type","Document Type","Document No.");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Transaction Type","Transaction Type"::Purchase);
-          SETRANGE("Reverse Charge",TRUE);
-          SETRANGE("Liable to Pay",TRUE);
-          SETCURRENTKEY("Transaction Type","Entry Type","Document Type","Document No.",
-            "Document Line No.","Transaction No.","Original Doc. No.",
-            "Original Invoice No.","Item Charge Assgn. Line No.");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              Sign := 1;
-              IF "Entry Type" = "Entry Type"::Application THEN
-                IF "GST Group Type" = "GST Group Type"::Service THEN
-                  IF NOT "Associated Enterprises" THEN
-                    Sign := -1;
-              IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
-                 (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                 (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                 (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
-              THEN BEGIN
-                InwrdtotalAmount += Sign * "GST Base Amount";
-                InwrdIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::IGST) * Sign;
-                InwrdCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CGST) * Sign;
-                InwrdSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST") * Sign;
-                InwrdCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry,CompReportView::CESS) * Sign;
-              END;
-              EntryType := "Entry Type";
-              DocumentType := "Document Type";
-              DocumentNo := "Document No.";
-              DocumentLineNo := "Document Line No.";
-              OriginalDocNo := "Original Doc. No.";
-              TransactionNo := "Transaction No.";
-              OriginalInvNo := "Original Invoice No.";
-              ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            RESET;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Reverse Charge", "Liable to Pay",
+              "Entry Type", "Document Type", "Document No.");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Transaction Type", "Transaction Type"::Purchase);
+            SETRANGE("Reverse Charge", TRUE);
+            SETRANGE("Liable to Pay", TRUE);
+            SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type", "Document No.",
+              "Document Line No.", "Transaction No."/*  "Original Doc. No." */,
+              "Original Invoice No."/*  "Item Charge Assgn. Line No."*/);
+            IF FINDSET THEN
+                REPEAT
+                    if (detailedgstinfo.Get(DetailedGSTLedgerEntry."Entry No.")) then
+                        //16767 CheckComponentReportView("GST Component Code");
+                        Sign := 1;
+                    IF "Entry Type" = "Entry Type"::Application THEN
+                        IF "GST Group Type" = "GST Group Type"::Service THEN
+                            IF NOT "Associated Enterprises" THEN
+                                Sign := -1;
+                    IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
+                       (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
+                        (OriginalDocNo <> detailedgstinfo."Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
+                       (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> detailedgstinfo."Item Charge Assgn. Line No.")
+                    THEN BEGIN
+                        InwrdtotalAmount += Sign * "GST Base Amount";
+                        InwrdIGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::IGST) * Sign;
+                        InwrdCGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CGST) * Sign;
+                        InwrdSGSTUTGSTAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST") * Sign;
+                        InwrdCESSAmount += GetSupplyGSTAmountRec(DetailedGSTLedgerEntry, CompReportView::CESS) * Sign;
+                    END;
+                    EntryType := "Entry Type";
+                    DocumentType := "Document Type";
+                    DocumentNo := "Document No.";
+                    DocumentLineNo := "Document Line No.";
+                    OriginalDocNo := detailedgstinfo."Original Doc. No.";
+                    TransactionNo := "Transaction No.";
+                    OriginalInvNo := "Original Invoice No.";
+                    ItemChargeAssgnLineNo := detailedgstinfo."Item Charge Assgn. Line No.";
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure NonGSTOutwardSupplies()
     var
-        SalesInvoiceHeader: Record "112";
-        SalesInvoiceLine: Record "113";
-        SalesCrMemoHeader: Record "114";
-        SalesCrMemoLine: Record "115";
-        Location: Record "14";
+        SalesInvoiceHeader: Record 112;
+        SalesInvoiceLine: Record 113;
+        SalesCrMemoHeader: Record 114;
+        SalesCrMemoLine: Record 115;
+        Location: Record 14;
     begin
         // Non - GST Outward Supplies
         Sign := 1;
-        Location.SETRANGE("GST Registration No.",GSTIN);
+        Location.SETRANGE("GST Registration No.", GSTIN);
         IF Location.FINDSET THEN
-          REPEAT
-            SalesInvoiceHeader.SETFILTER(Structure,'<>%1','');
-            SalesInvoiceHeader.SETFILTER("Location Code",Location.Code);
-            SalesInvoiceHeader.SETRANGE("Posting Date",StartingDate,EndingDate);
-            IF SalesInvoiceHeader.FINDSET THEN
-              REPEAT
-                IF NOT GSTManagement.CheckGSTStrucure(SalesInvoiceHeader.Structure) THEN
-                  IF NOT CheckGSTChargeStrucure(SalesInvoiceHeader.Structure) THEN BEGIN
-                    SalesInvoiceLine.SETRANGE("Document No.",SalesInvoiceHeader."No.");
-                    IF SalesInvoiceLine.FINDSET THEN
-                      REPEAT
-                        OwrdNonGSTTotalAmount += SalesInvoiceLine."Amount Including VAT";
-                      UNTIL SalesInvoiceLine.NEXT = 0;
-                  END;
-              UNTIL SalesInvoiceHeader.NEXT = 0;
+            REPEAT
+                //16767 SalesInvoiceHeader.SETFILTER(Structure,'<>%1','');
+                SalesInvoiceHeader.SETFILTER("Location Code", Location.Code);
+                SalesInvoiceHeader.SETRANGE("Posting Date", StartingDate, EndingDate);
+                IF SalesInvoiceHeader.FINDSET THEN
+                    REPEAT
+                        //16767 IF NOT GSTManagement.CheckGSTStrucure(SalesInvoiceHeader.Structure) THEN
+                        //16767 IF NOT CheckGSTChargeStrucure(SalesInvoiceHeader.Structure) THEN BEGIN
+                        SalesInvoiceLine.SETRANGE("Document No.", SalesInvoiceHeader."No.");
+                        IF SalesInvoiceLine.FINDSET THEN
+                            REPEAT
+                                OwrdNonGSTTotalAmount += SalesInvoiceLine."Amount Including VAT";
+                            UNTIL SalesInvoiceLine.NEXT = 0;
 
-            SalesCrMemoHeader.SETFILTER(Structure,'<>%1','');
-            SalesCrMemoHeader.SETFILTER("Location Code",Location.Code);
-            SalesCrMemoHeader.SETRANGE("Posting Date",StartingDate,EndingDate);
-            IF SalesCrMemoHeader.FINDSET THEN
-              REPEAT
-                IF NOT GSTManagement.CheckGSTStrucure(SalesCrMemoHeader.Structure) THEN
-                  IF NOT CheckGSTChargeStrucure(SalesCrMemoHeader.Structure) THEN BEGIN
-                    SalesCrMemoLine.SETRANGE("Document No.",SalesCrMemoHeader."No.");
-                    IF SalesCrMemoLine.FINDSET THEN
-                      REPEAT
-                        OwrdNonGSTTotalAmount -= SalesCrMemoLine."Amount Including VAT";
-                      UNTIL SalesCrMemoLine.NEXT = 0;
-                  END;
-              UNTIL SalesCrMemoHeader.NEXT = 0;
-          UNTIL Location.NEXT = 0;
+                    UNTIL SalesInvoiceHeader.NEXT = 0;
+
+                //16767 SalesCrMemoHeader.SETFILTER(Structure,'<>%1','');
+                SalesCrMemoHeader.SETFILTER("Location Code", Location.Code);
+                SalesCrMemoHeader.SETRANGE("Posting Date", StartingDate, EndingDate);
+                IF SalesCrMemoHeader.FINDSET THEN
+                    REPEAT
+                        //16767  IF NOT GSTManagement.CheckGSTStrucure(SalesCrMemoHeader.Structure) THEN
+                        //16767    IF NOT CheckGSTChargeStrucure(SalesCrMemoHeader.Structure) THEN BEGIN
+                        SalesCrMemoLine.SETRANGE("Document No.", SalesCrMemoHeader."No.");
+                        IF SalesCrMemoLine.FINDSET THEN
+                            REPEAT
+                                OwrdNonGSTTotalAmount -= SalesCrMemoLine."Amount Including VAT";
+                            UNTIL SalesCrMemoLine.NEXT = 0;
+
+                    UNTIL SalesCrMemoHeader.NEXT = 0;
+            UNTIL Location.NEXT = 0;
     end;
 
     local procedure ImportGoodsServiceInwardReverse()
@@ -1193,73 +1261,73 @@ report 50008 "GSTR-3B New"
         // Eligible ITC
         // Import of Goods
         WITH DetailedGSTLedgerEntry DO BEGIN
-          RESET;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Source Type","GST Credit",
-            "Credit Availed","GST Vendor Type","GST Group Type");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Transaction Type","Transaction Type"::Purchase);
-          SETRANGE("Source Type","Source Type"::Vendor);
-          SETRANGE("GST Credit","GST Credit"::Availment);
-          SETRANGE("Credit Availed",TRUE);
-          SETRANGE("GST Vendor Type","GST Vendor Type"::Import,"GST Vendor Type"::SEZ);
-          SETRANGE("GST Group Type","GST Group Type"::Goods);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              ImportGoodsIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::IGST);
-              ImportGoodsCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CGST);
-              ImportGoodsSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST");
-              ImportGoodsCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            RESET;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Source Type", "GST Credit",
+              "Credit Availed", "GST Vendor Type", "GST Group Type");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Transaction Type", "Transaction Type"::Purchase);
+            SETRANGE("Source Type", "Source Type"::Vendor);
+            SETRANGE("GST Credit", "GST Credit"::Availment);
+            SETRANGE("Credit Availed", TRUE);
+            SETRANGE("GST Vendor Type", "GST Vendor Type"::Import, "GST Vendor Type"::SEZ);
+            SETRANGE("GST Group Type", "GST Group Type"::Goods);
+            IF FINDSET THEN
+                REPEAT
+                    //16767 CheckComponentReportView("GST Component Code");
+                    ImportGoodsIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::IGST);
+                    ImportGoodsCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CGST);
+                    ImportGoodsSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                    ImportGoodsCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
 
-          // Import of Services
-          SETRANGE("GST Group Type","GST Group Type"::Service);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF "Entry Type" = "Entry Type"::Application THEN
-                IF "Reverse Charge" THEN
-                  IF NOT "Associated Enterprises" THEN
-                    Sign := -1;
-              ImportServiceIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::IGST) * Sign;
-              ImportServiceCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CGST) * Sign;
-              ImportServiceSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST") * Sign;
-              ImportServiceCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CESS) * Sign;
-            UNTIL NEXT = 0;
+            // Import of Services
+            SETRANGE("GST Group Type", "GST Group Type"::Service);
+            IF FINDSET THEN
+                REPEAT
+                    //16767  CheckComponentReportView("GST Component Code");
+                    IF "Entry Type" = "Entry Type"::Application THEN
+                        IF "Reverse Charge" THEN
+                            IF NOT "Associated Enterprises" THEN
+                                Sign := -1;
+                    ImportServiceIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::IGST) * Sign;
+                    ImportServiceCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CGST) * Sign;
+                    ImportServiceSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST") * Sign;
+                    ImportServiceCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CESS) * Sign;
+                UNTIL NEXT = 0;
 
-          Sign := 1;
+            Sign := 1;
 
-          // Inward supplies liable to reverse charge
-          SETRANGE("GST Vendor Type","GST Vendor Type"::Registered,"GST Vendor Type"::Unregistered);
-          SETRANGE("GST Group Type");
-          SETRANGE("Reverse Charge",TRUE);
-          IF FINDSET THEN
-            REPEAT
-              IF "Entry Type" = "Entry Type"::Application THEN
-                IF "GST Group Type" = "GST Group Type"::Service THEN
-                  Sign := -1;
-              CheckComponentReportView("GST Component Code");
-              InwrdReverseIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::IGST) * Sign;
-              InwrdReverseCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CGST) * Sign;
-              InwrdReverseSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST") * Sign;
-              InwrdReverseCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CESS) * Sign;
-            UNTIL NEXT = 0;
-          //ACX-RK 17082021 Begin
-          recDetGSTLedEntry.RESET();
-          recDetGSTLedEntry.SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Source Type","GST Credit",
-            "Credit Availed","GST Vendor Type","GST Group Type");
-          recDetGSTLedEntry.SETRANGE("Location  Reg. No.",GSTIN);
-          recDetGSTLedEntry.SETRANGE("Posting Date",StartingDate,EndingDate);
-          recDetGSTLedEntry.SETRANGE("Source Type",recDetGSTLedEntry."Source Type"::" ");
-          recDetGSTLedEntry.SETRANGE("Transaction Type",recDetGSTLedEntry."Transaction Type"::Purchase);
-          recDetGSTLedEntry.SETRANGE("GST Jurisdiction Type",recDetGSTLedEntry."GST Jurisdiction Type"::Interstate);
+            // Inward supplies liable to reverse charge
+            SETRANGE("GST Vendor Type", "GST Vendor Type"::Registered, "GST Vendor Type"::Unregistered);
+            SETRANGE("GST Group Type");
+            SETRANGE("Reverse Charge", TRUE);
+            IF FINDSET THEN
+                REPEAT
+                    IF "Entry Type" = "Entry Type"::Application THEN
+                        IF "GST Group Type" = "GST Group Type"::Service THEN
+                            Sign := -1;
+                    //16767  CheckComponentReportView("GST Component Code");
+                    InwrdReverseIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::IGST) * Sign;
+                    InwrdReverseCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CGST) * Sign;
+                    InwrdReverseSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST") * Sign;
+                    InwrdReverseCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CESS) * Sign;
+                UNTIL NEXT = 0;
+            //ACX-RK 17082021 Begin
+            recDetGSTLedEntry.RESET();
+            recDetGSTLedEntry.SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Source Type", "GST Credit",
+              "Credit Availed", "GST Vendor Type", "GST Group Type");
+            recDetGSTLedEntry.SETRANGE("Location  Reg. No.", GSTIN);
+            recDetGSTLedEntry.SETRANGE("Posting Date", StartingDate, EndingDate);
+            recDetGSTLedEntry.SETRANGE("Source Type", recDetGSTLedEntry."Source Type"::" ");
+            recDetGSTLedEntry.SETRANGE("Transaction Type", recDetGSTLedEntry."Transaction Type"::Purchase);
+            recDetGSTLedEntry.SETRANGE("GST Jurisdiction Type", recDetGSTLedEntry."GST Jurisdiction Type"::Interstate);
             IF recDetGSTLedEntry.FINDFIRST THEN BEGIN
-              REPEAT
-                TransferShipmentIGSTamt += recDetGSTLedEntry."GST Amount";
-              UNTIL recDetGSTLedEntry.NEXT = 0;
+                REPEAT
+                    TransferShipmentIGSTamt += recDetGSTLedEntry."GST Amount";
+                UNTIL recDetGSTLedEntry.NEXT = 0;
             END;
-          //ACX-RK End
+            //ACX-RK End
         END;
         Sign := 1;
     end;
@@ -1267,231 +1335,250 @@ report 50008 "GSTR-3B New"
     local procedure AllAndIneligibleITC()
     begin
         WITH DetailedGSTLedgerEntry DO BEGIN
-          // All other ITC
-          RESET;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Source Type",
-            "Input Service Distribution","Reverse Charge","GST Credit","Credit Availed");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Transaction Type","Transaction Type"::Purchase);
-          SETRANGE("Source Type","Source Type"::Vendor);
-          SETRANGE("Input Service Distribution",FALSE);
-          SETRANGE("Reverse Charge",FALSE);
-          SETRANGE("GST Credit","GST Credit"::Availment);
-          SETRANGE("Credit Availed",TRUE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              AllOtherITCIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::IGST);
-              AllOtherITCCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CGST);
-              AllOtherITCSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST");
-              AllOtherITCCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            // All other ITC
+            RESET;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Source Type",
+              "Input Service Distribution", "Reverse Charge", "GST Credit", "Credit Availed");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Transaction Type", "Transaction Type"::Purchase);
+            SETRANGE("Source Type", "Source Type"::Vendor);
+            SETRANGE("Input Service Distribution", FALSE);
+            SETRANGE("Reverse Charge", FALSE);
+            SETRANGE("GST Credit", "GST Credit"::Availment);
+            SETRANGE("Credit Availed", TRUE);
+            IF FINDSET THEN
+                REPEAT
+                    //16767 CheckComponentReportView("GST Component Code");
+                    AllOtherITCIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::IGST);
+                    AllOtherITCCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CGST);
+                    AllOtherITCSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                    AllOtherITCCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
 
-          // Ineligible ITC  17(5) DGLE
-          SETRANGE("Entry Type","Entry Type"::"Initial Entry");
-          SETRANGE("Reverse Charge");
-          SETRANGE("GST Credit","GST Credit"::"Non-Availment");
-          SETRANGE("Credit Availed",FALSE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IneligibleITCIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::IGST) ;
-              IneligibleITCCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CGST);
-              IneligibleITCSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::"SGST / UTGST") ;
-              IneligibleITCCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry,CompReportView::CESS) ;
-            UNTIL NEXT = 0;
+            // Ineligible ITC  17(5) DGLE
+            SETRANGE("Entry Type", "Entry Type"::"Initial Entry");
+            SETRANGE("Reverse Charge");
+            SETRANGE("GST Credit", "GST Credit"::"Non-Availment");
+            SETRANGE("Credit Availed", FALSE);
+            IF FINDSET THEN
+                REPEAT
+                    //16767  CheckComponentReportView("GST Component Code");
+                    IneligibleITCIGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::IGST);
+                    IneligibleITCCGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CGST);
+                    IneligibleITCSGSTUTGSTAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::"SGST / UTGST");
+                    IneligibleITCCESSAmount += GetSupplyGSTAmountLine(DetailedGSTLedgerEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
         END;
 
         WITH DetailedCrAdjstmntEntry DO BEGIN
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Reverse Charge");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Reverse Charge",TRUE);
-          SETFILTER("Credit Adjustment Type",'%1|%2',
-            "Credit Adjustment Type"::"Credit Reversal","Credit Adjustment Type"::"Reversal of Availment");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              AllOtherITCIGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::IGST);
-              AllOtherITCCGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::CGST);
-              AllOtherITCSGSTUTGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::"SGST / UTGST");
-              AllOtherITCCESSAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Reverse Charge");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Reverse Charge", TRUE);
+            SETFILTER("Credit Adjustment Type", '%1|%2',
+              "Credit Adjustment Type"::"Credit Reversal", "Credit Adjustment Type"::"Reversal of Availment");
+            IF FINDSET THEN
+                REPEAT
+                    //16767  CheckComponentReportView("GST Component Code");
+                    AllOtherITCIGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::IGST);
+                    AllOtherITCCGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::CGST);
+                    AllOtherITCSGSTUTGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::"SGST / UTGST");
+                    AllOtherITCCESSAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
         END;
 
         WITH DetailedCrAdjstmntEntry DO BEGIN
-          RESET;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Reverse Charge");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Reverse Charge",TRUE);
-          SETFILTER("Credit Adjustment Type",'%1|%2',
-            "Credit Adjustment Type"::"Credit Availment","Credit Adjustment Type"::"Credit Re-Availment");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              OthersIGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::IGST);
-              OthersCGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::CGST);
-              OthersSGSTUTGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::"SGST / UTGST");
-              OthersCESSAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            RESET;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Reverse Charge");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Reverse Charge", TRUE);
+            SETFILTER("Credit Adjustment Type", '%1|%2',
+              "Credit Adjustment Type"::"Credit Availment", "Credit Adjustment Type"::"Credit Re-Availment");
+            IF FINDSET THEN
+                REPEAT
+                    //16767 CheckComponentReportView("GST Component Code");
+                    OthersIGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::IGST);
+                    OthersCGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::CGST);
+                    OthersSGSTUTGSTAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::"SGST / UTGST");
+                    OthersCESSAmount += GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure InputFromComposition()
+    var
+        detailegstinfo: Record "Detailed GST Ledger Entry Info";
     begin
         // Values of exempt, nil-rated and non-GST inward supplies
         // From a supplier under composition scheme, Exempt and Nil rated supply
         WITH DetailedGSTLedgerEntry DO BEGIN
-          ClearDocInfo;
-          RESET;
-          SETCURRENTKEY("Location  Reg. No.","Posting Date","Transaction Type","Source Type","Entry Type",
-            "Document Type","Document No.","Component Calc. Type","GST %");
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Transaction Type","Transaction Type"::Purchase);
-          SETRANGE("Source Type","Source Type"::Vendor);
-          SETFILTER("Component Calc. Type",'%1|%2|%3',"Component Calc. Type"::General,
-            "Component Calc. Type"::Threshold,"Component Calc. Type"::"Cess %");
-          SETRANGE("GST %",0);
-          SETCURRENTKEY("Transaction Type","Entry Type","Document Type","Document No.",
-            "Transaction No.","Original Doc. No.","Document Line No.",
-            "Original Invoice No.","Item Charge Assgn. Line No.");
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
-                 (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
-                 (OriginalDocNo <> "Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
-                 (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> "Item Charge Assgn. Line No.")
-              THEN BEGIN
-                IF "GST Jurisdiction Type" = "GST Jurisdiction Type"::Interstate THEN
-                  InterStateCompSupplyAmount += "GST Base Amount"
-                ELSE
-                  IF "GST Jurisdiction Type" = "GST Jurisdiction Type"::Intrastate THEN
-                    IntraStateCompSupplyAmount += "GST Base Amount";
-              END;
-              EntryType := "Entry Type";
-              DocumentType := "Document Type";
-              DocumentNo := "Document No.";
-              DocumentLineNo := "Document Line No.";
-              OriginalDocNo := "Original Doc. No.";
-              TransactionNo := "Transaction No.";
-              OriginalInvNo := "Original Invoice No.";
-              ItemChargeAssgnLineNo := "Item Charge Assgn. Line No.";
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            RESET;
+            SETCURRENTKEY("Location  Reg. No.", "Posting Date", "Transaction Type", "Source Type", "Entry Type",
+              "Document Type", "Document No."/*  "Component Calc. Type" */, "GST %");
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Transaction Type", "Transaction Type"::Purchase);
+            SETRANGE("Source Type", "Source Type"::Vendor);
+            /*  SETFILTER("Component Calc. Type", '%1|%2|%3', "Component Calc. Type"::General,
+               "Component Calc. Type"::Threshold, "Component Calc. Type"::"Cess %"); */ //16767
+            SETRANGE("GST %", 0);
+            SETCURRENTKEY("Transaction Type", "Entry Type", "Document Type", "Document No.",
+              "Transaction No."/*  "Original Doc. No." */, "Document Line No.",
+              "Original Invoice No."/*  "Item Charge Assgn. Line No." */); //16767
+            IF FINDSET THEN
+                REPEAT
+                    if (detailegstinfo.Get(DetailedGSTLedgerEntry."Entry No."))
+                     and (detailegstinfo."Component Calc. Type" in [detailegstinfo."Component Calc. Type"::General,
+                     detailegstinfo."Component Calc. Type"::Threshold,
+                    detailegstinfo."Component Calc. Type"::"Cess %"]) then
+                        //16767   CheckComponentReportView("GST Component Code");
+                        IF (EntryType <> "Entry Type") OR (DocumentType <> "Document Type") OR
+                       (DocumentNo <> "Document No.") OR (TransactionNo <> "Transaction No.") OR
+                        (OriginalDocNo <> detailegstinfo."Original Doc. No.") OR (DocumentLineNo <> "Document Line No.") OR
+                       (OriginalInvNo <> "Original Invoice No.") OR (ItemChargeAssgnLineNo <> detailegstinfo."Item Charge Assgn. Line No.")  //16767
+                    THEN BEGIN
+                            IF "GST Jurisdiction Type" = "GST Jurisdiction Type"::Interstate THEN
+                                InterStateCompSupplyAmount += "GST Base Amount"
+                            ELSE
+                                IF "GST Jurisdiction Type" = "GST Jurisdiction Type"::Intrastate THEN
+                                    IntraStateCompSupplyAmount += "GST Base Amount";
+                        END;
+                    EntryType := "Entry Type";
+                    DocumentType := "Document Type";
+                    DocumentNo := "Document No.";
+                    DocumentLineNo := "Document Line No.";
+                    OriginalDocNo := detailegstinfo."Original Doc. No.";
+                    TransactionNo := "Transaction No.";
+                    OriginalInvNo := "Original Invoice No.";
+                    ItemChargeAssgnLineNo := detailegstinfo."Item Charge Assgn. Line No.";
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure InwardFromISD()
     var
-        DetailedGSTDistEntry: Record "16454";
+        DetailedGSTDistEntry: Record "Detailed GST Dist. Entry";
     begin
         // Inward Supplies from ISD
         WITH DetailedGSTDistEntry DO BEGIN
-          SETCURRENTKEY("Rcpt. GST Reg. No.","Posting Date","Rcpt. GST Credit","Credit Availed");
-          SETRANGE("Rcpt. GST Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Rcpt. GST Credit","Rcpt. GST Credit"::Availment);
-          SETRANGE("Credit Availed",TRUE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("Rcpt. Component Code");
-              InwrdISDIGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::IGST);
-              InwrdISDCGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::CGST);
-              InwrdISDSGSTUTGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::"SGST / UTGST");
-              InwrdISDCESSAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            SETCURRENTKEY("Rcpt. GST Reg. No.", "Posting Date", "Rcpt. GST Credit", "Credit Availed");
+            SETRANGE("Rcpt. GST Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Rcpt. GST Credit", "Rcpt. GST Credit"::Availment);
+            SETRANGE("Credit Availed", TRUE);
+            IF FINDSET THEN
+                REPEAT
+                    //16767 Function not found  CheckComponentReportView("Rcpt. Component Code");
+                    InwrdISDIGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::IGST);
+                    InwrdISDCGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::CGST);
+                    InwrdISDSGSTUTGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::"SGST / UTGST");
+                    InwrdISDCESSAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
 
-          // Ineligible ITC  17(5) DGDE
-          SETRANGE("Rcpt. GST Credit","Rcpt. GST Credit"::"Non-Availment");
-          SETRANGE("Credit Availed",FALSE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("Rcpt. Component Code");
-              IneligibleITCIGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::IGST);
-              IneligibleITCCGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::CGST);
-              IneligibleITCSGSTUTGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::"SGST / UTGST");
-              IneligibleITCCESSAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry,CompReportView::CESS);
-            UNTIL NEXT = 0;
+            // Ineligible ITC  17(5) DGDE
+            SETRANGE("Rcpt. GST Credit", "Rcpt. GST Credit"::"Non-Availment");
+            SETRANGE("Credit Availed", FALSE);
+            IF FINDSET THEN
+                REPEAT
+                    //16767 function not found CheckComponentReportView("Rcpt. Component Code");
+                    IneligibleITCIGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::IGST);
+                    IneligibleITCCGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::CGST);
+                    IneligibleITCSGSTUTGSTAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::"SGST / UTGST");
+                    IneligibleITCCESSAmount += GetSupplyGSTAmountISDLine(DetailedGSTDistEntry, CompReportView::CESS);
+                UNTIL NEXT = 0;
         END;
     end;
 
     local procedure NonGSTInwardSupply()
     var
-        PurchInvHeader: Record "122";
-        PurchInvLine: Record "123";
-        PurchCrMemoHdr: Record "124";
-        PurchCrMemoLine: Record "125";
-        Location: Record "14";
+        PurchInvHeader: Record 122;
+        PurchInvLine: Record 123;
+        PurchCrMemoHdr: Record 124;
+        PurchCrMemoLine: Record 125;
+        Location: Record 14;
     begin
         // Non-GST supply Purchase
-        Location.SETRANGE("GST Registration No.",GSTIN);
+        Location.SETRANGE("GST Registration No.", GSTIN);
         IF Location.FINDSET THEN
-          REPEAT
-            PurchInvHeader.SETFILTER(Structure,'<>%1','');
-            PurchInvHeader.SETFILTER("Location Code",Location.Code);
-            PurchInvHeader.SETRANGE("Posting Date",StartingDate,EndingDate);
-            IF PurchInvHeader.FINDSET THEN
-              REPEAT
-                IF NOT GSTManagement.CheckGSTStrucure(PurchInvHeader.Structure) THEN
-                  IF NOT CheckGSTChargeStrucure(PurchInvHeader.Structure) THEN BEGIN
-                    PurchInvLine.SETRANGE("Document No.",PurchInvHeader."No.");
-                    IF PurchInvLine.FINDSET THEN
-                      REPEAT
-                        IF SameStateCode(PurchInvHeader."Location Code",PurchInvHeader."Buy-from Vendor No.") THEN
-                          PurchIntraStateAmount += PurchInvLine."Amount Including VAT"
-                        ELSE
-                          PurchInterStateAmount += PurchInvLine."Amount Including VAT";
-                      UNTIL PurchInvLine.NEXT = 0;
-                  END;
-              UNTIL PurchInvHeader.NEXT = 0;
+            REPEAT
+                //16767 PurchInvHeader.SETFILTER(Structure,'<>%1','');
+                PurchInvHeader.SETFILTER("Location Code", Location.Code);
+                PurchInvHeader.SETRANGE("Posting Date", StartingDate, EndingDate);
+                IF PurchInvHeader.FINDSET THEN
+                    REPEAT
+                        //16767 IF NOT GSTManagement.CheckGSTStrucure(PurchInvHeader.Structure) THEN
+                        //16767 IF NOT CheckGSTChargeStrucure(PurchInvHeader.Structure) THEN BEGIN
+                        PurchInvLine.SETRANGE("Document No.", PurchInvHeader."No.");
+                        IF PurchInvLine.FINDSET THEN
+                            REPEAT
+                                IF SameStateCode(PurchInvHeader."Location Code", PurchInvHeader."Buy-from Vendor No.") THEN
+                                    PurchIntraStateAmount += PurchInvLine."Amount Including VAT"
+                                ELSE
+                                    PurchInterStateAmount += PurchInvLine."Amount Including VAT";
+                            UNTIL PurchInvLine.NEXT = 0;
 
-            PurchCrMemoHdr.SETFILTER(Structure,'<>%1','');
-            PurchCrMemoHdr.SETFILTER("Location Code",Location.Code);
-            PurchCrMemoHdr.SETRANGE("Posting Date",StartingDate,EndingDate);
-            IF PurchCrMemoHdr.FINDSET THEN
-              REPEAT
-                IF NOT GSTManagement.CheckGSTStrucure(PurchCrMemoHdr.Structure) THEN
-                  IF NOT CheckGSTChargeStrucure(PurchCrMemoHdr.Structure) THEN BEGIN
-                    PurchCrMemoLine.SETRANGE("Document No.",PurchCrMemoHdr."No.");
-                    IF PurchCrMemoLine.FINDSET THEN
-                      REPEAT
-                        IF SameStateCode(PurchCrMemoHdr."Location Code",PurchCrMemoHdr."Buy-from Vendor No.") THEN
-                          PurchIntraStateAmount -= PurchCrMemoLine."Amount Including VAT"
-                        ELSE
-                          PurchInterStateAmount -= PurchCrMemoLine."Amount Including VAT";
-                      UNTIL PurchCrMemoLine.NEXT = 0;
-                  END;
-              UNTIL PurchCrMemoHdr.NEXT = 0;
-          UNTIL Location.NEXT = 0;
+                    UNTIL PurchInvHeader.NEXT = 0;
+
+                //16767  PurchCrMemoHdr.SETFILTER(Structure,'<>%1','');
+                PurchCrMemoHdr.SETFILTER("Location Code", Location.Code);
+                PurchCrMemoHdr.SETRANGE("Posting Date", StartingDate, EndingDate);
+                IF PurchCrMemoHdr.FINDSET THEN
+                    REPEAT
+                        //16767 IF NOT GSTManagement.CheckGSTStrucure(PurchCrMemoHdr.Structure) THEN
+                        //16767 IF NOT CheckGSTChargeStrucure(PurchCrMemoHdr.Structure) THEN BEGIN
+                        PurchCrMemoLine.SETRANGE("Document No.", PurchCrMemoHdr."No.");
+                        IF PurchCrMemoLine.FINDSET THEN
+                            REPEAT
+                                IF SameStateCode(PurchCrMemoHdr."Location Code", PurchCrMemoHdr."Buy-from Vendor No.") THEN
+                                    PurchIntraStateAmount -= PurchCrMemoLine."Amount Including VAT"
+                                ELSE
+                                    PurchInterStateAmount -= PurchCrMemoLine."Amount Including VAT";
+                            UNTIL PurchCrMemoLine.NEXT = 0;
+
+                    UNTIL PurchCrMemoHdr.NEXT = 0;
+            UNTIL Location.NEXT = 0
     end;
 
-    [Scope('Internal')]
-    procedure CheckGSTChargeStrucure(StructureCode: Code[10]): Boolean
+
+    /* procedure CheckGSTChargeStrucure(StructureCode: Code[10]): Boolean
     var
-        StructureDetails: Record "13793";
+        StructureDetails: Record 13793;
     begin
         WITH StructureDetails DO BEGIN
-          SETRANGE(Code,StructureCode);
-          SETRANGE(Type,Type::Charges);
-          EXIT(NOT ISEMPTY);
+            SETRANGE(Code, StructureCode);
+            SETRANGE(Type, Type::Charges);
+            EXIT(NOT ISEMPTY);
         END;
-    end;
+    end; *///16767
 
-    local procedure GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry: Record "16451";ReportView: Option): Decimal
+    //16767 start
+    local procedure GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry: Record "Detailed Cr. Adjstmnt. Entry"; ComponentCode: Option " ",CGST,"SGST / UTGST",IGST,CESS): Decimal
     var
-        GSTComponent: Record "16405";
+        TaxComponent: Record "Tax Component";
+    begin
+        TaxComponent.SetRange("Tax Type", GSTLbl);
+        TaxComponent.SetRange(Name, DetailedCrAdjstmntEntry."GST Component Code");
+        if TaxComponent.FindFirst() then
+            if TaxComponent.Name = Format(ComponentCode) then
+                exit(DetailedCrAdjstmntEntry."GST Amount");
+    end;
+    //16767  end
+
+    /* local procedure GetSupplyGSTAmountDCrAdjmntLine(DetailedCrAdjstmntEntry: Record "Detailed Cr. Adjstmnt. Entry";ReportView: Option): Decimal
+    var
+        GSTComponent: Record 16405;
     begin
         IF GSTComponent.GET(DetailedCrAdjstmntEntry."GST Component Code") THEN
           IF GSTComponent."Report View" = ReportView THEN
             EXIT(DetailedCrAdjstmntEntry."GST Amount");
-    end;
+    end; */ //16767
 
     local procedure InwardSuppliesReverseChargeforGSTAdjustment()
     var
-        DetailedGSTLedgerEntry: Record "16419";
+        DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry";
         DocumentNo: Code[20];
         GSTBaseAmount: Decimal;
         GSTBaseAmount1: Decimal;
@@ -1499,40 +1586,40 @@ report 50008 "GSTR-3B New"
         LineNo1: Integer;
     begin
         WITH PostedGSTLiabilityAdj DO BEGIN
-          ClearDocInfo;
-          RESET;
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Liable to Pay",TRUE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              DetailedGSTLedgerEntry.SETRANGE("Document No.","Document No.");
-              DetailedGSTLedgerEntry.SETRANGE("Document Type","Document Type");
-              DetailedGSTLedgerEntry.SETRANGE("Transaction Type",DetailedGSTLedgerEntry."Transaction Type"::Purchase);
-              IF DetailedGSTLedgerEntry.FINDSET THEN
+            ClearDocInfo;
+            RESET;
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Liable to Pay", TRUE);
+            IF FINDSET THEN
                 REPEAT
-                  IF "Credit Adjustment Type" = "Credit Adjustment Type"::Generate THEN BEGIN
-                    IF (LineNo <> DetailedGSTLedgerEntry."Document Line No.") AND
-                       (DocumentNo <> DetailedGSTLedgerEntry."Document No.")
-                    THEN
-                      GSTBaseAmount := DetailedGSTLedgerEntry."GST Base Amount";
-                    LineNo := DetailedGSTLedgerEntry."Document Line No.";
-                  END ELSE BEGIN
-                    IF (LineNo1 <> DetailedGSTLedgerEntry."Document Line No.") AND
-                       (DocumentNo <> DetailedGSTLedgerEntry."Document No.")
-                    THEN
-                      GSTBaseAmount1 := DetailedGSTLedgerEntry."GST Base Amount";
-                    LineNo1 := DetailedGSTLedgerEntry."Document Line No.";
-                  END;
-                  DocumentNo := DetailedGSTLedgerEntry."Document No.";
-                UNTIL DetailedGSTLedgerEntry.NEXT = 0;
-              InwrdtotalAmount1 := GSTBaseAmount - GSTBaseAmount1;
-              InwrdIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::IGST);
-              InwrdCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CGST);
-              InwrdSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::"SGST / UTGST");
-              InwrdCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CESS);
-            UNTIL NEXT = 0;
+                    //16767 CheckComponentReportView("GST Component Code");
+                    DetailedGSTLedgerEntry.SETRANGE("Document No.", "Document No.");
+                    DetailedGSTLedgerEntry.SETRANGE("Document Type", "Document Type");
+                    DetailedGSTLedgerEntry.SETRANGE("Transaction Type", DetailedGSTLedgerEntry."Transaction Type"::Purchase);
+                    IF DetailedGSTLedgerEntry.FINDSET THEN
+                        REPEAT
+                            IF "Credit Adjustment Type" = "Credit Adjustment Type"::Generate THEN BEGIN
+                                IF (LineNo <> DetailedGSTLedgerEntry."Document Line No.") AND
+                                   (DocumentNo <> DetailedGSTLedgerEntry."Document No.")
+                                THEN
+                                    GSTBaseAmount := DetailedGSTLedgerEntry."GST Base Amount";
+                                LineNo := DetailedGSTLedgerEntry."Document Line No.";
+                            END ELSE BEGIN
+                                IF (LineNo1 <> DetailedGSTLedgerEntry."Document Line No.") AND
+                                   (DocumentNo <> DetailedGSTLedgerEntry."Document No.")
+                                THEN
+                                    GSTBaseAmount1 := DetailedGSTLedgerEntry."GST Base Amount";
+                                LineNo1 := DetailedGSTLedgerEntry."Document Line No.";
+                            END;
+                            DocumentNo := DetailedGSTLedgerEntry."Document No.";
+                        UNTIL DetailedGSTLedgerEntry.NEXT = 0;
+                    InwrdtotalAmount1 := GSTBaseAmount - GSTBaseAmount1;
+                    InwrdIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::IGST);
+                    InwrdCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CGST);
+                    InwrdSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::"SGST / UTGST");
+                    InwrdCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CESS);
+                UNTIL NEXT = 0;
         END;
         InwardSuppliesReverseChargeforGSTAdjCreditAvail;
     end;
@@ -1540,38 +1627,53 @@ report 50008 "GSTR-3B New"
     local procedure InwardSuppliesReverseChargeforGSTAdjCreditAvail()
     begin
         WITH PostedGSTLiabilityAdj DO BEGIN
-          ClearDocInfo;
-          RESET;
-          SETRANGE("Location  Reg. No.",GSTIN);
-          SETRANGE("Posting Date",StartingDate,EndingDate);
-          SETRANGE("Credit Availed",TRUE);
-          IF FINDSET THEN
-            REPEAT
-              CheckComponentReportView("GST Component Code");
-              IF NOT ("GST Vendor Type" IN ["GST Vendor Type"::Import]) THEN BEGIN
-                InwrdReverseIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::IGST);
-                InwrdReverseCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CGST);
-                InwrdReverseSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::"SGST / UTGST");
-                InwrdReverseCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CESS);
-              END ELSE BEGIN
-                ImportServiceIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::IGST);
-                ImportServiceCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CGST);
-                ImportServiceSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::"SGST / UTGST");
-                ImportServiceCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj,CompReportView::CESS);
-              END;
-            UNTIL NEXT = 0;
+            ClearDocInfo;
+            RESET;
+            SETRANGE("Location  Reg. No.", GSTIN);
+            SETRANGE("Posting Date", StartingDate, EndingDate);
+            SETRANGE("Credit Availed", TRUE);
+            IF FINDSET THEN
+                REPEAT
+                    //16767    CheckComponentReportView("GST Component Code");
+                    IF NOT ("GST Vendor Type" IN ["GST Vendor Type"::Import]) THEN BEGIN
+                        InwrdReverseIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::IGST);
+                        InwrdReverseCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CGST);
+                        InwrdReverseSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::"SGST / UTGST");
+                        InwrdReverseCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CESS);
+                    END ELSE BEGIN
+                        ImportServiceIGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::IGST);
+                        ImportServiceCGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CGST);
+                        ImportServiceSGSTUTGSTAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::"SGST / UTGST");
+                        ImportServiceCESSAmount1 += GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj, CompReportView::CESS);
+                    END;
+                UNTIL NEXT = 0;
         END;
     end;
+    //16767 start
 
-    local procedure GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj: Record "16457";ReportView: Option): Decimal
+    local procedure GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj: Record "Posted GST Liability Adj."; ComponentCode: Option " ",CGST,"SGST / UTGST",IGST,CESS): Decimal
     var
-        GSTComponent: Record "16405";
+        TaxComponent: Record "Tax Component";
+        GSTAmount: Decimal;
+    begin
+        TaxComponent.SetRange("Tax Type", GSTLbl);
+        TaxComponent.SetRange(Name, PostedGSTLiabilityAdj."GST Component Code");
+        if TaxComponent.FindFirst() then
+            if TaxComponent.Name = Format(ComponentCode) then
+                GSTAmount += PostedGSTLiabilityAdj."GST Amount";
+
+        exit(GSTAmount);
+    end;
+    //16767 End
+
+    /* local procedure GetSupplyGSTAmountRecforGSTAdjust(PostedGSTLiabilityAdj: Record "Posted GST Liability Adj.";ReportView: Option): Decimal
+    var
+        GSTComponent: Record 16405;
         GSTAmount: Decimal;
     begin
         IF GSTComponent.GET(PostedGSTLiabilityAdj."GST Component Code") THEN
           IF GSTComponent."Report View" = ReportView THEN
             GSTAmount += PostedGSTLiabilityAdj."GST Amount";
         EXIT(GSTAmount);
-    end;
+    end; */ //16767
 }
-

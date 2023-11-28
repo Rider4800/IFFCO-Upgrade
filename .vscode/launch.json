@@ -1,19 +1,20 @@
 {
-          "version": "0.2.0",
-          "configurations": [
-                    {
-                              "name": "Microsoft cloud sandbox",
-                              "request": "launch",
-                              "type": "al",
-                              "environmentType": "Sandbox",
-                              "startupObjectId": 22,
-                              "startupObjectType": "Page",
-                              "server": "https://businesscentral.dynamics.com/ab1e2f9e-0470-4b67-aaf4-e973b0b06cca/",
-                              "environmentName": "PARIJAT_UAT",
-                               "breakOnError": "All",
-                              "launchBrowser": true,
-                              "enableLongRunningSqlStatements": true,
-                              "enableSqlInformationDebugger": true
-                    }
-          ]
-}
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Microsoft Cloud Sandbox",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "Sandbox",
+            "server": "https://businesscentral.dynamics.com/d3a55687-ec5c-433b-9eaa-9d952c913e94/",     
+            "environmentName": "FICCI_CRM",
+            "schemaUpdateMode": "Synchronize",
+            "startupObjectId": 22,
+            "startupObjectType": "Page",
+            "breakOnError": true,
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true
+        }
+    ]
+  }
