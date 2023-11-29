@@ -64,6 +64,13 @@ tableextension 50081 tableextension50081 extends "Gen. Journal Line"
         {
             DataClassification = ToBeClassified;
         }
+        //->Team-17783  New field added to save the previous data of External Doc No (Length 50) in this field
+        field(50007; "External Document No. New"; Code[50])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'External Document No. New';
+        }
+        //<-Team-17783
     }
 
     trigger OnAfterDelete()
