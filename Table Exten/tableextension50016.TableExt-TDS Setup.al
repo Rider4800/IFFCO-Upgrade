@@ -11,10 +11,10 @@ tableextension 50016 tableextension50016 extends "TDS Setup"
 
         // }
         //<-TEAM-17783
-        field(27; "Calc. Over & Above Threshold"; Boolean)
-        {
-            DataClassification = ToBeClassified;
-        }
+        // field(27; "Calc. Over & Above Threshold"; Boolean)
+        // {
+        //     DataClassification = ToBeClassified;
+        // }
     }
 }
 

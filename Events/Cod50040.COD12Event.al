@@ -760,6 +760,21 @@ codeunit 50040 COD12Event
         end;
     end;
 
+    //->17783   Flow "External Doc. No. New" field from GenJnlLine to BankAccLedgEntry
+    [EventSubscriber(ObjectType::Codeunit, 12, 'OnAfterInitBankAccLedgEntry', '', false, false)]
+    local procedure OnAfterInitBankAccLedgEntry(GenJournalLine: Record "Gen. Journal Line"; var BankAccountLedgerEntry: Record "Bank Account Ledger Entry")
+    begin
+        BankAccountLedgerEntry."External Document No. New" := GenJournalLine."External Document No. New";
+    end;
+    //<-17783
+
+    //->17783   Flow "External Doc. No. New" field from GenJnlLine to GLEntry
+    [EventSubscriber(ObjectType::Table, 17, 'OnAfterCopyGLEntryFromGenJnlLine', '', false, false)]
+    local procedure OnAfterCopyGLEntryFromGenJnlLine(var GLEntry: Record "G/L Entry"; var GenJournalLine: Record "Gen. Journal Line")
+    begin
+        GLEntry."External Document No. New" := GenJournalLine."External Document No. New";
+    end;
+    //<-17783
 
     var
         strFinanceDimension: Code[20];
