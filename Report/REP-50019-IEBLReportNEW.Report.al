@@ -512,10 +512,10 @@ report 50019 "IEBL Report-NEW"
         ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//24
         ExcelBuf.AddColumn(txtData[10], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//25
         ExcelBuf.AddColumn(txtData[9], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//26
-        ExcelBuf.AddColumn("Sales Invoice Line"."MRP Price", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//27
+        ExcelBuf.AddColumn("Sales Invoice Line"."MRP Price New", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//27
         Data3 := 0;
-        IF ("Sales Invoice Line"."MRP Price" <> 0) AND ("Sales Invoice Line"."Units per Parcel" <> 0) THEN
-            Data3 := "Sales Invoice Line"."MRP Price" / "Sales Invoice Line"."Units per Parcel"
+        IF ("Sales Invoice Line"."MRP Price New" <> 0) AND ("Sales Invoice Line"."Units per Parcel" <> 0) THEN
+            Data3 := "Sales Invoice Line"."MRP Price New" / "Sales Invoice Line"."Units per Parcel"
         ELSE
             Data3 := 0;
         ExcelBuf.AddColumn(Data3, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//28
@@ -592,10 +592,10 @@ report 50019 "IEBL Report-NEW"
         ExcelBuf.AddColumn('', FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//24
         ExcelBuf.AddColumn(txtData[10], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//25
         ExcelBuf.AddColumn(txtData[9], FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Text);//26
-        ExcelBuf.AddColumn("Sales Cr.Memo Line"."MRP Price", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//27
+        ExcelBuf.AddColumn("Sales Cr.Memo Line"."MRP Price New", FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//27
         Data3 := 0;
-        IF ("Sales Cr.Memo Line"."MRP Price" <> 0) AND ("Sales Cr.Memo Line"."Units per Parcel" <> 0) THEN
-            Data3 := "Sales Cr.Memo Line"."MRP Price" / "Sales Cr.Memo Line"."Units per Parcel"
+        IF ("Sales Cr.Memo Line"."MRP Price New" <> 0) AND ("Sales Cr.Memo Line"."Units per Parcel" <> 0) THEN
+            Data3 := "Sales Cr.Memo Line"."MRP Price New" / "Sales Cr.Memo Line"."Units per Parcel"
         ELSE
             Data3 := 0;
         ExcelBuf.AddColumn(Data3, FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuf."Cell Type"::Number);//28

@@ -3,7 +3,7 @@ tableextension 50077 tableextension50077 extends "Sales Price"
     fields
     {
         //12887 custom field added by TCPL--->
-        field(50000; "MRP Price"; Decimal)
+        field(50000; "MRP Price New"; Decimal)
         {
 
         }

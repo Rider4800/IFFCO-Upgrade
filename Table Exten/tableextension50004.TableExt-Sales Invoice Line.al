@@ -26,7 +26,7 @@ tableextension 50004 tableextension50004 extends "Sales Invoice Line"
             DataClassification = ToBeClassified;
         }
         //->Team-17783  New field Added as MRP price is std field in NAV, so to use in BC, we created it
-        field(50006; "MRP Price"; Decimal)
+        field(50006; "MRP Price New"; Decimal)
         {
             DataClassification = ToBeClassified;
         }

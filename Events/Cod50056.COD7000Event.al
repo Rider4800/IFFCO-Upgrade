@@ -3,7 +3,7 @@ codeunit 50056 COD7000Event
     [EventSubscriber(ObjectType::Codeunit, 7000, 'OnBeforeFindSalesPrice', '', false, false)]
     local procedure OnBeforeFindSalesPrice(var FromSalesPrice: Record "Sales Price")
     begin
-        FromSalesPrice.SetRange("MRP Price", 0);
+        FromSalesPrice.SetRange("MRP Price New", 0);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 7000, 'OnBeforeActivatedCampaignExists', '', false, false)]

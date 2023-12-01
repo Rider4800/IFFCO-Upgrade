@@ -68,7 +68,7 @@ tableextension 50050 tableextension50050 extends "Sales Line"
             DataClassification = ToBeClassified;
         }
         //12887---> custom "MRP Price" field is added
-        field(50006; "MRP Price"; Decimal)
+        field(50006; "MRP Price New"; Decimal)
         {
             DataClassification = ToBeClassified;
             trigger OnValidate()

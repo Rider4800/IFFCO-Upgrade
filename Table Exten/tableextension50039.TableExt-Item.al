@@ -111,7 +111,7 @@ tableextension 50039 tableextension50039 extends Item
             Description = 'acxcp';
         }
         //->Team-17783  New field Added as MRP price is std field in NAV, so to use in BC, we created it
-        field(50013; "MRP Price"; Decimal)
+        field(50013; "MRP Price New"; Decimal)
         {
             DataClassification = ToBeClassified;
         }

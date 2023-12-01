@@ -71,7 +71,7 @@ report 50016 "FSC Data Export To Excel"
                 ExcelBuffer.AddColumn(FORMAT(Packvalue + (Packvalue * GSTPer) / 100), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuffer."Cell Type"::Number);//11
 
                 IF "Sales Invoice Line"."Units per Parcel" <> 0 THEN
-                    unitperpiece := "Sales Invoice Line"."MRP Price" / "Sales Invoice Line"."Units per Parcel"
+                    unitperpiece := "Sales Invoice Line"."MRP Price New" / "Sales Invoice Line"."Units per Parcel"
                 ELSE
                     unitperpiece := 0;
                 ExcelBuffer.AddColumn(FORMAT(unitperpiece), FALSE, '', FALSE, FALSE, FALSE, '', ExcelBuffer."Cell Type"::Number);//12

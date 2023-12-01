@@ -292,7 +292,7 @@ report 50067 "Sales Tax Invoice Draft"
                     column(Rate; "Sales Line"."Unit Price")
                     {
                     }
-                    column(MRP; "Sales Line"."MRP Price")
+                    column(MRP; "Sales Line"."MRP Price New")
                     {
                     }
                     column(Amount; "Sales Line"."Line Amount")

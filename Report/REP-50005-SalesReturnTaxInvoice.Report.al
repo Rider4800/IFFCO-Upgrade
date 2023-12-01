@@ -316,7 +316,7 @@ report 50005 "Sales Return Tax Invoice"
                     column(Rate; "Sales Cr.Memo Line"."Unit Price")
                     {
                     }
-                    column(MRP; "Sales Cr.Memo Line"."MRP Price")
+                    column(MRP; "Sales Cr.Memo Line"."MRP Price New")
                     {
                     }
                     column(Amount; "Sales Cr.Memo Line"."Line Amount")

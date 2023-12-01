@@ -70,7 +70,7 @@ codeunit 50045 TransferOrderPostShipment
         recEwayEinvoice."E-way Bill Part" := recEwayEinvoice."E-way Bill Part"::Registered;//RK 05May22
         //RK 29Mar21 Begin
         IF recTransportMenthod.GET(TransShptHeader."Transport Method") THEN
-            TransMethd := FORMAT(recTransportMenthod."Trans Mode");
+            TransMethd := FORMAT(recTransportMenthod."Transportation Mode");
         EVALUATE(recEwayEinvoice."Transportation Mode", TransMethd);
         //RK End
         recEwayEinvoice.INSERT;

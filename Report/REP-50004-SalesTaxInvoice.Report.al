@@ -300,7 +300,7 @@ report 50004 "Sales Tax Invoice"
                     column(Rate; "Sales Invoice Line"."Unit Price")
                     {
                     }
-                    column(MRP; "Sales Invoice Line"."MRP Price")
+                    column(MRP; "Sales Invoice Line"."MRP Price New")
                     {
                     }
                     column(Amount; "Sales Invoice Line"."Line Amount")
