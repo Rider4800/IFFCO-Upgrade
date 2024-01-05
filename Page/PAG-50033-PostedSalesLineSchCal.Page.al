@@ -4,6 +4,8 @@ page 50033 "Posted SalesLine Sch. Cal."
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     ShowFilter = false;
     SourceTable = 50018;
 

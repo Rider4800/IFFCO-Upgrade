@@ -2,50 +2,21 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
 {
     layout
     {
-        modify("Lot No.")
-        {
-            trigger OnAfterValidate()
-            begin
-                LotNoOnAfterValidate;
-                //KM
-                IF NOT recLotInfo.GET(rec."Item No.", rec."Variant Code", rec."Lot No.") THEN BEGIN
-                    recLotInfoInsert.INIT;
-                    recLotInfoInsert.VALIDATE("Item No.", rec."Item No.");
-                    recLotInfoInsert.VALIDATE("Variant Code", rec."Variant Code");
-                    recLotInfoInsert.VALIDATE("Lot No.", rec."Lot No.");
-                    recLotInfoInsert.INSERT(TRUE);
-                END;
-                //KM
-                UpdateReservEntry//KM
-            end;
-
-            trigger OnAssistEdit()
-            begin
-                //KM010721
-                IF Rec."Source Type" = 37 THEN BEGIN
-                    IF Rec."Lot No." <> '' THEN
-                        ERROR('Multi lot selection not allowed against same sales line');
-                END;
-                //KM010721
-            end;
-        }
         modify("Expiration Date")
         {
             trigger OnAfterValidate()
-            var
-
             begin
                 ModifyLot;
             end;
         }
         modify("Appl.-from Item Entry")
         {
-            Caption = '<Appl.-from Item Entry>';
+            Caption = 'Appl.-from Item Entry';
         }
 
         modify(AvailabilitySerialNo)
         {
-            Visible = false;
+            Visible = true;
         }
         modify("Serial No.")
         {
@@ -55,12 +26,16 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         {
             Visible = false;
         }
+        modify("Qty. to Invoice (Base)")
+        {
+            Visible = true;
+        }
 
         addafter("Quantity (Base)")
         {
             field("Batch MRP"; rec."Batch MRP")
             {
-
+                ApplicationArea = All;
                 trigger OnValidate()
                 begin
                     /*
@@ -78,7 +53,7 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
             }
             field("MFG Date"; rec."MFG Date")
             {
-
+                ApplicationArea = All;
                 trigger OnValidate()
                 begin
                     ModifyLot;
@@ -93,66 +68,6 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
     {
 
     }
-    local procedure UpdateBatchMRPOnSalesLine()
-    var
-        recSalesHeader: Record 36;
-        recSalesLine: Record 37;
-        LotNoInfo: Record 6505;
-        recItemTrack: Record 337;
-        LotMRP: Decimal;
-        CheckMRP: Boolean;
-        recRecRev: Record 337;
-    begin
-        recItemTrack.RESET();
-        LotMRP := 0;
-        CheckMRP := FALSE;
-        recItemTrack.SETRANGE("Source ID", rec."Source ID");
-        recItemTrack.SETRANGE("Source Ref. No.", rec."Source Ref. No.");
-        recItemTrack.SETRANGE("Item No.", rec."Item No.");
-        IF recItemTrack.FINDFIRST THEN BEGIN
-            REPEAT
-                recSalesLine.RESET();
-                recSalesLine.SETRANGE("Document No.", recItemTrack."Source ID");
-                recSalesLine.SETRANGE("Line No.", recItemTrack."Source Ref. No.");
-                recSalesLine.SETRANGE("No.", recItemTrack."Item No.");
-                IF recSalesLine.FIND('-') THEN BEGIN
-                    LotNoInfo.RESET();
-                    LotNoInfo.SETRANGE("Item No.", recItemTrack."Item No.");
-                    LotNoInfo.SETRANGE("Lot No.", recItemTrack."Lot No.");
-                    IF LotNoInfo.FINDFIRST THEN BEGIN
-                        LotNoInfo.TESTFIELD("Batch MRP");
-                        /*IF (LotMRP<>0) AND (LotMRP <> LotNoInfo."Batch MRP") THEN BEGIN
-                          MESSAGE('Both batch MRP are not matched showing error at the the time of postig order...');
-                          CheckMRP:= TRUE;
-                        END;*/
-                        LotMRP := LotNoInfo."Batch MRP";
-                    END;
-                END;
-            UNTIL recItemTrack.NEXT = 0;
-            recSalesLine.ValidateMRPItemTracking := TRUE;
-            //12887 field is removed recSalesLine.VALIDATE("MRP Price", LotMRP);
-            recSalesLine.MODIFY();
-            //acxcp_300622_CampaignCode +
-            //acxcp_06062022 + for checking sale price line with campaign code
-            recSalesHeader.SETRANGE("No.", recItemTrack."Source ID");
-            recSalesHeader.SETFILTER("Campaign No.", '<>%1', '');
-            IF recSalesHeader.FINDFIRST THEN BEGIN
-                //IF recSalesHeader.SETFILTER("Campaign No.",'<>%1','') THEN BEGIN
-                recSalePrice.RESET;
-                recSalePrice.SETRANGE("Item No.", Rec."Item No.");
-                recSalePrice.SETRANGE("Sales Type", recSalePrice."Sales Type"::Campaign);
-                //12887 field is removed recSalePrice.SETFILTER("MRP Price", '%1', LotMRP);
-                IF NOT recSalePrice.FINDFIRST THEN
-                    //MESSAGE('Batch MRP %1 don''t exists into the Sale Price list',LotMRP);
-                    ERROR('Batch MRP %1 don''t exists into the Sale Price list having Sales Type-%2', LotMRP, recSalePrice."Sales Type"::Campaign)
-            END
-
-            //END;
-            //acxcp_06062022 -
-            //acxcp_300622_CampaignCode -
-        END;
-
-    end;
 
 
     local procedure ModifyLot()
@@ -245,15 +160,84 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         recCPG: Record 92;
         recSalePrice: Record 7002;
 
-    trigger OnOpenPage()
+    trigger OnClosePage()   //pp
     var
         Count: Integer;
+        PriceListLine: Record "Price List Line";
+        PriceListLine1: Record "Price List Line";
+        SalesLine: Record "Sales Line";
+        recSalesHeader: Record 36;
+        LotNoInfo: Record 6505;
+        recItemTrack: Record 337;
+        LotMRP: Decimal;
+        CheckMRP: Boolean;
+        recRecRev: Record 337;
     begin
         UpdateReservEntry;//KM
 
-        IF rec."Source Type" = 37 THEN
-            UpdateBatchMRPOnSalesLine;//KM240621
+        // IF rec."Source Type" = 37 THEN
+        //     UpdateBatchMRPOnSalesLine;//KM240621
 
+        if rec."Source Type" = 37 then begin
+            PriceListLine.Reset();
+            PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers");
+            PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+            PriceListLine.SetRange("Product No.", Rec."Item No.");
+            PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+            PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
+            if PriceListLine.FindFirst() then begin
+                recItemTrack.Reset();
+                recItemTrack.SETRANGE("Source ID", Rec."Source ID");
+                recItemTrack.SETRANGE("Source Ref. No.", Rec."Source Ref. No.");
+                recItemTrack.SETRANGE("Item No.", Rec."Item No.");
+                IF recItemTrack.FINDFIRST THEN BEGIN
+                    REPEAT
+                        SalesLine.Reset();
+                        SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+                        SalesLine.SetRange("Document No.", Rec."Source ID");
+                        SalesLine.SetRange("Line No.", Rec."Source Ref. No.");
+                        SalesLine.SetRange("No.", Rec."Item No.");
+                        if SalesLine.FindFirst() then begin
+                            LotNoInfo.RESET();
+                            LotNoInfo.SETRANGE("Item No.", recItemTrack."Item No.");
+                            LotNoInfo.SETRANGE("Lot No.", recItemTrack."Lot No.");
+                            IF LotNoInfo.FINDFIRST THEN begin
+                                LotNoInfo.TESTFIELD("Batch MRP");
+                                LotMRP := LotNoInfo."Batch MRP";
+                            end;
+                        end;
+                    UNTIL recItemTrack.NEXT = 0;
+                    SalesLine.ValidateMRPItemTracking := TRUE;
+                    SalesLine.Validate("Unit Price", PriceListLine."Unit Price");
+                    SalesLine.Modify();
+
+                    //acxcp_300622_CampaignCode +
+                    //acxcp_06062022 + for checking sale price line with campaign code
+                    recSalesHeader.Reset();
+                    recSalesHeader.SETRANGE("No.", recItemTrack."Source ID");
+                    recSalesHeader.SETFILTER("Campaign No.", '<>%1', '');
+                    IF recSalesHeader.FINDFIRST THEN BEGIN
+                        //IF recSalesHeader.SETFILTER("Campaign No.",'<>%1','') THEN BEGIN  
+                        PriceListLine1.Reset();
+                        PriceListLine1.SetRange("Product No.", Rec."Item No.");
+                        PriceListLine1.SetRange("Source Type", PriceListLine1."Source Type"::Campaign);
+                        PriceListLine1.SetRange("MRP Price", LotMRP);
+                        if PriceListLine1.FindFirst() then begin
+                            //MESSAGE('Batch MRP %1 don''t exists into the Sale Price list',LotMRP);
+                            ERROR('Batch MRP %1 don''t exists into the Sale Price list having Sales Type-%2', LotMRP, PriceListLine1."Source Type"::Campaign)
+                        END
+
+                        //END;
+                        //acxcp_06062022 -
+                        //acxcp_300622_CampaignCode -
+                    end;
+                end;
+            end;
+        end;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
         //acxcp_23052022 + //check expiry date selection in current lot
         IF (rec."Source Type" = 37) AND (rec."Source Subtype" = 1) THEN
             IF (Rec."Expiration Date") <> 0D THEN

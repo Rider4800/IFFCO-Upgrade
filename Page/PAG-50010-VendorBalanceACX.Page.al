@@ -1,6 +1,8 @@
 page 50010 "Vendor Balance-ACX"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 23;
 
     layout

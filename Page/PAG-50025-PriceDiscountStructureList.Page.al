@@ -2,6 +2,8 @@ page 50025 "Price Discount Structure List"
 {
     CardPageID = "ACX Price Disc. Header";
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50007;
 
     layout

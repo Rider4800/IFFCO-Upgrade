@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="LocationCode_PurchCrMemoHdr">
+          <DataField>LocationCode_PurchCrMemoHdr</DataField>
+        </Field>
+        <Field Name="BuyfromVendorNo">
+          <DataField>BuyfromVendorNo</DataField>
+        </Field>
+        <Field Name="BuyfromVendorName">
+          <DataField>BuyfromVendorName</DataField>
+        </Field>
+        <Field Name="BuyfromVendorName2">
+          <DataField>BuyfromVendorName2</DataField>
+        </Field>
+        <Field Name="BuyfromAddress">
+          <DataField>BuyfromAddress</DataField>
+        </Field>
+        <Field Name="BuyfromAddress2">
+          <DataField>BuyfromAddress2</DataField>
+        </Field>
+        <Field Name="BuyfromCity">
+          <DataField>BuyfromCity</DataField>
+        </Field>
+        <Field Name="BuyfromContact">
+          <DataField>BuyfromContact</DataField>
+        </Field>
+        <Field Name="BuyfromPostCode">
+          <DataField>BuyfromPostCode</DataField>
+        </Field>
+        <Field Name="BuyFrmCountryName">
+          <DataField>BuyFrmCountryName</DataField>
+        </Field>
+        <Field Name="BuyFromStateName">
+          <DataField>BuyFromStateName</DataField>
+        </Field>
+        <Field Name="No_PurchCrMemoHdr">
+          <DataField>No_PurchCrMemoHdr</DataField>
+        </Field>
+        <Field Name="PostingDateHdr">
+          <DataField>PostingDateHdr</DataField>
+        </Field>
+        <Field Name="BuyVenGSTNo">
+          <DataField>BuyVenGSTNo</DataField>
+        </Field>
+        <Field Name="BuyVenPANNo">
+          <DataField>BuyVenPANNo</DataField>
+        </Field>
+        <Field Name="CompPAN">
+          <DataField>CompPAN</DataField>
+        </Field>
+        <Field Name="CompLogo">
+          <DataField>CompLogo</DataField>
+        </Field>
+        <Field Name="CompName">
+          <DataField>CompName</DataField>
+        </Field>
+        <Field Name="CompName2">
+          <DataField>CompName2</DataField>
+        </Field>
+        <Field Name="CompAdd1">
+          <DataField>CompAdd1</DataField>
+        </Field>
+        <Field Name="CompAdd2">
+          <DataField>CompAdd2</DataField>
+        </Field>
+        <Field Name="CompCity">
+          <DataField>CompCity</DataField>
+        </Field>
+        <Field Name="CompPostCode">
+          <DataField>CompPostCode</DataField>
+        </Field>
+        <Field Name="CompStateCode">
+          <DataField>CompStateCode</DataField>
+        </Field>
+        <Field Name="CompCountryRegion">
+          <DataField>CompCountryRegion</DataField>
+        </Field>
+        <Field Name="CompPhone">
+          <DataField>CompPhone</DataField>
+        </Field>
+        <Field Name="CompEmail">
+          <DataField>CompEmail</DataField>
+        </Field>
+        <Field Name="CompWebsite">
+          <DataField>CompWebsite</DataField>
+        </Field>
+        <Field Name="CINNo">
+          <DataField>CINNo</DataField>
+        </Field>
+        <Field Name="CompBankName">
+          <DataField>CompBankName</DataField>
+        </Field>
+        <Field Name="CompBranch">
+          <DataField>CompBranch</DataField>
+        </Field>
+        <Field Name="CompBankAcctNo">
+          <DataField>CompBankAcctNo</DataField>
+        </Field>
+        <Field Name="RegAdd1">
+          <DataField>RegAdd1</DataField>
+        </Field>
+        <Field Name="RegAdd2">
+          <DataField>RegAdd2</DataField>
+        </Field>
+        <Field Name="RegCity">
+          <DataField>RegCity</DataField>
+        </Field>
+        <Field Name="RegPostCode">
+          <DataField>RegPostCode</DataField>
+        </Field>
+        <Field Name="RegStateName">
+          <DataField>RegStateName</DataField>
+        </Field>
+        <Field Name="RegGSTIN">
+          <DataField>RegGSTIN</DataField>
+        </Field>
+        <Field Name="RegPAN">
+          <DataField>RegPAN</DataField>
+        </Field>
+        <Field Name="RegEmail">
+          <DataField>RegEmail</DataField>
+        </Field>
+        <Field Name="RegPhone">
+          <DataField>RegPhone</DataField>
+        </Field>
+        <Field Name="LocName">
+          <DataField>LocName</DataField>
+        </Field>
+        <Field Name="LocAdd1">
+          <DataField>LocAdd1</DataField>
+        </Field>
+        <Field Name="LocAdd2">
+          <DataField>LocAdd2</DataField>
+        </Field>
+        <Field Name="LocCity">
+          <DataField>LocCity</DataField>
+        </Field>
+        <Field Name="LocPostCode">
+          <DataField>LocPostCode</DataField>
+        </Field>
+        <Field Name="LocGSTNo">
+          <DataField>LocGSTNo</DataField>
+        </Field>
+        <Field Name="LocPhoneNo">
+          <DataField>LocPhoneNo</DataField>
+        </Field>
+        <Field Name="LocStateName">
+          <DataField>LocStateName</DataField>
+        </Field>
+        <Field Name="LocCountryName">
+          <DataField>LocCountryName</DataField>
+        </Field>
+        <Field Name="ShiptoCode">
+          <DataField>ShiptoCode</DataField>
+        </Field>
+        <Field Name="ShiptoName">
+          <DataField>ShiptoName</DataField>
+        </Field>
+        <Field Name="ShiptoName2">
+          <DataField>ShiptoName2</DataField>
+        </Field>
+        <Field Name="ShiptoAddress">
+          <DataField>ShiptoAddress</DataField>
+        </Field>
+        <Field Name="ShiptoAddress2">
+          <DataField>ShiptoAddress2</DataField>
+        </Field>
+        <Field Name="ShiptoCity">
+          <DataField>ShiptoCity</DataField>
+        </Field>
+        <Field Name="ShiptoPostCode">
+          <DataField>ShiptoPostCode</DataField>
+        </Field>
+        <Field Name="ShiptoCountryRegionCode">
+          <DataField>ShiptoCountryRegionCode</DataField>
+        </Field>
+        <Field Name="ShiptoContact">
+          <DataField>ShiptoContact</DataField>
+        </Field>
+        <Field Name="VendorCrMemoNo">
+          <DataField>VendorCrMemoNo</DataField>
+        </Field>
+        <Field Name="txtComment">
+          <DataField>txtComment</DataField>
+        </Field>
+        <Field Name="decRoundOff">
+          <DataField>decRoundOff</DataField>
+        </Field>
+        <Field Name="decRoundOffFormat">
+          <DataField>decRoundOffFormat</DataField>
+        </Field>
+        <Field Name="AmounttoVendorHdr">
+          <DataField>AmounttoVendorHdr</DataField>
+        </Field>
+        <Field Name="AmounttoVendorHdrFormat">
+          <DataField>AmounttoVendorHdrFormat</DataField>
+        </Field>
+        <Field Name="Amount_In_Words_Total">
+          <DataField>Amount_In_Words_Total</DataField>
+        </Field>
+        <Field Name="CGST">
+          <DataField>CGST</DataField>
+        </Field>
+        <Field Name="CGSTFormat">
+          <DataField>CGSTFormat</DataField>
+        </Field>
+        <Field Name="SGST">
+          <DataField>SGST</DataField>
+        </Field>
+        <Field Name="SGSTFormat">
+          <DataField>SGSTFormat</DataField>
+        </Field>
+        <Field Name="IGST">
+          <DataField>IGST</DataField>
+        </Field>
+        <Field Name="IGSTFormat">
+          <DataField>IGSTFormat</DataField>
+        </Field>
+        <Field Name="UnitofMeasure_PurchCrMemoLine">
+          <DataField>UnitofMeasure_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="BuyfromVendorNo_PurchCrMemoLine">
+          <DataField>BuyfromVendorNo_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="DocumentNo_PurchCrMemoLine">
+          <DataField>DocumentNo_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Type_PurchCrMemoLine">
+          <DataField>Type_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="No_PurchCrMemoLine">
+          <DataField>No_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Description_PurchCrMemoLine">
+          <DataField>Description_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Uom_PurchCrMemoLine">
+          <DataField>Uom_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Quantity_PurchCrMemoLine">
+          <DataField>Quantity_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Quantity_PurchCrMemoLineFormat">
+          <DataField>Quantity_PurchCrMemoLineFormat</DataField>
+        </Field>
+        <Field Name="DirectUnitCost_PurchCrMemoLine">
+          <DataField>DirectUnitCost_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="DirectUnitCost_PurchCrMemoLineFormat">
+          <DataField>DirectUnitCost_PurchCrMemoLineFormat</DataField>
+        </Field>
+        <Field Name="Amount_PurchCrMemoLine">
+          <DataField>Amount_PurchCrMemoLine</DataField>
+        </Field>
+        <Field Name="Amount_PurchCrMemoLineFormat">
+          <DataField>Amount_PurchCrMemoLineFormat</DataField>
+        </Field>
+        <Field Name="LineAmount">
+          <DataField>LineAmount</DataField>
+        </Field>
+        <Field Name="LineAmountFormat">
+          <DataField>LineAmountFormat</DataField>
+        </Field>
+        <Field Name="HSNSACCode">
+          <DataField>HSNSACCode</DataField>
+        </Field>
+        <Field Name="GSTBaseAmount">
+          <DataField>GSTBaseAmount</DataField>
+        </Field>
+        <Field Name="GSTBaseAmountFormat">
+          <DataField>GSTBaseAmountFormat</DataField>
+        </Field>
+        <Field Name="AmountToVendor">
+          <DataField>AmountToVendor</DataField>
+        </Field>
+        <Field Name="AmountToVendorFormat">
+          <DataField>AmountToVendorFormat</DataField>
+        </Field>
+        <Field Name="GSTPercentage">
+          <DataField>GSTPercentage</DataField>
+        </Field>
+        <Field Name="GSTPercentageFormat">
+          <DataField>GSTPercentageFormat</DataField>
+        </Field>
+        <Field Name="LotNo">
+          <DataField>LotNo</DataField>
+        </Field>
+        <Field Name="Mfg">
+          <DataField>Mfg</DataField>
+        </Field>
+        <Field Name="Exp">
+          <DataField>Exp</DataField>
+        </Field>
+        <Field Name="dcNoofLoosPack">
+          <DataField>dcNoofLoosPack</DataField>
+        </Field>
+        <Field Name="dcNoofLoosPackFormat">
+          <DataField>dcNoofLoosPackFormat</DataField>
+        </Field>
+        <Field Name="LineNumber">
+          <DataField>LineNumber</DataField>
+        </Field>
+        <Field Name="LotNo_ItemLedgerEntry">
+          <DataField>LotNo_ItemLedgerEntry</DataField>
+        </Field>
+        <Field Name="IleQty">
+          <DataField>IleQty</DataField>
+        </Field>
+        <Field Name="IleQtyFormat">
+          <DataField>IleQtyFormat</DataField>
+        </Field>
+        <Field Name="dcLineAmt">
+          <DataField>dcLineAmt</DataField>
+        </Field>
+        <Field Name="dcLineAmtFormat">
+          <DataField>dcLineAmtFormat</DataField>
+        </Field>
+        <Field Name="LineGst">
+          <DataField>LineGst</DataField>
+        </Field>
+        <Field Name="LineGstFormat">
+          <DataField>LineGstFormat</DataField>
+        </Field>
+        <Field Name="LineAmtwithGST">
+          <DataField>LineAmtwithGST</DataField>
+        </Field>
+        <Field Name="LineAmtwithGSTFormat">
+          <DataField>LineAmtwithGSTFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

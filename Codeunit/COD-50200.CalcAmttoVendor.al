@@ -1,5 +1,160 @@
 codeunit 50200 CalcAmttoVendor
 {
+    Permissions = tabledata 122 = RIMD;
+    procedure ImportExcel()
+    begin
+        SelectFile();
+    end;
+
+    procedure SelectFile()
+    begin
+        UploadIntoStream('Please choose the excel file.', '', '', FromFile, IStream);
+        if FromFile <> '' then begin
+            FileName := FileMgt.GetFileName(FromFile);
+            ExcelBuffer.GetSheetsNameListFromStream(IStream, NameValueBufferOut);
+        end else
+            Error('No excel sheet found!');
+
+        //Import Data Start
+        ExcelBuffer.Reset();
+        ExcelBuffer.DeleteAll();
+        NameValueBufferOut.Reset();
+        if NameValueBufferOut.FindSet() then begin
+            repeat
+                Clear(SheetName);
+                SheetName := NameValueBufferOut.Value;
+                ExcelBuffer.OpenBookStream(IStream, SheetName);
+                ExcelBuffer.ReadSheet();
+
+                MaxRowNo := 0;
+                ExcelBuffer.Reset();
+                if ExcelBuffer.FindLast() then
+                    MaxRowNo := ExcelBuffer."Row No.";
+
+                RowNo := 0;
+                ColNo := 0;
+
+                if SheetName = 'Sales Price' then begin
+                    ImportData();
+                end;
+
+            until NameValueBufferOut.Next() = 0;
+            Message('Data is successfully Imported');
+        end;
+        //Import Data End
+    end;
+
+    procedure ImportData()
+    begin
+        For RowNo := 4 TO MaxRowNo Do begin
+            //->17783 move data from NAV 2016 sales price excel to BC Cloud Sales price table
+            // Rec7001.Init();
+            // Rec7001."Item No." := GetValueAtCell(RowNo, 1);
+            // Evaluate(salestype, GetValueAtCell(RowNo, 2));
+            // Rec7001."Sales Type" := salestype;
+            // Rec7001."Sales Code" := GetValueAtCell(RowNo, 3);
+            // Evaluate(startdate, GetValueAtCell(RowNo, 4));
+            // Rec7001."Starting Date" := startdate;
+            // Rec7001."Currency Code" := GetValueAtCell(RowNo, 5);
+            // Rec7001."Variant Code" := GetValueAtCell(RowNo, 6);
+            // Rec7001."Unit of Measure Code" := GetValueAtCell(RowNo, 7);
+            // Evaluate(minqty, GetValueAtCell(RowNo, 8));
+            // Rec7001."Minimum Quantity" := minqty;
+            // Evaluate(mrppricenew, GetValueAtCell(RowNo, 9));
+            // Rec7001."MRP Price New" := mrppricenew;
+            // Evaluate(unitprice, GetValueAtCell(RowNo, 10));
+            // Rec7001."Unit Price" := unitprice;
+            // Evaluate(PIVAT, GetValueAtCell(RowNo, 11));
+            // Rec7001."Price Includes VAT" := PIVAT;
+            // Evaluate(allowinvdisc, GetValueAtCell(RowNo, 12));
+            // Rec7001."Allow Invoice Disc." := allowinvdisc;
+            // Rec7001."VAT Bus. Posting Gr. (Price)" := GetValueAtCell(RowNo, 13);
+            // Evaluate(Endingdate, GetValueAtCell(RowNo, 14));
+            // Rec7001."Ending Date" := Endingdate;
+            // Evaluate(allowlinedisc, GetValueAtCell(RowNo, 15));
+            // Rec7001."Allow Line Disc." := allowlinedisc;
+            // Rec7001.Insert();
+            //<-17783   move data from NAV 2016 sales price excel to BC Cloud Sales price table
+
+            //->17783   move data from BC Cloud Sales price table to BC Cloud Price list line table
+            Rec7002.reset();
+            if Rec7002.FindFirst() then begin
+                repeat
+                    Rec7001.Init();
+                    Rec7001."Price List Code" := 'S00001';
+
+                    Rec7001New.reset();
+                    if not Rec7001New.findlast() then
+                        LineNo1 := 1
+                    else
+                        LineNo1 := Rec7001New."Line No." + 1;
+
+                    Rec7001."Line No." := lineno1;
+                    Rec7001."Product No." := Rec7002."Item No.";
+                    Rec7001."Assign-to No." := Rec7002."Sales Code";
+                    Rec7001."Currency Code" := Rec7002."Currency Code";
+                    Rec7001."Starting Date" := Rec7002."Starting Date";
+                    Rec7001."Unit Price" := Rec7002."Unit Price";
+                    Rec7001."Price Includes VAT" := Rec7002."Price Includes VAT";
+                    Rec7001."Allow Invoice Disc." := true;
+                    Evaluate(salestype, Format(Rec7002."Sales Type"));
+                    Rec7001."Source Type" := salestype;
+                    Rec7001."Ending Date" := Rec7002."Ending Date";
+                    Rec7001."Unit of Measure Code" := Rec7002."Unit of Measure Code";
+                    Rec7001."Allow Line Disc." := true;
+                    Rec7001."MRP Price" := Rec7002."MRP Price New";
+                    Rec7001.Insert();
+                until Rec7002.next() = 0;
+            end;
+            //<-17783   move data from BC Cloud Sales price table to BC Cloud Price list line table
+        end;
+        // if PCrMHRec.Get(GetValueAtCell(RowNo, 1)) then begin
+        //     Evaluate(PCrMHRec."Certificate of Analysis", GetValueAtCell(RowNo, 2));
+        //     Evaluate(PCrMHRec."Finance Branch A/c Code", GetValueAtCell(RowNo, 3));
+        //     Evaluate(PCrMHRec."Creation DateTime", GetValueAtCell(RowNo, 4));
+        //     PCrMHRec.Modify();
+        // end;
+    end;
+
+    procedure GetValueAtCell(RowNo: Integer; ColNo: Integer): Text
+    begin
+        ExcelBuffer.Reset();
+        if ExcelBuffer.Get(RowNo, ColNo) then
+            exit(ExcelBuffer."Cell Value as Text")
+        else
+            exit('');
+    end;
+
+    var
+        ExcelBuffer: Record "Excel Buffer" temporary;
+        FromFile: Text;
+        IStream: InStream;
+        FileName: Text;
+        FileMgt: Codeunit "File Management";
+        NameValueBufferOut: Record "Name/Value Buffer" temporary;
+        SheetName: Text;
+        MaxRowNo: Integer;
+        RowNo: Integer;
+        ColNo: Integer;
+        LineNo: Integer;
+        DCLERec: Record "Detailed Cust. Ledg. Entry";
+        PIHRec: Record "Purch. Inv. Header";
+
+        PCrMHRec: Record "Purch. Cr. Memo Hdr.";
+        Rec7001: Record 7001;
+        Rec7002: Record 7002;
+        salestype: Option "Customer","Customer Price Group","All Customers","Campaign";
+        startdate: Date;
+        minqty: Decimal;
+        mrppricenew: Decimal;
+        unitprice: Decimal;
+        PIVAT: Boolean;
+        allowinvdisc: Boolean;
+        Endingdate: Date;
+        allowlinedisc: Boolean;
+        LineNo1: Integer;
+        Rec7001New: record 7001;
+
     procedure AmttoVendor(T38: Record 38): Decimal
     var
         igst: Decimal;

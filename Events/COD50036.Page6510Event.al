@@ -5,45 +5,45 @@ codeunit 50036 ItemTrackingLine
 
     end;
 
-    [EventSubscriber(ObjectType::Page, Page::"Item Tracking Lines", 'OnAfterUpdateExpDateEditable', '', false, false)]
-    local procedure OnAfterUpdateExpDateEditable(var TrackingSpecification: Record "Tracking Specification"; var ExpirationDateEditable: Boolean; var ItemTrackingCode: Record "Item Tracking Code"; var NewExpirationDateEditable: Boolean; CurrentSignFactor: Integer);
-    var
-        LotMFG: Date;
-        ItemTrackingMgt: Codeunit 6500;
-        Page6510: Page 6510;
-    begin
-        /*12887 Need to be reviewed--->
-        IF (TrackingSpecification."Lot No." <> '') AND (TrackingSpecification."Source Type" = 37) THEN BEGIN
-            recSaleLine.RESET;//acxcp090622
-            recSaleLine.SETRANGE("Document No.", TrackingSpecification."Source ID");//acxcp090622
-            IF recSaleLine.FINDFIRST THEN BEGIN//acxcp090622
-                recCust.RESET;
-                recCust.SETRANGE("No.", recSaleLine."Sell-to Customer No.");
-                IF recCust.FINDFIRST THEN BEGIN
-                    recCPG.RESET;
-                    recCPG.SETRANGE(Code, recCust."Customer Posting Group");
-                    IF recCPG.FINDFIRST THEN BEGIN
-                        IF NOT recCPG.ExcludeFIFOExpiry THEN
-                            IF TrackingSpecification."Expiration Date" > TODAY THEN
-                                CheckNearExp(TrackingSpecification."Item No.", TrackingSpecification."Location Code", TrackingSpecification."Expiration Date"); //ACXCP_18052022 //Near Expiry Check uncommented
-                        IF Expire = TRUE THEN BEGIN //ACXCP_18052022
-                            TempItemTrackLineInsert.DELETE();//ACXCP_18052022
-                            TrackingSpecification.DELETE();//ACXCP_18052022
-                        END;//ACXCP_18052022
-                    END;//acxcp090622
-                END;//acxcp090622
-            END;//acxcp090622
-        END;
-        MRP := ItemTrackingMgt.BatchMRP(TrackingSpecification."Item No.", TrackingSpecification."Lot No.");
-        IF MRP <> 0 THEN
-            TrackingSpecification."Batch MRP" := TrackingSpecification.MRP;
-        LotMFG := ItemTrackingMgt.BatchMFG(TrackingSpecification."Item No.", TrackingSpecification."Lot No.");
-        IF LotMFG <> 0D THEN
-            TrackingSpecification."MFG Date" := LotMFG;
-        //KM
-        //acxcp_01072022 -
-<---12887*/
-    end;
+    //     [EventSubscriber(ObjectType::Page, Page::"Item Tracking Lines", 'OnAfterUpdateExpDateEditable', '', false, false)]
+    //     local procedure OnAfterUpdateExpDateEditable(var TrackingSpecification: Record "Tracking Specification"; var ExpirationDateEditable: Boolean; var ItemTrackingCode: Record "Item Tracking Code"; var NewExpirationDateEditable: Boolean; CurrentSignFactor: Integer);
+    //     var
+    //         LotMFG: Date;
+    //         ItemTrackingMgt: Codeunit 6500;
+    //         Page6510: Page 6510;
+    //     begin
+    //         /*12887 Need to be reviewed--->
+    //         IF (TrackingSpecification."Lot No." <> '') AND (TrackingSpecification."Source Type" = 37) THEN BEGIN
+    //             recSaleLine.RESET;//acxcp090622
+    //             recSaleLine.SETRANGE("Document No.", TrackingSpecification."Source ID");//acxcp090622
+    //             IF recSaleLine.FINDFIRST THEN BEGIN//acxcp090622
+    //                 recCust.RESET;
+    //                 recCust.SETRANGE("No.", recSaleLine."Sell-to Customer No.");
+    //                 IF recCust.FINDFIRST THEN BEGIN
+    //                     recCPG.RESET;
+    //                     recCPG.SETRANGE(Code, recCust."Customer Posting Group");
+    //                     IF recCPG.FINDFIRST THEN BEGIN
+    //                         IF NOT recCPG.ExcludeFIFOExpiry THEN
+    //                             IF TrackingSpecification."Expiration Date" > TODAY THEN
+    //                                 CheckNearExp(TrackingSpecification."Item No.", TrackingSpecification."Location Code", TrackingSpecification."Expiration Date"); //ACXCP_18052022 //Near Expiry Check uncommented
+    //                         IF Expire = TRUE THEN BEGIN //ACXCP_18052022
+    //                             TempItemTrackLineInsert.DELETE();//ACXCP_18052022
+    //                             TrackingSpecification.DELETE();//ACXCP_18052022
+    //                         END;//ACXCP_18052022
+    //                     END;//acxcp090622
+    //                 END;//acxcp090622
+    //             END;//acxcp090622
+    //         END;
+    //         MRP := ItemTrackingMgt.BatchMRP(TrackingSpecification."Item No.", TrackingSpecification."Lot No.");
+    //         IF MRP <> 0 THEN
+    //             TrackingSpecification."Batch MRP" := TrackingSpecification.MRP;
+    //         LotMFG := ItemTrackingMgt.BatchMFG(TrackingSpecification."Item No.", TrackingSpecification."Lot No.");
+    //         IF LotMFG <> 0D THEN
+    //             TrackingSpecification."MFG Date" := LotMFG;
+    //         //KM
+    //         //acxcp_01072022 -
+    // <---12887*/
+    //     end;
 
     procedure CheckNearExp("ItemNo.": Code[20]; LocationCode: Code[20]; Date: Date)
     var
@@ -84,7 +84,7 @@ codeunit 50036 ItemTrackingLine
                             Expire := FALSE //acxcp_23052022
                         ELSE //acxcp_23052022
                             Expire := TRUE;
-                        MESSAGE('Wrong Selection, as per near expiration please select %1, Lot...', ILE."Lot No.");
+                        Error('Wrong Selection, as per near expiration please select %1, Lot...', ILE."Lot No.");
                     END;
                 END;
             UNTIL ILE.NEXT = 0;

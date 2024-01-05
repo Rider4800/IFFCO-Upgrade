@@ -208,7 +208,7 @@ codeunit 50011 CalculatedCDSchemesKM
                 END;
               END;
          END;
-        
+
         IF Type = Type::"Credit Memo" THEN BEGIN
           SchemeItem.RESET();
           SchemeItem.SETRANGE("Scheme Code",SCHCode);
@@ -441,7 +441,7 @@ codeunit 50011 CalculatedCDSchemesKM
                             REPEAT
                                 //InsCalCD."Invoice Amount"+= SIL."Amount To Customer";
                                 InsCalCD."Invoice Amt. Exclud GST" += SIL."Line Amount";
-                                InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";
+                                //InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS"; //17783
                                 InsCalCD.MODIFY(TRUE);
                             UNTIL SIL.NEXT = 0;
                         END;
@@ -643,7 +643,7 @@ codeunit 50011 CalculatedCDSchemesKM
                             REPEAT
                                 //InsCalCD."Invoice Amount"+= SIL."Amount To Customer";
                                 InsCalCD."Invoice Amt. Exclud GST" += SIL."Line Amount";
-                                InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";
+                                //InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS"; //17783
                                 InsCalCD.MODIFY(TRUE);
                             UNTIL SIL.NEXT = 0;
                         END;
@@ -1150,4 +1150,3 @@ codeunit 50011 CalculatedCDSchemesKM
         END;
     end;
 }
-

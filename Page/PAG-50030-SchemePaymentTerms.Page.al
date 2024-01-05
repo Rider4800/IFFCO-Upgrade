@@ -1,6 +1,8 @@
 page 50030 "Scheme Payment Terms"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50017;
 
     layout

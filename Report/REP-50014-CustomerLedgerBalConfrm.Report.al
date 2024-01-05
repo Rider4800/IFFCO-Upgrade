@@ -1,7 +1,7 @@
 report 50014 "Customer Ledger Bal Confrm."
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './CustomerLedgerBalConfrm.rdlc';
+    RDLCLayout = '.\ReportLayout\CustomerLedgerBalConfrm.rdl';
     PreviewMode = PrintLayout;
 
     dataset

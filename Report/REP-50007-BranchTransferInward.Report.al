@@ -1,7 +1,7 @@
 report 50007 "Branch Transfer Inward"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './BranchTransferInward.rdlc';
+    RDLCLayout = '.\ReportLayout\BranchTransferInward.rdl';
     PreviewMode = PrintLayout;
 
     dataset

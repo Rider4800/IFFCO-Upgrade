@@ -6,6 +6,8 @@ page 50016 "Job Work Receive Register"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 5747;
     SourceTableView = WHERE("Transfer-from Code" = FILTER('JW*'));
 

@@ -5,6 +5,8 @@ page 50024 "ACX Price Discount Structure"
     LinksAllowed = false;
     MultipleNewLines = true;
     PageType = ListPart;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50008;
 
     layout

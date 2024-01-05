@@ -1,6 +1,8 @@
 page 50045 "Scheme Master Setup"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50005;
 
     layout

@@ -6,6 +6,8 @@ page 50049 "Generated Scheme Summary"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50027;
     SourceTableView = WHERE("Credit Note No." = filter(<> ''));
 

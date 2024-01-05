@@ -1,7 +1,7 @@
 report 50013 "GRN Report"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './GRNReport.rdlc';
+    RDLCLayout = '.\ReportLayout\GRNReport.rdl';
 
     dataset
     {

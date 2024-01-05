@@ -1,7 +1,7 @@
 report 50051 "GSTR-3B NewTest"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './GSTR3BNewTest.rdlc';
+    RDLCLayout = '.\ReportLayout\GSTR3BNewTest.rdl';
     Caption = 'GSTR-3B New Test';
     ApplicationArea = Basic, Suite;
     PreviewMode = PrintLayout;

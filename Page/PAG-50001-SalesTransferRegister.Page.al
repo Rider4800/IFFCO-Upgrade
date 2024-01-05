@@ -3,6 +3,8 @@ page 50001 "Sales\Transfer Register"
     Editable = false;
     PageType = List;
     SourceTable = 50002;
+    UsageCategory = Lists;
+    ApplicationArea = All;
 
     layout
     {

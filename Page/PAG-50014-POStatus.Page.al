@@ -5,6 +5,8 @@ page 50014 "PO Status"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     RefreshOnActivate = true;
     ShowFilter = true;
     SourceTable = 39;

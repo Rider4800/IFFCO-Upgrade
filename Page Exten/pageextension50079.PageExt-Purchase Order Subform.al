@@ -28,21 +28,25 @@ pageextension 50079 pageextension50079 extends "Purchase Order Subform"
         {
             field("MRP Price"; Rec."MRP Price")
             {
+                ApplicationArea = All;
             }
         }
         addafter("Quantity Invoiced")
         {
             field("Qty. Rcd. Not Invoiced"; Rec."Qty. Rcd. Not Invoiced")
             {
+                ApplicationArea = All;
             }
         }
         addafter(ShortcutDimCode8)
         {
             field("Completely Received"; Rec."Completely Received")
             {
+                ApplicationArea = All;
             }
             field("Short Quantity Remark"; Rec."Short Quantity Remark")
             {
+                ApplicationArea = All;
             }
         }
 

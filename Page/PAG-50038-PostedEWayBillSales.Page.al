@@ -3,6 +3,8 @@ page 50038 "Posted E- Way Bill (Sales)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     Permissions = TableData 112 = rm;
     SourceTable = 112;
     SourceTableView = WHERE("GST Customer Type" = FILTER(Registered | Unregistered),
@@ -320,8 +322,8 @@ page 50038 "Posted E- Way Bill (Sales)"
                         IF CONFIRM(txtMessageVeh) THEN BEGIN
                             IF Rec."Vehicle No." = Rec."Old Vehicle No." THEN
                                 ERROR('Update new Vehicle No.')
-                            ELSE
-                                CodeunitEWayBill.InitializeUpdateVehicleNo(Rec."No.", Rec."Vehicle No.");
+                            // ELSE
+                            //     CodeunitEWayBill.InitializeUpdateVehicleNo(Rec."No.", Rec."Vehicle No.");    //17783
                         END;
                     end;
                 }
@@ -338,7 +340,7 @@ page 50038 "Posted E- Way Bill (Sales)"
                         txtMessagecancel := 'Do you want to Cancel the E-Way Bill No. ' + Rec."E-Way Bill No.";
 
                         IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            CodeunitEWayBill.InitializeCancelBillNo(Rec."No.", Rec."E-Way Bill No.")
+                            //CodeunitEWayBill.InitializeCancelBillNo(Rec."No.", Rec."E-Way Bill No.")  //17783
                         END;
                     end;
                 }
@@ -371,7 +373,7 @@ page 50038 "Posted E- Way Bill (Sales)"
                         txtMessage := 'Do you want to generate E-Way Bill No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Customer ' + FORMAT(AmttoCust);
 
                         IF CONFIRM(txtMessage) THEN BEGIN
-                            CodeunitEWayBill.InitializeEwayBillGenerate(Rec."No.")
+                            //CodeunitEWayBill.InitializeEwayBillGenerate(Rec."No.")    //17783
                         END;
                     end;
                 }

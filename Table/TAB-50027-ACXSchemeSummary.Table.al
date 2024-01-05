@@ -180,10 +180,12 @@ table 50027 "ACX Scheme Summary"
         {
             DataClassification = ToBeClassified;
         }
-        field(41; Blocked; Enum CustomerBlockedFieldEnum)
+        field(41; Blocked; Option)
         {
             CalcFormula = Lookup(Customer.Blocked WHERE("No." = FIELD("Customer No.")));
             FieldClass = FlowField;
+	    OptionCaption = ' ,Ship,Invoice,All';
+            OptionMembers = " ",Ship,Invoice,All;
         }
     }
 

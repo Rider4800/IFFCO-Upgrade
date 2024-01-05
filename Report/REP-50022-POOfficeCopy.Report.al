@@ -1,7 +1,7 @@
 report 50022 "PO-OfficeCopy"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './POOfficeCopy.rdlc';
+    RDLCLayout = '.\ReportLayout\POOfficeCopy.rdl';
     PreviewMode = PrintLayout;
 
     dataset

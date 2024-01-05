@@ -2,7 +2,7 @@ report 50004 "Sales Tax Invoice"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\SalesTaxInvoice.rdl';
-    ApplicationArea = all;
+    ApplicationArea = All;
     UsageCategory = ReportsAndAnalysis;
     PreviewMode = PrintLayout;
 

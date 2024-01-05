@@ -1,6 +1,8 @@
 page 50213 "Item Balance-ACX1"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 27;
 
     layout

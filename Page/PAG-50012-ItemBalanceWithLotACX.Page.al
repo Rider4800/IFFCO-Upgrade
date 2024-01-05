@@ -1,6 +1,8 @@
 page 50012 "Item Balance With Lot-ACX"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 6505;
 
     layout

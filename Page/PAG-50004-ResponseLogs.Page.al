@@ -7,6 +7,8 @@ page 50004 "Response Logs"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50003;
 
     layout

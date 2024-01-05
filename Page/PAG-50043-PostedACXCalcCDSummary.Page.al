@@ -5,6 +5,8 @@ page 50043 "Posted ACX Calc. CD Summary"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50020;
 
     layout

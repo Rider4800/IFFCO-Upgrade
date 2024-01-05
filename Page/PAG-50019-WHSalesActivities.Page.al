@@ -2,6 +2,8 @@ page 50019 "WH Sales Activities"
 {
     Caption = 'Activities';
     PageType = CardPart;
+    UsageCategory = Tasks;
+    ApplicationArea = All;
     SourceTable = 9053;
 
     layout

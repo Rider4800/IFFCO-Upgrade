@@ -1,7 +1,7 @@
 report 50011 "Customer Ledger-NW"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './CustomerLedgerNW.rdlc';
+    RDLCLayout = '.\ReportLayout\CustomerLedgerNW.rdl';
 
     dataset
     {

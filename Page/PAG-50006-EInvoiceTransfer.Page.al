@@ -3,6 +3,8 @@ page 50006 "E-Invoice (Transfer)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50000;
     SourceTableView = WHERE("Transaction Type" = FILTER('Transfer Shipment'),
                             "E-Invoice IRN No" = FILTER(''));
@@ -162,8 +164,8 @@ page 50006 "E-Invoice (Transfer)"
                             TransferShipHdr.RESET;
                             TransferShipHdr.SETRANGE("No.", Rec."No.");
                             IF TransferShipHdr.FINDFIRST THEN BEGIN
-                                CodeunitEWayBillEInvoice.SetTransferShipHdr(TransferShipHdr);
-                                CodeunitEWayBillEInvoice.CreateJsonforTransferShip(TransferShipHdr."No.");
+                                // CodeunitEWayBillEInvoice.SetTransferShipHdr(TransferShipHdr);
+                                // CodeunitEWayBillEInvoice.CreateJsonforTransferShip(TransferShipHdr."No.");   //17783
                             END;
                         END;
 
@@ -190,7 +192,7 @@ page 50006 "E-Invoice (Transfer)"
                         txtMessagecancel := 'Do you want to Cancel the E-Invoice IRN No. ' + Rec."E-Invoice IRN No";
 
                         IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeCancelEinvoice(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeCancelEinvoice(Rec."No.", Rec."E-Invoice IRN No"); //17783
                         END;
 
                         CurrPage.UPDATE;
@@ -216,7 +218,7 @@ page 50006 "E-Invoice (Transfer)"
                         txtGetIRNNo := 'Do you want to Get E-Invoice IRN No. for Document No. ' + Rec."No.";
 
                         IF CONFIRM(txtGetIRNNo) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");    //17783
                         END;
 
                         CurrPage.UPDATE;
@@ -237,17 +239,17 @@ page 50006 "E-Invoice (Transfer)"
 
                         txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
 
-                        IF Rec."Distance (Km)" <> '' THEN BEGIN
-                            IF CONFIRM(txtMessageDistancepre) THEN
-                                CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
-                        END;
+                        // IF Rec."Distance (Km)" <> '' THEN BEGIN
+                        //     IF CONFIRM(txtMessageDistancepre) THEN
+                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
+                        // END; //17783
 
                         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                        IF Rec."Distance (Km)" = '' THEN BEGIN
-                            IF CONFIRM(txtMessageDistance) THEN
-                                CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
-                        END;
+                        // IF Rec."Distance (Km)" = '' THEN BEGIN
+                        //     IF CONFIRM(txtMessageDistance) THEN
+                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
+                        // END; //17783
 
                         CurrPage.UPDATE;
                         CLEAR(CodeunitEWayBillEInvoice);
@@ -277,7 +279,7 @@ page 50006 "E-Invoice (Transfer)"
                         txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
 
                         IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
                         END;
 
                         CurrPage.UPDATE;
@@ -298,7 +300,7 @@ page 50006 "E-Invoice (Transfer)"
                         txtMessagecancel := 'Do you want to Cancel the E-Way Bill No. ' + Rec."E-Way Bill No.";
 
                         IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            CodeunitEWayBill.InitializeCancelBillNo(Rec."No.", Rec."E-Way Bill No.")
+                            // CodeunitEWayBill.InitializeCancelBillNo(Rec."No.", Rec."E-Way Bill No.")  //17783
                         END;
                     end;
                 }

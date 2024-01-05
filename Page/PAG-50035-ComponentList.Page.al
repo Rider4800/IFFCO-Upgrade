@@ -5,6 +5,8 @@ page 50035 "Component List"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 5407;
 
     layout

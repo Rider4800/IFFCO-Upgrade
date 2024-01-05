@@ -85,7 +85,6 @@ pageextension 50044 pageextension50044 extends "Customer List"
         UserMgt: Codeunit 5700;
         recCustomer: Record 18;
 
-
     //Unsupported feature: Code Modification on "OnOpenPage".
 
     //trigger OnOpenPage()

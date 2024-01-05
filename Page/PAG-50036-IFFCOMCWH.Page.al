@@ -15,7 +15,7 @@ page 50036 "IFFCOMC-WH"
             {
                 Caption = 'Item Balance Report';
                 Image = "Report";
-                RunObject = Report 50024;
+                //RunObject = Report 50024; //commented because this report was not given in list by IFFCO to TEAM, so to publish this main app, deleted those all other reports, kept copy of them in F Drive, and we commented this.
             }
             group(NewGroup)
             {

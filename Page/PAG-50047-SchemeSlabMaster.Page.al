@@ -1,6 +1,8 @@
 page 50047 "Scheme Slab Master"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50025;
 
     layout

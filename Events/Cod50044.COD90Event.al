@@ -28,4 +28,15 @@ codeunit 50044 COD90Event
             GenJnlLine.VALIDATE("Shortcut Dimension 2 Code", recdim."STATE-FIN");
     END;//Acx_Anubha
 
+    [EventSubscriber(ObjectType::Page, 6510, 'OnBeforeLotNoAssistEdit', '', false, false)]
+    local procedure OnBeforeLotNoAssistEdit(var TrackingSpecification: Record "Tracking Specification"; xTrackingSpecification: Record "Tracking Specification"; CurrentSignFactor: Integer; var MaxQuantity: Decimal; UndefinedQtyArray: array[3] of Decimal; var IsHandled: Boolean; ForBinCode: Code[20]; Inbound: Boolean; CurrentRunMode: Enum "Item Tracking Run Mode"; ItemTrackingDataCollection: Codeunit "Item Tracking Data Collection"; CurrentSourceType: Integer; SourceQuantityArray: array[5] of Decimal; InsertIsBlocked: Boolean)
+    begin
+        //KM010721
+        IF TrackingSpecification."Source Type" = 37 THEN BEGIN
+            IF TrackingSpecification."Lot No." <> '' THEN
+                ERROR('Multi lot selection not allowed against same sales line');
+        END;
+        //KM010721
+    end;
+
 }

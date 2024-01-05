@@ -6,8 +6,6 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            //"server": "https://businesscentral.dynamics.com/d3a55687-ec5c-433b-9eaa-9d952c913e94/",
-            //"environmentName": "FICCI_CRM",
             "server": "https://businesscentral.dynamics.com/94e89aca-caf5-4d20-9e99-b82e1731a486/",
             "environmentName": "IFFCO_UAT",
             "schemaUpdateMode": "Synchronize",

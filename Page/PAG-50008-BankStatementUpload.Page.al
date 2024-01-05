@@ -2,6 +2,8 @@ page 50008 "Bank Statement Upload"
 {
     Editable = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50004;
 
     layout

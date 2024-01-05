@@ -1,6 +1,8 @@
 page 50046 "Scheme Items Detail"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50026;
 
     layout

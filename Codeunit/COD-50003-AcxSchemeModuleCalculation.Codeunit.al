@@ -34,13 +34,13 @@ codeunit 50003 "Acx Scheme Module Calculation"
                 recSHeader.RESET;
                 recSHeader.SETRANGE("No.", recSLine."Document No.");
                 IF recSHeader.FINDFIRST THEN BEGIN
-                    recSHeader.CALCFIELDS("Amount to Customer");
+                    //recSHeader.CALCFIELDS("Amount to Customer");  //17783
                     recSchemesummary."Customer Name" := recSHeader."Sell-to Customer Name";
-                    recSchemesummary."Invoice Amount" := recSHeader."Amount to Customer";
+                    //recSchemesummary."Invoice Amount" := recSHeader."Amount to Customer"; //17783
                     recSchemesummary."Invoice Due Date" := recSHeader."Due Date";
                 END;
-                recSchemesummary."Taxes & Charges Amount" := recSLine."Total GST Amount";
-                recSchemesummary."Invoice Amt. Exclud GST" := (recSLine."Line Amount" - recSLine."Total GST Amount");
+                //recSchemesummary."Taxes & Charges Amount" := recSLine."Total GST Amount"; //17783
+                //recSchemesummary."Invoice Amt. Exclud GST" := (recSLine."Line Amount" - recSLine."Total GST Amount"); //17783
 
                 recSchemesummary.INSERT;
             UNTIL recSLine.NEXT = 0;

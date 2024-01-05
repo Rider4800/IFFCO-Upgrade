@@ -6,6 +6,8 @@ page 50015 "Job Work Issue Register"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 5745;
     SourceTableView = WHERE("Transfer-to Code" = FILTER('JW*'));
 

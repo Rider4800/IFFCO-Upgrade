@@ -6,19 +6,19 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
         {
             field("Certificate of Analysis"; Rec."Certificate of Analysis")
             {
+                ApplicationArea = all;
             }
-        }
-        addafter("Shortcut Dimension 1 Code")
-        {
             field("Branch Accounting"; Rec."Branch Accounting")
             {
+                ApplicationArea = all;
             }
             field("Finance Branch A/c Code"; Rec."Finance Branch A/c Code")
             {
+                ApplicationArea = all;
             }
         }
-        moveafter("Certificate of Analysis"; "Location Code")
-        moveafter("Location Code"; "Shortcut Dimension 1 Code")
+        moveafter("Assigned User ID"; "Location Code")
+        //moveafter("Location Code"; "Shortcut Dimension 1 Code")
     }
     actions
     {

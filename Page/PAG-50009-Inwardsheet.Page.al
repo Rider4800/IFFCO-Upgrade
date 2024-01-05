@@ -2,6 +2,8 @@ page 50009 "Inward sheet"
 {
     Editable = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 123;
     SourceTableView = WHERE(Type = FILTER(Item));
 

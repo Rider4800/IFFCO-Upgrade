@@ -27,12 +27,15 @@ pageextension 50099 pageextension50099 extends "Lot No. Information List"
         {
             field("MFG Date"; Rec."MFG Date")
             {
+                ApplicationArea = All;
             }
             field("Expiration Date"; Rec."Expiration Date")
             {
+                ApplicationArea = All;
             }
             field("Batch MRP"; Rec."Batch MRP")
             {
+                ApplicationArea = All;
             }
         }
     }

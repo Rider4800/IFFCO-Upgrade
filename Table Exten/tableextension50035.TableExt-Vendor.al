@@ -67,34 +67,15 @@ tableextension 50035 tableextension50035 extends Vendor
         }
     }
 
+    trigger OnInsert()
+    begin
+        //ACXCP02+
+        "Creation DateTime" := CURRENTDATETIME;
+        //ACXCP02-
 
-    //Unsupported feature: Code Modification on "OnInsert".
-
-    //trigger OnInsert()
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    IF "No." = '' THEN BEGIN
-      PurchSetup.GET;
-      PurchSetup.TESTFIELD("Vendor Nos.");
-    #4..11
-    DimMgt.UpdateDefaultDim(
-      DATABASE::Vendor,"No.",
-      "Global Dimension 1 Code","Global Dimension 2 Code");
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..14
-    //ACXCP02+
-    "Creation DateTime":=CURRENTDATETIME;
-    //ACXCP02-
-
-    //ACXCP03+
-    "Created By":=USERID;
-    //ACXCP03-
-    */
-    //end;
+        //ACXCP03+
+        "Created By" := USERID;
+        //ACXCP03-
+    end;
 }
 

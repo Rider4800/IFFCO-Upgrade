@@ -3,6 +3,8 @@ page 50040 "Posted E-Way Bill (Transfer)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50000;
     SourceTableView = WHERE("Transaction Type" = FILTER('Transfer Shipment'),
                             "E-Way Bill No." = FILTER(<> ''));
@@ -201,8 +203,8 @@ page 50040 "Posted E-Way Bill (Transfer)"
                         IF CONFIRM(txtMessageVeh) THEN BEGIN
                             IF Rec."Vehicle No." = Rec."Old Vehicle No." THEN
                                 ERROR('Update new Vehicle No.')
-                            ELSE
-                                CodeunitEWayBillEInvoice.InitializeUpdateVehicleNoTransferShipment(Rec."No.", Rec."Vehicle No.");
+                            // ELSE
+                            //     CodeunitEWayBillEInvoice.InitializeUpdateVehicleNoTransferShipment(Rec."No.", Rec."Vehicle No.");    //17783
                         END;
                     end;
                 }
@@ -221,7 +223,7 @@ page 50040 "Posted E-Way Bill (Transfer)"
                         txtMessagecancel := 'Do you want to Cancel the E-Way Bill No. ' + Rec."E-Way Bill No.";
 
                         IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeCancelBillNoTransferShipment(Rec."No.", Rec."E-Way Bill No.")
+                            //CodeunitEWayBillEInvoice.InitializeCancelBillNoTransferShipment(Rec."No.", Rec."E-Way Bill No.")  //17783
                         END;
                     end;
                 }
@@ -249,7 +251,7 @@ page 50040 "Posted E-Way Bill (Transfer)"
                         txtMessage := 'Do you want to generate E-Way Bill No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Transfer ' + FORMAT(Rec."Amount to Transfer");
 
                         IF CONFIRM(txtMessage) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeEwayBillGenerateTransferShipment(Rec."No.")
+                            //CodeunitEWayBillEInvoice.InitializeEwayBillGenerateTransferShipment(Rec."No.")    //17783
                         END;
                     end;
                 }

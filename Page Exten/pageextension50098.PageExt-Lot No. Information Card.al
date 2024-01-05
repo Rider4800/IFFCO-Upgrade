@@ -26,12 +26,15 @@ pageextension 50098 pageextension50098 extends "Lot No. Information Card"
         {
             field("Expiration Date"; Rec."Expiration Date")
             {
+                ApplicationArea = All;
             }
             field("MFG Date"; Rec."MFG Date")
             {
+                ApplicationArea = All;
             }
             field("Batch MRP"; Rec."Batch MRP")
             {
+                ApplicationArea = All;
             }
         }
     }

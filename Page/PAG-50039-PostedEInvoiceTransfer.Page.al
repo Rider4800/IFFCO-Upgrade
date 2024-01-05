@@ -3,6 +3,8 @@ page 50039 "Posted E-Invoice (Transfer)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50000;
     SourceTableView = WHERE("Transaction Type" = FILTER('Transfer Shipment'),
                             "E-Way Bill No." = FILTER(<> ''));

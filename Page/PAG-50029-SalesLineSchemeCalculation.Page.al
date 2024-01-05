@@ -4,6 +4,8 @@ page 50029 "Sales Line Scheme Calculation"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     ShowFilter = false;
     SourceTable = 50016;
 

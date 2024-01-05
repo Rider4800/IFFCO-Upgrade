@@ -2,6 +2,8 @@ page 50021 "Scheme Charges"
 {
     PageType = List;
     SourceTable = 50011;
+    UsageCategory = Lists;
+    ApplicationArea = All;
 
     layout
     {

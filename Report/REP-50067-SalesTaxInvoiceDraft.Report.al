@@ -1,7 +1,7 @@
 report 50067 "Sales Tax Invoice Draft"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './SalesTaxInvoiceDraft.rdlc';
+    RDLCLayout = '.\ReportLayout\SalesTaxInvoiceDraft.rdl';
     PreviewMode = PrintLayout;
 
     dataset

@@ -1,6 +1,8 @@
 page 50026 "Employee Geography Matrix"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50013;
 
     layout

@@ -214,13 +214,21 @@ tableextension 50031 tableextension50031 extends Customer
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
+            var
+                Text001: TextConst ENU = 'User Setup do not exist for User %1';
             begin
-                cdUser := (USERID);
-                recUserSetup.RESET();
-                recUserSetup.SETRANGE("User ID", cdUser);
-                IF recUserSetup.FINDFIRST AND (recUserSetup."Excludes Credit Limit Allow" = FALSE) THEN
-                    ERROR('User have not permission to edit Excludes Credit Limit field...');
-                TESTFIELD("One Time Credit Pass Allow", FALSE);
+                // cdUser := (USERID);
+                // recUserSetup.RESET();
+                // recUserSetup.SETRANGE("User ID", cdUser);
+                // IF recUserSetup.FINDFIRST AND (recUserSetup."Excludes Credit Limit Allow" = FALSE) THEN
+                //     ERROR('User have not permission to edit Excludes Credit Limit field...');
+                // TESTFIELD("One Time Credit Pass Allow", FALSE);
+                if not recUserSetup.Get(USERID) then
+                    Error(Text001, USERID)
+                else begin
+                    if not recUserSetup."Excludes Credit Limit Allow" then
+                        ERROR('User have not permission to edit Excludes Credit Limit field...');
+                end;
             end;
         }
         field(50034; "One Time Credit Pass Allow"; Boolean)
@@ -228,13 +236,21 @@ tableextension 50031 tableextension50031 extends Customer
             DataClassification = ToBeClassified;
 
             trigger OnValidate()
+            var
+                Text002: TextConst ENU = 'User Setup do not exist for User %1';
             begin
-                cdUser := (USERID);
-                recUserSetup.RESET();
-                recUserSetup.SETRANGE("User ID", cdUser);
-                IF recUserSetup.FINDFIRST AND (recUserSetup."One Time Credit Pass Allow" = FALSE) THEN
-                    ERROR('User have not permission to edit One Time Credit Pass field...');
-                TESTFIELD("Excludes Credit Limit Allow", FALSE);
+                // cdUser := (USERID);
+                // recUserSetup.RESET();
+                // recUserSetup.SETRANGE("User ID", cdUser);
+                // IF recUserSetup.FINDFIRST AND (recUserSetup."One Time Credit Pass Allow" = FALSE) THEN
+                //     ERROR('User have not permission to edit One Time Credit Pass field...');
+                // TESTFIELD("Excludes Credit Limit Allow", FALSE);
+                if not recUserSetup.Get(USERID) then
+                    Error(Text002, USERID)
+                else begin
+                    if not recUserSetup."One Time Credit Pass Allow" then
+                        ERROR('User have not permission to edit One Time Credit Pass field...');
+                end;
             end;
         }
         field(50035; "Creation DateTime"; DateTime)
@@ -265,7 +281,7 @@ tableextension 50031 tableextension50031 extends Customer
         //<-E-Bazaar Customization
     }
 
-    trigger OnAfterInsert()
+    trigger OnInsert()
     begin
         //ACX-RK 11032021 Begin
         Rec.Blocked := Blocked::All;

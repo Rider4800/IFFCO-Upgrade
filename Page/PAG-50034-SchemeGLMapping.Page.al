@@ -1,6 +1,8 @@
 page 50034 "Scheme GL Mapping"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50021;
 
     layout

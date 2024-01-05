@@ -1,6 +1,8 @@
 page 50022 "Scheme Sales Line Discount"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50012;
 
     layout

@@ -13,20 +13,20 @@ tableextension 50049 tableextension50049 extends "Sales Header"
                 UddateSalesHierarchy//Sales Hierarchy
             end;
         }
-        modify("Bill-to Customer No.")
-        {
-            trigger OnAfterValidate()
-            var
-                CustRecTab: Record Customer;
-            begin
-                //9509 Start
-                CustRecTab.RESET;
-                IF CustRecTab.GET(Rec."Bill-to Customer No.") THEN BEGIN
-                    Rec."Campaign No." := CustRecTab."Preferred Campaign No.";
-                    Rec.MODIFY;
-                END;
-            end;
-        }
+        // modify("Bill-to Customer No.")
+        // {
+        //     trigger OnAfterValidate()
+        //     var
+        //         CustRecTab: Record Customer;
+        //     begin
+        //         //9509 Start
+        //         CustRecTab.RESET;
+        //         IF CustRecTab.GET(Rec."Bill-to Customer No.") THEN BEGIN
+        //             Rec."Campaign No." := CustRecTab."Preferred Campaign No.";
+        //             Rec.MODIFY;
+        //         END;
+        //     end;
+        // }
         modify("Campaign No.")
         {
             TableRelation = Campaign WHERE("Status Code" = FILTER(<> 'CLOSE'));
@@ -237,13 +237,13 @@ tableextension 50049 tableextension50049 extends "Sales Header"
             TableRelation = "Salesperson/Purchaser".Code WHERE("Designation Code" = CONST('HOD'));
         }
         //12887----->
-        field(50118; "Run Statistics"; Boolean)
+        field(50120; "Run Statistics"; Boolean)
         {
             Description = '12887 26th oct 23 added to run statistics page mandatory';
         }
         //<--12887
         //->E-Bazaar Customization
-        field(50119; "JV Posted"; Boolean)
+        field(50121; "JV Posted"; Boolean)
         {
             DataClassification = ToBeClassified;
         }

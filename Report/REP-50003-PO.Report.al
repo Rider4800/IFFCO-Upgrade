@@ -1,7 +1,7 @@
 report 50003 PO
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './PO.rdlc';
+    RDLCLayout = '.\ReportLayout\PO.rdl';
     PreviewMode = PrintLayout;
 
     dataset

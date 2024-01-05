@@ -1,7 +1,7 @@
 report 50015 "Branch transfer"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Branchtransfer.rdlc';
+    RDLCLayout = '.\ReportLayout\Branchtransfer.rdl';
     PreviewMode = PrintLayout;
 
     dataset

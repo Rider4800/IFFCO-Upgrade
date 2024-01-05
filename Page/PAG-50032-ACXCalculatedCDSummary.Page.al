@@ -4,6 +4,8 @@ page 50032 "ACX Calculated CD Summary"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = "ACX Calculated CD Summary";
 
     layout
@@ -117,7 +119,7 @@ page 50032 "ACX Calculated CD Summary"
             {
                 Image = Post;
                 Promoted = true;
-                RunObject = Report 50023;
+                //RunObject = Report 50023; //commented because this report was not given in list by IFFCO to TEAM, so to publish this main app, deleted those all other reports, kept copy of them in F Drive, and we commented this.
             }
             action(UpdateCDSummaryLine)
             {

@@ -1,7 +1,7 @@
 report 50012 "Vendor Ledger-NW"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './VendorLedgerNW.rdlc';
+    RDLCLayout = '.\ReportLayout\VendorLedgerNW.rdl';
 
     dataset
     {

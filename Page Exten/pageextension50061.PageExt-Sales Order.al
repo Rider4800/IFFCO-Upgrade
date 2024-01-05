@@ -192,12 +192,15 @@ pageextension 50061 pageextension50061 extends "Sales Order"
             }
         }
         //f7 mandatory<---12887
-        addbefore(PostAndNew)
+        addafter(Release)
         {
             action(PostNew)
             {
-                ApplicationArea = Basic, Suite;
-                Caption = 'P&ost';
+                ApplicationArea = All;
+                Caption = 'Post';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 Ellipsis = true;
                 Image = PostOrder;
                 ShortCutKey = 'F9';
@@ -423,7 +426,7 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                         END;
                     END;
                     //COMMIT;
-                    SLEEP(1000);
+                    //SLEEP(1000);
 
                     //ACXVG
                     IF NOT CONFIRM('Do You Want To Preview Before Post') THEN BEGIN
@@ -489,6 +492,7 @@ pageextension 50061 pageextension50061 extends "Sales Order"
         {
             action("Calculate Scheme")
             {
+                ApplicationArea = all;
                 Image = CalculateDiscount;
                 Promoted = true;
 

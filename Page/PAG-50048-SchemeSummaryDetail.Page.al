@@ -6,6 +6,8 @@ page 50048 "Scheme Summary Detail"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50027;
     SourceTableView = WHERE("Credit Note No." = CONST(''));
 

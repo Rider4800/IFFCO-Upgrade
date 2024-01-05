@@ -1,6 +1,8 @@
 page 50011 "Customer Balance-ACX"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 18;
 
     layout

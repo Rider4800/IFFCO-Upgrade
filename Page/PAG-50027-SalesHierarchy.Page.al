@@ -1,6 +1,8 @@
 page 50027 "Sales Hierarchy"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50014;
 
     layout

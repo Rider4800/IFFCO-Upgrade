@@ -102,13 +102,16 @@ pageextension 50109 pageextension50109 extends "Sales Order List"
         {
             Visible = false;
         }
-        addbefore(PostAndSend)
+        addafter(Release)
         {
             action(PostNew)
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'P&ost';
                 Ellipsis = true;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 Image = PostOrder;
                 ShortCutKey = 'F9';
                 ToolTip = 'Finalize the document or journal by posting the amounts and quantities to the related accounts in your company books.';

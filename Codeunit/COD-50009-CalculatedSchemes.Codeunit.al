@@ -136,11 +136,11 @@ codeunit 50009 CalculatedSchemes
                 IF CalScheme.FINDFIRST THEN BEGIN
                     SIL.RESET();
                     SIL.SETRANGE("Document No.", SIH."No.");
-                    SIL.SETRANGE("Product Group Code", SchemeItem.Code);
+                    //SIL.SETRANGE("Product Group Code", SchemeItem.Code);  //17783
                     IF SIL.FINDFIRST THEN BEGIN
                         REPEAT
                             CalScheme."Invoice Amt. Exclud GST" += SIL."Line Amount";
-                            CalScheme."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";
+                            //CalScheme."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";    //17783
                             CalScheme.MODIFY(TRUE);
                         UNTIL SIL.NEXT = 0;
                     END;
@@ -170,16 +170,16 @@ codeunit 50009 CalculatedSchemes
                 REPEAT
                     recSIL.RESET();
                     IF SchemeItem.Type = SchemeItem.Type::"Product Group" THEN
-                        recSIL.SETRANGE("Product Group Code", SchemeItem.Code);
+                        //recSIL.SETRANGE("Product Group Code", SchemeItem.Code);   //17783
                     IF SchemeItem.Type = SchemeItem.Type::Item THEN
-                        recSIL.SETRANGE("No.", SchemeItem.Code);
+                            recSIL.SETRANGE("No.", SchemeItem.Code);
                     recSIL.SETRANGE("Document No.", InvNo);
                     IF recSIL.FINDFIRST THEN BEGIN
                         REPEAT
                             IF AmtCalType = 1 THEN
                                 ExcuAmt += recSIL."Line Amount";
-                            IF AmtCalType = 2 THEN
-                                ExcuAmt += recSIL."Total GST Amount";
+                        // IF AmtCalType = 2 THEN
+                        //     ExcuAmt += recSIL."Total GST Amount";    //17783
                         UNTIL recSIL.NEXT = 0;
                     END;
                 UNTIL SchemeItem.NEXT = 0;
@@ -197,16 +197,16 @@ codeunit 50009 CalculatedSchemes
                 REPEAT
                     recSCL.RESET();
                     IF SchemeItem.Type = SchemeItem.Type::"Product Group" THEN
-                        recSCL.SETRANGE("Product Group Code", SchemeItem.Code);
+                        //recSCL.SETRANGE("Product Group Code", SchemeItem.Code);   //17783
                     IF SchemeItem.Type = SchemeItem.Type::Item THEN
-                        recSCL.SETRANGE("No.", SchemeItem.Code);
+                            recSCL.SETRANGE("No.", SchemeItem.Code);
                     recSCL.SETRANGE("Document No.", InvNo);
                     IF recSCL.FINDFIRST THEN BEGIN
                         REPEAT
                             IF AmtCalType = 1 THEN
                                 ExcuAmt += recSCL."Line Amount";
-                            IF AmtCalType = 2 THEN
-                                ExcuAmt += recSCL."Total GST Amount";
+                        // IF AmtCalType = 2 THEN
+                        //     ExcuAmt += recSCL."Total GST Amount";    //17783
                         UNTIL recSCL.NEXT = 0;
                     END;
                 UNTIL SchemeItem.NEXT = 0;
@@ -240,7 +240,7 @@ codeunit 50009 CalculatedSchemes
                         SIL.RESET();
                         SIL.SETRANGE("Document No.", SIH."No.");
                         // IF SchemeItem.Type = SchemeItem.Type::"Product Group" THEN
-                        SIL.SETRANGE("Product Group Code", SchemeItem.Code);
+                        //SIL.SETRANGE("Product Group Code", SchemeItem.Code);  //17783
                         // IF SchemeItem.Type = SchemeItem.Type::Item THEN
                         // SIL.SETRANGE("No.",SchemeItem.Code);
                         IF SIL.FINDFIRST THEN BEGIN
@@ -424,9 +424,9 @@ codeunit 50009 CalculatedSchemes
                         SIL.SETRANGE(Type, SIL.Type::Item);
                         IF SIL.FINDFIRST THEN BEGIN
                             REPEAT
-                                InsCalCD."Invoice Amount" += SIL."Amount To Customer";
+                                //InsCalCD."Invoice Amount" += SIL."Amount To Customer";    //17783
                                 InsCalCD."Invoice Amt. Exclud GST" += SIL."Line Amount";
-                                InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";
+                                //InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS"; //17783
                                 InsCalCD.MODIFY(TRUE);
                             UNTIL SIL.NEXT = 0;
                         END;
@@ -585,9 +585,9 @@ codeunit 50009 CalculatedSchemes
                         SIL.SETRANGE(Type, SIL.Type::Item);
                         IF SIL.FINDFIRST THEN BEGIN
                             REPEAT
-                                InsCalCD."Invoice Amount" += SIL."Amount To Customer";
+                                //InsCalCD."Invoice Amount" += SIL."Amount To Customer";    //17783
                                 InsCalCD."Invoice Amt. Exclud GST" += SIL."Line Amount";
-                                InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS";
+                                //InsCalCD."Taxes & Charges Amount" += SIL."Total GST Amount" + SIL."Total TDS/TCS Incl. SHE CESS"; //17783
                                 InsCalCD.MODIFY(TRUE);
                             UNTIL SIL.NEXT = 0;
                         END;

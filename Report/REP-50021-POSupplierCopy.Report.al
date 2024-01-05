@@ -1,7 +1,7 @@
 report 50021 "PO-SupplierCopy"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './POSupplierCopy.rdlc';
+    RDLCLayout = '.\ReportLayout\POSupplierCopy.rdl';
     PreviewMode = PrintLayout;
 
     dataset

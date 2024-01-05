@@ -2,6 +2,8 @@ page 50028 "Posted Sales Hierarchy Details"
 {
     Editable = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50002;
 
     layout

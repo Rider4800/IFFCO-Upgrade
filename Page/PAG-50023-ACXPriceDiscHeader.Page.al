@@ -1,6 +1,8 @@
 page 50023 "ACX Price Disc. Header"
 {
     PageType = Document;
+    UsageCategory = Documents;
+    ApplicationArea = All;
     RefreshOnActivate = true;
     SourceTable = 50007;
 

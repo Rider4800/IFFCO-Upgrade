@@ -1,7 +1,7 @@
 report 50020 "Consignment Branch Transfer"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ConsignmentBranchTransfer.rdlc';
+    RDLCLayout = '.\ReportLayout\ConsignmentBranchTransfer.rdl';
     PreviewMode = PrintLayout;
 
     dataset

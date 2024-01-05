@@ -1,7 +1,7 @@
 report 50055 "Cust Collection Report New"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './CustCollectionReportNew.rdlc';
+    RDLCLayout = '.\ReportLayout\CustCollectionReportNew.rdl';
 
     dataset
     {

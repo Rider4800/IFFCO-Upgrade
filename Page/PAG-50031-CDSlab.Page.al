@@ -1,6 +1,8 @@
 page 50031 "CD Slab"
 {
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     SourceTable = 50019;
 
     layout

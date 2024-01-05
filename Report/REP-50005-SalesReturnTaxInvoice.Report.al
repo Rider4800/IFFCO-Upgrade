@@ -2,7 +2,7 @@ report 50005 "Sales Return Tax Invoice"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\SalesReturnTaxInvoice.rdl';
-    ApplicationArea = all;
+    ApplicationArea = All;
     UsageCategory = ReportsAndAnalysis;
     PreviewMode = PrintLayout;
 

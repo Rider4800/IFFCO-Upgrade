@@ -3,6 +3,8 @@ page 50042 "Posted E-Invoice (SalesReturn)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     Permissions = TableData 112 = rm;
     SourceTable = 50000;
     SourceTableView = WHERE("GST Customer Type" = FILTER(Registered),

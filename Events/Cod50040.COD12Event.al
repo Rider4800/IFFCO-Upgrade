@@ -556,11 +556,19 @@ codeunit 50040 COD12Event
         Codeunit12Glb: Codeunit 12;
         CustPostingGr: Record "Customer Posting Group";
         GLEntry: Record "G/L Entry";
+        SIHRec: Record "Sales Invoice Header";
+        SCrMHRec: Record "Sales Cr.Memo Header";
     begin
         Cu50041.GetDataPostDtldVendLedgEntries(TotalAmountLCY, TotalAmountAddCurr, GenJnlLine);
         Cu50041.GetData(Codeunit12Glb);
         Cu50041.GetFinanceDimCode(strFinanceDimensionCode);
-        CustPostingGr.GET(GenJnlLine."Posting Group");
+        //->17783
+        if SIHRec.get(GlobalGLEntry."Document No.") then
+            CustPostingGr.Get(SIHRec."Customer Posting Group");
+        if SCrMHRec.get(GlobalGLEntry."Document No.") then
+            CustPostingGr.Get(SCrMHRec."Customer Posting Group");
+        //<-17783
+        //CustPostingGr.GET(GenJnlLine."Posting Group"); 
         //ACXZAK01-BEGIN
         IF GenJnlLine."Source Code" <> 'TRANSFER' THEN BEGIN
             IF (strFinanceDimensionCode <> GenJnlLine."Finance Branch A/c Code") AND
@@ -653,8 +661,16 @@ codeunit 50040 COD12Event
         VendPostingGr: Record "Vendor Posting Group";
         GLEntry: Record "G/L Entry";
         recdim: Record "Dimension Value";
+        PIHRec: Record "Purch. Inv. Header";
+        PCrMHRec: Record "Purch. Cr. Memo Hdr.";
     begin
-        VendPostingGr.get(GenJnlLine."Posting Group");
+        //->17783
+        if PIHRec.get(GlobalGLEntry."Document No.") then
+            VendPostingGr.Get(PIHRec."Vendor Posting Group");
+        if PCrMHRec.get(GlobalGLEntry."Document No.") then
+            VendPostingGr.Get(PCrMHRec."Vendor Posting Group");
+        //<-17783
+        //VendPostingGr.get(GenJnlLine."Posting Group");
         Cu50041.GetDataPostDtldVendLedgEntries(TotalAmountLCY, TotalAmountAddCurr, GenJnlLine);
         Cu50041.GetData(Codeunit12Glb);
         Cu50041.GetFinanceDimCode(strFinanceDimensionCode);

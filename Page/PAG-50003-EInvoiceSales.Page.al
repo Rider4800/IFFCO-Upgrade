@@ -3,6 +3,8 @@ page 50003 "E-Invoice (Sales)"
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
+    UsageCategory = Lists;
+    ApplicationArea = All;
     Permissions = TableData 112 = rm;
     SourceTable = 50000;
     SourceTableView = WHERE("GST Customer Type" = FILTER(Registered),
@@ -226,8 +228,8 @@ page 50003 "E-Invoice (Sales)"
                             SalesInvHeader.RESET;
                             SalesInvHeader.SETRANGE("No.", Rec."No.");
                             IF SalesInvHeader.FINDFIRST THEN BEGIN
-                                CodeunitEWayBillEInvoice.SetSalesInvHeader(SalesInvHeader);
-                                CodeunitEWayBillEInvoice.CreateJsonforSalesInv(SalesInvHeader."No.");
+                                // CodeunitEWayBillEInvoice.SetSalesInvHeader(SalesInvHeader);
+                                // CodeunitEWayBillEInvoice.CreateJsonforSalesInv(SalesInvHeader."No.");    //17783
                                 ;
 
                             END;
@@ -256,7 +258,7 @@ page 50003 "E-Invoice (Sales)"
                         txtMessagecancel := 'Do you want to Cancel the E-Invoice IRN No. ' + Rec."E-Invoice IRN No";
 
                         IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeCancelEinvoice(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeCancelEinvoice(Rec."No.", Rec."E-Invoice IRN No"); //17783
                         END;
 
                         CurrPage.UPDATE;
@@ -281,7 +283,7 @@ page 50003 "E-Invoice (Sales)"
                         txtGetIRNNo := 'Do you want to Get E-Invoice IRN No. for Document No. ' + Rec."No.";
 
                         IF CONFIRM(txtGetIRNNo) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");    //17783
                         END;
 
                         CurrPage.UPDATE;
@@ -312,17 +314,17 @@ page 50003 "E-Invoice (Sales)"
 
                         txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
 
-                        IF Rec."Distance (Km)" <> '' THEN BEGIN
-                            IF CONFIRM(txtMessageDistancepre) THEN
-                                CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                        END;
+                        // IF Rec."Distance (Km)" <> '' THEN BEGIN
+                        //     IF CONFIRM(txtMessageDistancepre) THEN
+                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
+                        // END; //17783
 
                         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                        IF Rec."Distance (Km)" = '' THEN BEGIN
-                            IF CONFIRM(txtMessageDistance) THEN
-                                CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                        END;
+                        // IF Rec."Distance (Km)" = '' THEN BEGIN
+                        //     IF CONFIRM(txtMessageDistance) THEN
+                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
+                        // END; //17783
 
                         CurrPage.UPDATE;
                         CLEAR(CodeunitEWayBillEInvoice);
@@ -352,7 +354,7 @@ page 50003 "E-Invoice (Sales)"
                         txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
 
                         IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
-                            CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");
+                            //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
                         END;
 
                         CurrPage.UPDATE;

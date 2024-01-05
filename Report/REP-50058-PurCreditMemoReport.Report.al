@@ -1,7 +1,7 @@
 report 50058 PurCreditMemoReport
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './PurCreditMemoReport.rdlc';
+    RDLCLayout = '.\ReportLayout\PurCreditMemoReport.rdl';
     PreviewMode = PrintLayout;
 
     dataset
@@ -407,7 +407,7 @@ report 50058 PurCreditMemoReport
                 END;
 
                 RecCheck.InitTextVariable;
-                RecCheck.FormatNoText(Numbertxt, (Codeunit50200.AmttoVendorPurchCrMemoHdr("Purch. Cr. Memo Hdr.")  + decRoundOff), "Purch. Cr. Memo Hdr."."Currency Code");
+                RecCheck.FormatNoText(Numbertxt, (Codeunit50200.AmttoVendorPurchCrMemoHdr("Purch. Cr. Memo Hdr.") + decRoundOff), "Purch. Cr. Memo Hdr."."Currency Code");
                 //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
 
 

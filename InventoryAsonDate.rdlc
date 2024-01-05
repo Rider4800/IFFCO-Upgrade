@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="ItemNo">
+          <DataField>ItemNo</DataField>
+        </Field>
+        <Field Name="LocationCode">
+          <DataField>LocationCode</DataField>
+        </Field>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
+        </Field>
+        <Field Name="Quantity">
+          <DataField>Quantity</DataField>
+        </Field>
+        <Field Name="QuantityFormat">
+          <DataField>QuantityFormat</DataField>
+        </Field>
+        <Field Name="lotNo">
+          <DataField>lotNo</DataField>
+        </Field>
+        <Field Name="CostAmt">
+          <DataField>CostAmt</DataField>
+        </Field>
+        <Field Name="CostAmtFormat">
+          <DataField>CostAmtFormat</DataField>
+        </Field>
+        <Field Name="RemQty">
+          <DataField>RemQty</DataField>
+        </Field>
+        <Field Name="RemQtyFormat">
+          <DataField>RemQtyFormat</DataField>
+        </Field>
+        <Field Name="StateCode">
+          <DataField>StateCode</DataField>
+        </Field>
+        <Field Name="LocationName">
+          <DataField>LocationName</DataField>
+        </Field>
+        <Field Name="MFGDate">
+          <DataField>MFGDate</DataField>
+        </Field>
+        <Field Name="ExpDate">
+          <DataField>ExpDate</DataField>
+        </Field>
+        <Field Name="AlterConv">
+          <DataField>AlterConv</DataField>
+        </Field>
+        <Field Name="AlterConvFormat">
+          <DataField>AlterConvFormat</DataField>
+        </Field>
+        <Field Name="InvenPostGroup">
+          <DataField>InvenPostGroup</DataField>
+        </Field>
+        <Field Name="TextItemName">
+          <DataField>TextItemName</DataField>
+        </Field>
+        <Field Name="UOM">
+          <DataField>UOM</DataField>
+        </Field>
+        <Field Name="AlterUOM">
+          <DataField>AlterUOM</DataField>
+        </Field>
+        <Field Name="NextExpQty">
+          <DataField>NextExpQty</DataField>
+        </Field>
+        <Field Name="NextExpQtyFormat">
+          <DataField>NextExpQtyFormat</DataField>
+        </Field>
+        <Field Name="ExpStock">
+          <DataField>ExpStock</DataField>
+        </Field>
+        <Field Name="ExpStockFormat">
+          <DataField>ExpStockFormat</DataField>
+        </Field>
+        <Field Name="ExpDays">
+          <DataField>ExpDays</DataField>
+        </Field>
+        <Field Name="NextDate">
+          <DataField>NextDate</DataField>
+        </Field>
+        <Field Name="RemCost">
+          <DataField>RemCost</DataField>
+        </Field>
+        <Field Name="RemCostFormat">
+          <DataField>RemCostFormat</DataField>
+        </Field>
+        <Field Name="MRPPrice">
+          <DataField>MRPPrice</DataField>
+        </Field>
+        <Field Name="MRPPriceFormat">
+          <DataField>MRPPriceFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

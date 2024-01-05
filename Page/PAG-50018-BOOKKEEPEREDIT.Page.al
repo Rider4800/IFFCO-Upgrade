@@ -2,6 +2,7 @@ page 50018 "BOOK KEEPER EDIT"
 {
     Caption = 'Role Center';
     PageType = RoleCenter;
+    ApplicationArea = All;
 
     layout
     {
@@ -88,7 +89,7 @@ page 50018 "BOOK KEEPER EDIT"
                 //PromotedCategory = "Report";
                 //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedIsBig = true;
-                RunObject = Report 50024;
+                //RunObject = Report 50024; //commented because this report was not given in list by IFFCO to TEAM, so to publish this main app, deleted those all other reports, kept copy of them in F Drive, and we commented this.
             }
             action("<Customer Detail Ledger>")
             {
@@ -197,7 +198,7 @@ page 50018 "BOOK KEEPER EDIT"
                     //PromotedCategory = Category6;
                     //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
                     //PromotedIsBig = true;
-                    RunObject = Report 50018;
+                    //RunObject = Report 50018; //commented because this report was not given in list by IFFCO to TEAM, so to publish this main app, deleted those all other reports, kept copy of them in F Drive, and we commented this.
                 }
                 action("<Customer Ledger>")
                 {
