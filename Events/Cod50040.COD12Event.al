@@ -564,9 +564,12 @@ codeunit 50040 COD12Event
         Cu50041.GetFinanceDimCode(strFinanceDimensionCode);
         //->17783
         if SIHRec.get(GlobalGLEntry."Document No.") then
-            CustPostingGr.Get(SIHRec."Customer Posting Group");
-        if SCrMHRec.get(GlobalGLEntry."Document No.") then
-            CustPostingGr.Get(SCrMHRec."Customer Posting Group");
+            CustPostingGr.Get(SIHRec."Customer Posting Group")
+        else begin
+            if SCrMHRec.get(GlobalGLEntry."Document No.") then
+                CustPostingGr.Get(SCrMHRec."Customer Posting Group");
+        end;
+
         //<-17783
         //CustPostingGr.GET(GenJnlLine."Posting Group"); 
         //ACXZAK01-BEGIN
@@ -666,9 +669,12 @@ codeunit 50040 COD12Event
     begin
         //->17783
         if PIHRec.get(GlobalGLEntry."Document No.") then
-            VendPostingGr.Get(PIHRec."Vendor Posting Group");
-        if PCrMHRec.get(GlobalGLEntry."Document No.") then
-            VendPostingGr.Get(PCrMHRec."Vendor Posting Group");
+            VendPostingGr.Get(PIHRec."Vendor Posting Group")
+        else begin
+            if PCrMHRec.get(GlobalGLEntry."Document No.") then
+                VendPostingGr.Get(PCrMHRec."Vendor Posting Group");
+        end;
+
         //<-17783
         //VendPostingGr.get(GenJnlLine."Posting Group");
         Cu50041.GetDataPostDtldVendLedgEntries(TotalAmountLCY, TotalAmountAddCurr, GenJnlLine);
