@@ -3,6 +3,8 @@ report 50067 "Sales Tax Invoice Draft"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\SalesTaxInvoiceDraft.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

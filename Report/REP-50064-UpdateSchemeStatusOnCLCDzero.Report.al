@@ -2,6 +2,8 @@ report 50064 "UpdateSchemeStatusOnCL-CD zero"
 {
     Permissions = TableData 21 = rm;
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

@@ -11,9 +11,11 @@ pageextension 50092 pageextension50092 extends "Posted Transfer Shipment"
         {
             field("Transfer-from Bin Code"; Rec."Transfer-from Bin Code")
             {
+                ApplicationArea = All;
             }
             field("Transfer-To Bin Code"; Rec."Transfer-To Bin Code")
             {
+                ApplicationArea = All;
             }
         }
     }
@@ -23,6 +25,7 @@ pageextension 50092 pageextension50092 extends "Posted Transfer Shipment"
         {
             action("Material Out")
             {
+                ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = "Report";
                 Visible = true;
@@ -38,6 +41,7 @@ pageextension 50092 pageextension50092 extends "Posted Transfer Shipment"
             }
             action("Branch Transfer")
             {
+                ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = "Report";
 
@@ -52,6 +56,7 @@ pageextension 50092 pageextension50092 extends "Posted Transfer Shipment"
             }
             action("Consignment Branch Transfer")
             {
+                ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = "Report";
 

@@ -5,6 +5,7 @@ report 50051 "GSTR-3B NewTest"
     Caption = 'GSTR-3B New Test';
     ApplicationArea = Basic, Suite;
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
 
     dataset
     {

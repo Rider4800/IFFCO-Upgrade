@@ -248,6 +248,16 @@ tableextension 50049 tableextension50049 extends "Sales Header"
             DataClassification = ToBeClassified;
         }
         //<-E-Bazaar Customization
+        field(50124; "Campaign No. New"; Code[20])
+        {
+            DataClassification = ToBeClassified;
+            Caption = 'Campaign No.';
+            TableRelation = Campaign WHERE("Status Code" = FILTER(<> 'CLOSE'));
+            trigger OnValidate()
+            begin
+                Rec.Validate("Campaign No.", "Campaign No. New");
+            end;
+        }
     }
     trigger OnBeforeInsert()
     begin

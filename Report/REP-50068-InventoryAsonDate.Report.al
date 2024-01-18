@@ -1,6 +1,8 @@
 report 50068 "Inventory As on Date"
 {
     DefaultLayout = RDLC;
+    ApplicationArea = All;
+    UsageCategory = ReportsAndAnalysis;
     RDLCLayout = '.\ReportLayout\InventoryAsonDate.rdl';
 
     dataset

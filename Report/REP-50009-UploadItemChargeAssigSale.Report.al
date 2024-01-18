@@ -1,6 +1,8 @@
 report 50009 "Upload Item Charge Assig. Sale"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

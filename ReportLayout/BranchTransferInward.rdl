@@ -3950,6 +3950,9 @@ uo+8DdzCLhQ3xyk+3KTnefrF0+vXr+0dwbv/OfHO4UbA7x2LGuPlnKl/dpvZZ06K9BTI16fwSDoUxhkY
         <Field Name="CIN">
           <DataField>CIN</DataField>
         </Field>
+        <Field Name="CompTIN">
+          <DataField>CompTIN</DataField>
+        </Field>
         <Field Name="Company_Picture">
           <DataField>Company_Picture</DataField>
         </Field>

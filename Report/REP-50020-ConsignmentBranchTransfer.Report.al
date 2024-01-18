@@ -3,6 +3,8 @@ report 50020 "Consignment Branch Transfer"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\ConsignmentBranchTransfer.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -255,9 +257,9 @@ report 50020 "Consignment Branch Transfer"
                     column(UnitPrice; "Transfer Shipment Line"."Unit Price")
                     {
                     }
-                    // column(MrpPrice; "Transfer Shipment Line"."MRP Price")
-                    // {
-                    // }
+                    column(MrpPrice; 0)
+                    {
+                    }
                     column(Amount; "Transfer Shipment Line".Amount)
                     {
                     }

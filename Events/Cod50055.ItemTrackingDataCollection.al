@@ -182,9 +182,10 @@ codeunit 50055 ItemTrackingDataCollection
                     IF "Qty." - "RevQty." > 0 THEN BEGIN
                         IF ILE."Expiration Date" <= TODAY THEN //acxcp_23052022
                             Expire := FALSE //acxcp_23052022
-                        ELSE //acxcp_23052022
+                        ELSE begin//acxcp_23052022
                             Expire := TRUE;
-                        Error('Wrong Selection, as per near expiration please select %1, Lot...', ILE."Lot No.");
+                            Error('Wrong Selection, as per near expiration please select %1, Lot...', ILE."Lot No.");
+                        end;
                     END;
                 END;
             UNTIL ILE.NEXT = 0;

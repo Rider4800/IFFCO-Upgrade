@@ -3,6 +3,8 @@ report 50015 "Branch transfer"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\Branchtransfer.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -256,9 +258,9 @@ report 50015 "Branch transfer"
                     {
                     }
                     //field not found in BC
-                    // column(MrpPrice; "Transfer Shipment Line"."MRP Price")
-                    // {
-                    // }
+                    column(MrpPrice; 0)
+                    {
+                    }
                     //field not found in BC
                     column(Amount; "Transfer Shipment Line".Amount)
                     {

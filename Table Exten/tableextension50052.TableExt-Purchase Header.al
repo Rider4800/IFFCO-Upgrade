@@ -77,13 +77,11 @@ tableextension 50052 tableextension50052 extends "Purchase Header"
         }
     }
 
-
-    trigger OnBeforeInsert()
+    trigger OnInsert()
     begin
         //ACXCP_210721+
         "Creation DateTime" := CURRENTDATETIME;
         //ACXCP_210721-
-
     end;
 }
 

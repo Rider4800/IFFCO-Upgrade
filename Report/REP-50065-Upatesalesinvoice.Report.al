@@ -3,6 +3,8 @@ report 50065 Upatesalesinvoice
     Permissions = TableData 112 = rm,
                   TableData 113 = rm;
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

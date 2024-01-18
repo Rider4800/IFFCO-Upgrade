@@ -8348,6 +8348,9 @@ End Function
         <Field Name="UnitPriceFormat">
           <DataField>UnitPriceFormat</DataField>
         </Field>
+        <Field Name="MrpPrice">
+          <DataField>MrpPrice</DataField>
+        </Field>
         <Field Name="Amount">
           <DataField>Amount</DataField>
         </Field>

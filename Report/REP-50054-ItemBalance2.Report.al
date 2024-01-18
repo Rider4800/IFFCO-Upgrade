@@ -3,6 +3,8 @@ report 50054 "Item Balance2"
     // //acxcp_200921 + //Unit Cost Actual
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\ItemBalance2.rdl';
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
 
     dataset

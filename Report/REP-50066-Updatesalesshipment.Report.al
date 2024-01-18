@@ -3,6 +3,8 @@ report 50066 Updatesalesshipment
     Permissions = TableData 110 = rm,
                   TableData 111 = rm;
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

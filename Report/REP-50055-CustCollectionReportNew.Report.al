@@ -2,6 +2,8 @@ report 50055 "Cust Collection Report New"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\CustCollectionReportNew.rdl';
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

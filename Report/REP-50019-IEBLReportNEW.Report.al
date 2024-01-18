@@ -1,6 +1,8 @@
 report 50019 "IEBL Report-NEW"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

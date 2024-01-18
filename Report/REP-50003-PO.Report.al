@@ -3,6 +3,8 @@ report 50003 PO
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\PO.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

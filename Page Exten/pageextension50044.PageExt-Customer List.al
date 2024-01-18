@@ -6,31 +6,38 @@ pageextension 50044 pageextension50044 extends "Customer List"
         {
             field("Name 3"; Rec."Name 3")
             {
+                ApplicationArea = All;
             }
             field("Our Account No."; Rec."Our Account No.")
             {
+                ApplicationArea = All;
             }
         }
         addafter("Post Code")
         {
             field("State Code"; Rec."State Code")
             {
+                ApplicationArea = All;
             }
             field("GST Registration No."; Rec."GST Registration No.")
             {
+                ApplicationArea = All;
             }
             field(Balance; Rec.Balance)
             {
+                ApplicationArea = All;
             }
         }
         addafter("Phone No.")
         {
             field("Creation DateTime"; Rec."Creation DateTime")
             {
+                ApplicationArea = All;
                 Editable = false;
             }
             field("Created By"; Rec."Created By")
             {
+                ApplicationArea = All;
             }
         }
     }
@@ -40,12 +47,15 @@ pageextension 50044 pageextension50044 extends "Customer List"
         {
             action(Updateblock)
             {
-
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = Process;
                 trigger OnAction()
                 begin
-                    recCustomer.RESET();
-                    recCustomer.GET(Rec."No.");
-                    IF recCustomer.FINDFIRST THEN BEGIN
+                    // recCustomer.RESET();
+                    // recCustomer.GET(Rec."No.");
+                    // IF recCustomer.FINDFIRST THEN BEGIN
+                    if recCustomer.get(Rec."No.") then begin
                         REPEAT
                             IF recCustomer."GST Registration No." = '' THEN BEGIN
                                 recCustomer.VALIDATE("GST Customer Type", recCustomer."GST Customer Type"::Unregistered);
@@ -62,9 +72,11 @@ pageextension 50044 pageextension50044 extends "Customer List"
             {
                 Caption = 'Customer Ledger Balance';
                 Image = LedgerEntries;
+                ApplicationArea = All;
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page 50011;
+                PromotedCategory = New;
             }
         }
         addafter(ReportCustomerPaymentReceipt)
@@ -72,9 +84,10 @@ pageextension 50044 pageextension50044 extends "Customer List"
             action("Report Customer- Ledger Report")
             {
                 Caption = 'Customer- Ledger Report-New';
+                ApplicationArea = All;
                 Image = "Report";
                 Promoted = true;
-                PromotedCategory = "Report";
+                PromotedCategory = Report;
                 PromotedIsBig = true;
                 RunObject = Report 50011;
             }

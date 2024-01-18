@@ -1,6 +1,8 @@
 report 50049 "Calculate CD"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

@@ -2,7 +2,12 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
 {
     layout
     {
-        addafter(Status)
+        modify("Location Code")
+        {
+            Editable = VisiblityBool;
+            Enabled = VisiblityBool;
+        }
+        addafter("Assigned User ID")
         {
             field("Certificate of Analysis"; Rec."Certificate of Analysis")
             {
@@ -18,6 +23,7 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
             }
         }
         moveafter("Assigned User ID"; "Location Code")
+        moveafter("Certificate of Analysis"; "Shortcut Dimension 1 Code")
         //moveafter("Location Code"; "Shortcut Dimension 1 Code")
     }
     actions
@@ -26,6 +32,8 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
         {
             action("PO-Supplier Copy")
             {
+                ApplicationArea = All;
+                PromotedCategory = Report;
                 Image = Purchase;
                 Promoted = true;
                 PromotedIsBig = true;
@@ -35,13 +43,14 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
                     recPurchaseHeader.RESET();
                     recPurchaseHeader.SETRANGE("No.", Rec."No.");
                     //recPurchaseHeader.SETRANGE("Posting Date",Rec."Posting Date");
-                    IF recPurchaseHeader.FIND('-') THEN BEGIN
+                    if recPurchaseHeader.FindFirst() then
                         REPORT.RUN(50021, TRUE, TRUE, recPurchaseHeader);
-                    END;
                 end;
             }
             action("PO-Office Copy")
             {
+                ApplicationArea = All;
+                PromotedCategory = Report;
                 Image = Purchasing;
                 Promoted = true;
                 PromotedIsBig = true;
@@ -58,8 +67,32 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
             }
         }
     }
+    trigger OnAfterGetCurrRecord()
+    begin
+        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
+            VisiblityBool := false
+        else
+            VisiblityBool := true;
+    end;
+
+    trigger OnAfterGetRecord()
+    begin
+        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
+            VisiblityBool := false
+        else
+            VisiblityBool := true;
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
+            VisiblityBool := false
+        else
+            VisiblityBool := true;
+    end;
 
     var
         recPurchaseHeader: Record 38;
+        VisiblityBool: Boolean;
 }
 

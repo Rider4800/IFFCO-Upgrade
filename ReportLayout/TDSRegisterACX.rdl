@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,84 +11,6 @@
       <rd:DataSourceID>bbe2826a-e7dd-4ee0-b6fd-d11d390f9b93</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="txtPrintDescription">
-          <DataField>txtPrintDescription</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="Add1">
-          <DataField>Add1</DataField>
-        </Field>
-        <Field Name="Addr2">
-          <DataField>Addr2</DataField>
-        </Field>
-        <Field Name="TIME">
-          <DataField>TIME</DataField>
-        </Field>
-        <Field Name="Date">
-          <DataField>Date</DataField>
-        </Field>
-        <Field Name="Posting_Date">
-          <DataField>Posting_Date</DataField>
-        </Field>
-        <Field Name="Party_Code">
-          <DataField>Party_Code</DataField>
-        </Field>
-        <Field Name="Party_Name">
-          <DataField>Party_Name</DataField>
-        </Field>
-        <Field Name="PANNO">
-          <DataField>PANNO</DataField>
-        </Field>
-        <Field Name="Assessee_Code">
-          <DataField>Assessee_Code</DataField>
-        </Field>
-        <Field Name="TDS_Base_Amount">
-          <DataField>TDS_Base_Amount</DataField>
-        </Field>
-        <Field Name="TDS_Base_AmountFormat">
-          <DataField>TDS_Base_AmountFormat</DataField>
-        </Field>
-        <Field Name="TDS_Perc">
-          <DataField>TDS_Perc</DataField>
-        </Field>
-        <Field Name="TDS_PercFormat">
-          <DataField>TDS_PercFormat</DataField>
-        </Field>
-        <Field Name="TDS_Amount">
-          <DataField>TDS_Amount</DataField>
-        </Field>
-        <Field Name="TDS_AmountFormat">
-          <DataField>TDS_AmountFormat</DataField>
-        </Field>
-        <Field Name="intCompany">
-          <DataField>intCompany</DataField>
-        </Field>
-        <Field Name="TDS_Group">
-          <DataField>TDS_Group</DataField>
-        </Field>
-        <Field Name="TDS_Section">
-          <DataField>TDS_Section</DataField>
-        </Field>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -902,4 +824,71 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="txtPrintDescription">
+          <DataField>txtPrintDescription</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="Add1">
+          <DataField>Add1</DataField>
+        </Field>
+        <Field Name="Addr2">
+          <DataField>Addr2</DataField>
+        </Field>
+        <Field Name="TIME">
+          <DataField>TIME</DataField>
+        </Field>
+        <Field Name="Date">
+          <DataField>Date</DataField>
+        </Field>
+        <Field Name="Posting_Date">
+          <DataField>Posting_Date</DataField>
+        </Field>
+        <Field Name="Party_Code">
+          <DataField>Party_Code</DataField>
+        </Field>
+        <Field Name="Party_Name">
+          <DataField>Party_Name</DataField>
+        </Field>
+        <Field Name="PANNO">
+          <DataField>PANNO</DataField>
+        </Field>
+        <Field Name="Assessee_Code">
+          <DataField>Assessee_Code</DataField>
+        </Field>
+        <Field Name="TDS_Base_Amount">
+          <DataField>TDS_Base_Amount</DataField>
+        </Field>
+        <Field Name="TDS_Base_AmountFormat">
+          <DataField>TDS_Base_AmountFormat</DataField>
+        </Field>
+        <Field Name="TDS_Perc">
+          <DataField>TDS_Perc</DataField>
+        </Field>
+        <Field Name="TDS_PercFormat">
+          <DataField>TDS_PercFormat</DataField>
+        </Field>
+        <Field Name="TDS_Amount">
+          <DataField>TDS_Amount</DataField>
+        </Field>
+        <Field Name="TDS_AmountFormat">
+          <DataField>TDS_AmountFormat</DataField>
+        </Field>
+        <Field Name="intCompany">
+          <DataField>intCompany</DataField>
+        </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

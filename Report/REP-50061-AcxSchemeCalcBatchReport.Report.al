@@ -1,6 +1,8 @@
 report 50061 "Acx Scheme Calc Batch Report"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

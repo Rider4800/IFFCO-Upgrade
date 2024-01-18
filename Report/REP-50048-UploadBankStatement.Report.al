@@ -1,6 +1,8 @@
 report 50048 "Upload Bank Statement"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -21,24 +23,20 @@ report 50048 "Upload Bank Statement"
                         Caption = 'Import From';
                         field("Excel File Name"; FileName)
                         {
+                            ApplicationArea = All;
 
                             trigger OnAssistEdit()
-                            var
-                                Instr: InStream;
                             begin
                                 RequestFile;
-                                SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
                             end;
                         }
                         field("Excel Sheet Name"; SheetName)
                         {
+                            ApplicationArea = All;
                             trigger OnAssistEdit()
-                            var
-                                Instr: InStream;
                             begin
                                 IF ServerFileName = '' THEN
                                     RequestFile;
-                                SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
                             end;
                         }
                     }
@@ -66,9 +64,7 @@ report 50048 "Upload Bank Statement"
     trigger OnPreReport()
     begin
         CLEARLASTERROR();
-        ExcelBuf.DELETEALL();
-        ReadExcelSheet(ServerFileName, SheetName);
-        //InsertGenJourLine;
+        ReadExcelSheet(FileName, SheetName);
     end;
 
     var
@@ -165,28 +161,21 @@ report 50048 "Upload Bank Statement"
         recBankStatement: Record 50004;
         recBSUins: Record 50004;
         dtDate: Date;
+        Instr: InStream;
+        Text006: Label 'Import Excel File';
 
     local procedure RequestFile()
     var
         Outstr: OutStream;
-        InStr: Instream;
         TempBlbCodeu: Codeunit "Temp Blob";
+        Text006: Label 'Import Excel File';
     begin
-        // IF FileName <> '' THEN
-        //     ServerFileName := FileMgt.UploadFile(Text001, FileName)
-        // ELSE
-        //     ServerFileName := FileMgt.UploadFile(Text001, '.xlsx');
         Clear(TempBlbCodeu);
         Clear(InStr);
         TempBlbCodeu.CreateInStream(InStr);
-
-        if FileName = '' then
-            FileName := '.xlsx';
-        UploadIntoStream('', '', '', FileName, InStr);
-
-        ServerFileName := FileName;
-        ValidateServerFileName;
+        UploadIntoStream(Text006, '', '', ServerFileName, Instr);
         FileName := FileMgt.GetFileName(ServerFileName);
+        SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
     end;
 
     local procedure ValidateServerFileName()
@@ -199,28 +188,15 @@ report 50048 "Upload Bank Statement"
     end;
 
     procedure ReadExcelSheet(p_FileName: Text[250]; p_SheetName: Text[250])
-    var
-        oLineNo: Integer;
-        otstr: OutStream;
-        instrm: InStream;
-        BlobCu: Codeunit "Temp Blob";
     begin
         ExcelBuf.LOCKTABLE;
-        //ExcelBuf.OpenBook(p_FileName, p_SheetName);
-        ExcelBuf.LOCKTABLE;
-        BlobCu.CreateInStream(instrm);
-        BlobCu.CreateOutStream(otstr);
-        ExcelBuf.SaveToStream(otstr, false);
-        ExcelBuf.OpenBookStream(instrm, p_SheetName);
-
+        ExcelBuf.OpenBookStream(Instr, p_SheetName);
         ExcelBuf.ReadSheet;
         ExcelBuf.SETRANGE("Row No.", 1);
         TotalCol := ExcelBuf.COUNT();
         ExcelBuf.RESET();
         IF ExcelBuf.FINDLAST THEN
             TotalRow := ExcelBuf."Row No.";
-
-
 
         FOR X := 2 TO TotalRow DO BEGIN
             recBankStatement.RESET();

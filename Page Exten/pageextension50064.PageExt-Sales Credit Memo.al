@@ -2,17 +2,18 @@ pageextension 50064 pageextension50064 extends "Sales Credit Memo"
 {
     layout
     {
-        addafter("Shortcut Dimension 1 Code")
+        addafter("Assigned User ID")
         {
             field("Branch Accounting"; Rec."Branch Accounting")
             {
+                ApplicationArea = All;
             }
             field("Finance Branch A/c Code"; Rec."Finance Branch A/c Code")
             {
+                ApplicationArea = All;
             }
-
         }
-        moveafter("Finance Branch A/c Code"; "Reason Code")
+        movebefore(Status; "Reason Code")
         moveafter("Job Queue Status"; "Location Code")
         moveafter("Location Code"; "Shortcut Dimension 1 Code")
     }

@@ -13,6 +13,7 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
         {
             field("Transfer-from Bin Code"; Rec."Transfer-from Bin Code")
             {
+                ApplicationArea = All;
             }
 
         }
@@ -21,6 +22,7 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
         {
             field("Transfer-To Bin Code"; Rec."Transfer-To Bin Code")
             {
+                ApplicationArea = All;
             }
         }
         moveafter("Transfer-To Bin Code"; "Transfer-to Name")
@@ -28,18 +30,21 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
         {
             field("Jobwork PO"; Rec."Jobwork PO")
             {
+                ApplicationArea = All;
             }
         }
         addafter("Load Unreal Prof Amt on Invt.")
         {
             field("External Document No."; Rec."External Document No.")
             {
+                ApplicationArea = All;
             }
             field(ExpiryStockMovementAllowed; Rec.ExpiryStockMovementAllowed)
             {
                 Caption = 'Expiry Stock Movement Allowed';
-                Editable = Editableeditfield;
-                Enabled = ExpiryStockMovemAllowed;
+                Editable = ExpiryStockMovemAllowed;
+                //Enabled = ExpiryStockMovemAllowed;
+                ApplicationArea = All;
 
                 trigger OnValidate()
                 begin
@@ -53,12 +58,23 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
         {
             field("Transporter Code"; Rec."Transporter Code")
             {
+                ApplicationArea = All;
             }
             field("Transporter Name"; Rec."Transporter Name")
             {
+                ApplicationArea = All;
             }
             field("Transporter GSTIN"; Rec."Transporter GSTIN")
             {
+                ApplicationArea = All;
+            }
+            field("Port Code"; Rec."Port Code")
+            {
+                ApplicationArea = All;
+            }
+            field("Responsibility Center"; Rec."Responsibility Center")
+            {
+                ApplicationArea = All;
             }
         }
     }
@@ -76,13 +92,14 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
 
     trigger OnAfterGetCurrRecord()
     begin
-        IF Rec.Status = Rec.Status::Open THEN BEGIN
-            Editableeditfield := TRUE;
-        END;
-        IF Rec.Status = Rec.Status::Released THEN BEGIN
-            Editableeditfield := FALSE
-        END;
-        Rec.MODIFY;
+        // IF Rec.Status = Rec.Status::Open THEN BEGIN
+        //     Editableeditfield := TRUE;
+        // END;
+        // IF Rec.Status = Rec.Status::Released THEN BEGIN
+        //     Editableeditfield := FALSE
+        // END;
+        // Rec.MODIFY;
+        ExpiryStockMovementAllowedFuc();
     end;
 
     trigger OnDeleteRecord(): Boolean

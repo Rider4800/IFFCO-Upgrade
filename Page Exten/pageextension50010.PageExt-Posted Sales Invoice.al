@@ -50,8 +50,10 @@ pageextension 50010 pageextension50010 extends "Posted Sales Invoice"
         {
             action("Tax Invoice")
             {
+                ApplicationArea = All;
                 Promoted = true;
-                PromotedCategory = "Report";
+                Image = Invoice;
+                PromotedCategory = Report;
 
                 trigger OnAction()
                 begin

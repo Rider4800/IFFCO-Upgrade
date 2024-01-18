@@ -24,7 +24,7 @@ pageextension 50061 pageextension50061 extends "Sales Order"
             Visible = false;
         }
         moveafter("Document Date"; "External Document No.")
-
+        moveafter("Salesperson Code"; "Shortcut Dimension 2 Code")
 
         addafter("Assigned User ID")
         {
@@ -41,7 +41,18 @@ pageextension 50061 pageextension50061 extends "Sales Order"
             {
             }
         }
-        moveafter("Customer Disc. Group"; "Campaign No.")
+        addafter("Customer Disc. Group")
+        {
+            field("Campaign No. New"; Rec."Campaign No. New")
+            {
+                ApplicationArea = All;
+            }
+        }
+        modify("Campaign No.")
+        {
+            Visible = false;
+        }
+
         addafter("LR/RR Date")
         {
             field("Transporter Code"; Rec."Transporter Code")
@@ -235,6 +246,8 @@ pageextension 50061 pageextension50061 extends "Sales Order"
 
                     //TM 9509 For Statics Calculation 30-10-2023
                     Rec.OpenSalesOrderStatistics;
+                    Rec."Run Statistics" := true;
+                    Rec.Modify();
                     SalesCalcDiscountByType.ResetRecalculateInvoiceDisc(Rec);
                     //TM 9509 For Statics Calculation 30-10-2023
 
@@ -421,7 +434,8 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                                             END
                                         END;
                                     END;
-                                END;
+                                END else
+                                    Error('Journal Batch JV AUTO not found');
                             END;
                         END;
                     END;

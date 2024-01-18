@@ -1,6 +1,8 @@
 report 50016 "FSC Data Export To Excel"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

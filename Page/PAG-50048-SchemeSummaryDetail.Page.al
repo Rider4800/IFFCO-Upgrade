@@ -139,6 +139,7 @@ page 50048 "Scheme Summary Detail"
             action(CalculateSchemeData)
             {
                 Caption = 'CalculateSchemeData';
+                ApplicationArea = All;
                 Image = CalculateDiscount;
                 Promoted = true;
                 PromotedCategory = Process;
@@ -161,6 +162,10 @@ page 50048 "Scheme Summary Detail"
             {
                 Caption = 'Generate Voucher:';
                 Image = Voucher;
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
 
                 trigger OnAction()
                 var

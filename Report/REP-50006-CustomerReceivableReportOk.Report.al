@@ -1,6 +1,8 @@
 report 50006 "Customer Receivable Report-Ok"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

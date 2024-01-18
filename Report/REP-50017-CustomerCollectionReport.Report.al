@@ -2,6 +2,8 @@ report 50017 "Customer-Collection Report"
 {
     Caption = 'Customer - Payment Receipt';
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

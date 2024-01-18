@@ -3,6 +3,8 @@ report 50063 UpdateSchemeStatusOnCL
     DefaultLayout = RDLC;
     RDLCLayout = './UpdateSchemeStatusOnCL.rdlc';
     Permissions = TableData 21 = rm;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

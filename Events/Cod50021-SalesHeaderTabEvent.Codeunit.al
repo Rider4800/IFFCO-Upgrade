@@ -35,42 +35,58 @@ codeunit 50021 SalesHeaderTabEvent
         //Acxvg
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeCheckCreditMaxBeforeInsert', '', false, false)]
-    procedure OnBeforeCheckCreditMaxBeforeInsert(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean; HideCreditCheckDialogue: Boolean; FilterCustNo: Code[20]; FilterContNo: Code[20])
+    // [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeCheckCreditMaxBeforeInsert', '', false, false)]
+    // procedure OnBeforeCheckCreditMaxBeforeInsert(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean; HideCreditCheckDialogue: Boolean; FilterCustNo: Code[20]; FilterContNo: Code[20])
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnBeforeCheckCreditLimitIfLineNotInsertedYet', '', false, false)]
+    procedure OnBeforeCheckCreditLimitIfLineNotInsertedYet(var SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
     var
         Customer: Record Customer;
         CustCheckCreditLimit: Codeunit "Cust-Check Cr. Limit";
         Cont: Record Contact;
         ContBusinessRelation: Record "Contact Business Relation";
         SkipCreditCheck: Boolean;
+        CheckCreditLimit: Page "Check Credit Limit";
+        OK: Boolean;
+        Text000: Label 'The update has been interrupted to respect the warning.';
     begin
-        IsHandled := true;
-        if (FilterCustNo <> '') or (SalesHeader."Sell-to Customer No." <> '') then begin
-            if SalesHeader."Sell-to Customer No." <> '' then
-                Customer.Get(SalesHeader."Sell-to Customer No.")
-            else
-                Customer.Get(FilterCustNo);
-            if Customer."Bill-to Customer No." <> '' then
-                SalesHeader."Bill-to Customer No." := Customer."Bill-to Customer No."
-            else
-                SalesHeader."Bill-to Customer No." := Customer."No.";
-            SkipCreditCheck := SalesHeader.CheckCustCredit(Customer."No.");//KM
-            IF (SkipCreditCheck = FALSE) AND ((SalesHeader."Document Type" = SalesHeader."Document Type"::Order) OR (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)) THEN
-                CustCheckCreditLimit.SalesHeaderCheck(SalesHeader);
-        end else
-            if FilterContNo <> '' then begin
-                Cont.Get(FilterContNo);
-                if ContBusinessRelation.FindByContact(ContBusinessRelation."Link to Table"::Customer, Cont."Company No.") then begin
-                    Customer.Get(ContBusinessRelation."No.");
-                    if Customer."Bill-to Customer No." <> '' then
-                        SalesHeader."Bill-to Customer No." := Customer."Bill-to Customer No."
-                    else
-                        SalesHeader."Bill-to Customer No." := Customer."No.";
-                    SkipCreditCheck := SalesHeader.CheckCustCredit(Customer."No.");//KM
-                    IF (SkipCreditCheck = FALSE) AND ((SalesHeader."Document Type" = SalesHeader."Document Type"::Order) OR (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)) THEN
-                        CustCheckCreditLimit.SalesHeaderCheck(SalesHeader);
-                end;
-            end;
+
+        // IsHandled := true;
+        // if (FilterCustNo <> '') or (SalesHeader."Sell-to Customer No." <> '') then begin
+        //     if SalesHeader."Sell-to Customer No." <> '' then
+        //         Customer.Get(SalesHeader."Sell-to Customer No.")
+        //     else
+        //         Customer.Get(FilterCustNo);
+        //     if Customer."Bill-to Customer No." <> '' then
+        //         SalesHeader."Bill-to Customer No." := Customer."Bill-to Customer No."
+        //     else
+        //         SalesHeader."Bill-to Customer No." := Customer."No.";
+        //     SkipCreditCheck := SalesHeader.CheckCustCredit(Customer."No.");//KM
+        //     IF (SkipCreditCheck = FALSE) AND ((SalesHeader."Document Type" = SalesHeader."Document Type"::Order) OR (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)) THEN begin
+        //         //CustCheckCreditLimit.SalesHeaderCheck(SalesHeader);
+        //         // IF NOT CheckCreditLimit.SalesHeaderShowWarning(SalesHeader) THEN
+        //         //     SalesHeader.OnCustomerCreditLimitNotExceeded
+        //         // ELSE BEGIN
+        //         //CreditLimitExceeded := TRUE;
+        //         OK := CheckCreditLimit.RUNMODAL = ACTION::Yes;
+        //         CLEAR(CheckCreditLimit);
+        //         IF not OK THEN
+        //             ERROR(Text000);
+        //         //END;
+        //     end;
+        // end else
+        //     if FilterContNo <> '' then begin
+        //         Cont.Get(FilterContNo);
+        //         if ContBusinessRelation.FindByContact(ContBusinessRelation."Link to Table"::Customer, Cont."Company No.") then begin
+        //             Customer.Get(ContBusinessRelation."No.");
+        //             if Customer."Bill-to Customer No." <> '' then
+        //                 SalesHeader."Bill-to Customer No." := Customer."Bill-to Customer No."
+        //             else
+        //                 SalesHeader."Bill-to Customer No." := Customer."No.";
+        //             SkipCreditCheck := SalesHeader.CheckCustCredit(Customer."No.");//KM
+        //             IF (SkipCreditCheck = FALSE) AND ((SalesHeader."Document Type" = SalesHeader."Document Type"::Order) OR (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)) THEN
+        //                 CustCheckCreditLimit.SalesHeaderCheck(SalesHeader);
+        //         end;
+        //     end;
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnCopySelltoCustomerAddressFieldsFromCustomerOnBeforeAssignRespCenter', '', false, false)]
@@ -96,4 +112,34 @@ codeunit 50021 SalesHeaderTabEvent
         SalesHeader."Campaign No." := Customer."Preferred Campaign No.";//9509 03112023
     end;
     //<-E-Bazaar Customization
+
+    [EventSubscriber(ObjectType::Table, 36, 'OnBeforeTestStatusOpen', '', false, false)]
+    procedure OnBeforeTestStatusOpen(xSalesHeader: Record "Sales Header"; var SalesHeader: Record "Sales Header"; CallingFieldNo: Integer; sender: Record "Sales Header")
+    var
+        CLERec: Record "Cust. Ledger Entry";
+        Text001: Label 'The customer %1 has an overdue balance of %2. The update has been interrupted to respect the warning.';
+        Text002: Label 'The customer %1 has an credit limit of %2. The update has been interrupted to respect the warning.';
+        CLEOverdueAmt: Decimal;
+        CustRec: Record Customer;
+    begin
+        CLEOverdueAmt := 0;
+        CLERec.Reset();
+        CLERec.SetCurrentKey("Document Type", "Customer No.", Open, "Due Date");
+        CLERec.SetRange("Customer No.", SalesHeader."Sell-to Customer No.");
+        CLERec.SetRange(Open, true);
+        CLERec.SetFilter("Due Date", '<%1', Today);
+        if CLERec.FindFirst() then begin
+            repeat
+                CLERec.CalcFields("Remaining Amount");
+                CLEOverdueAmt := CLEOverdueAmt + CLERec."Remaining Amount"
+            until CLERec.Next() = 0;
+            if CLEOverdueAmt > 0 then
+                Error(Text001, CLERec."Customer No.", CLEOverdueAmt);
+        end;
+        if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
+            CustRec.CalcFields("Balance (LCY)");
+            if CustRec."Balance (LCY)" > CustRec."Credit Limit (LCY)" then
+                Error(Text002, CustRec."No.", CustRec."Credit Limit (LCY)");
+        end;
+    end;
 }

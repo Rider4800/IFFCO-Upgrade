@@ -6,6 +6,10 @@ pageextension 50097 pageextension50097 extends "Item Tracking Summary"
         {
             Visible = false;
         }
+        modify("Expiration Date")
+        {
+            Visible = true;
+        }
     }
 }
 

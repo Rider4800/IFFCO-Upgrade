@@ -1,6 +1,8 @@
 report 50010 "Bank Integration Voucher"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

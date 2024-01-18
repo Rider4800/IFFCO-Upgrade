@@ -1,6 +1,8 @@
 report 50062 "AcxCD Scheme Calc Batch Report"
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

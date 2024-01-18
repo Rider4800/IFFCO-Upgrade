@@ -78,20 +78,31 @@ codeunit 50035 "Cod-80-Event"
     var
         recSalesLine: Record "Sales Line";
         recSalesPrice: Record "Sales Price";
+        PriceListLineRec: Record "Price List Line";
     begin
         recSalesLine.RESET();
-        recSalesLine.SETRANGE("Document No.", "DocNo.");
+        recSalesLine.SETRANGE("Document No.", "DocNo.");//dp
         recSalesLine.SETRANGE(Type, recSalesLine.Type::Item);
         IF recSalesLine.FINDFIRST THEN BEGIN
             REPEAT
-                recSalesPrice.RESET();
-                recSalesPrice.SETRANGE("Item No.", recSalesLine."No.");
-                recSalesPrice.SETFILTER("Ending Date", '%1|>=%2', 0D, Date);
-                recSalesPrice.SETRANGE("Starting Date", 0D, Date);
-                //recSalesPrice.SETRANGE("MRP Price", recSalesLine."MRP Price");    //Team-17783    Code commented as MRP Price not present in Sales Price Table.
-                recSalesPrice.SETRANGE("Unit Price", recSalesLine."Unit Price");
-                IF NOT recSalesPrice.FINDFIRST THEN
-                    ERROR('As per MRP Sales line unit price%1 not be find with sales price matrix against line No.%2', recSalesLine."Unit Price", recSalesLine."Line No.");
+                //->17783
+                // recSalesPrice.RESET();
+                // recSalesPrice.SETRANGE("Item No.", recSalesLine."No.");
+                // recSalesPrice.SETFILTER("Ending Date", '%1|>=%2', 0D, Date);
+                // recSalesPrice.SETRANGE("Starting Date", 0D, Date);
+                // //recSalesPrice.SETRANGE("MRP Price", recSalesLine."MRP Price");    //Team-17783    Code commented as MRP Price not present in Sales Price Table.
+                // recSalesPrice.SETRANGE("Unit Price", recSalesLine."Unit Price");
+                // IF NOT recSalesPrice.FINDFIRST THEN
+                //     ERROR('As per MRP Sales line unit price%1 not be find with sales price matrix against line No.%2', recSalesLine."Unit Price", recSalesLine."Line No.");
+                //<-17783
+                PriceListLineRec.Reset();
+                PriceListLineRec.SetRange("Product No.", recSalesLine."No.");   //pp
+                PriceListLineRec.SetFilter("Ending Date", '%1|>=%2', 0D, Date);
+                PriceListLineRec.SETRANGE("Starting Date", 0D, Date);
+                PriceListLineRec.SETRANGE("MRP Price", recSalesLine."MRP Price New");
+                PriceListLineRec.SETRANGE("Unit Price", recSalesLine."Unit Price");
+                IF NOT PriceListLineRec.FINDFIRST THEN
+                    ERROR('As per MRP Sales line unit price %1 not be find with sales price matrix against line No. %2', recSalesLine."Unit Price", recSalesLine."Line No.");
             UNTIL recSalesLine.NEXT = 0;
         END;
     end;

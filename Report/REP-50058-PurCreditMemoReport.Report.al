@@ -3,6 +3,8 @@ report 50058 PurCreditMemoReport
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\PurCreditMemoReport.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -531,6 +533,7 @@ report 50058 PurCreditMemoReport
         dcLineAmt: Decimal;
         decRoundOff: Decimal;
         recPCML: Record 125;
+        //RecCheck: Report "Posted Voucher";
         RecCheck: Report Check;
         Numbertxt: array[1] of Text;
         txtCmpInfo: array[10] of Text;

@@ -118,7 +118,7 @@ tableextension 50039 tableextension50039 extends Item
         //<-Team-17783
     }
 
-    trigger OnAfterInsert()
+    trigger OnInsert()
     begin
         //ACXCP02+
         "Creation DateTime" := CURRENTDATETIME;

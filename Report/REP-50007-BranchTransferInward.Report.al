@@ -3,6 +3,8 @@ report 50007 "Branch Transfer Inward"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\BranchTransferInward.rdl';
     PreviewMode = PrintLayout;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -40,6 +42,9 @@ report 50007 "Branch Transfer Inward"
             // column(CompTIN; recCompInfo."T.I.N. No.")
             // {
             // }
+            column(CompTIN; '')
+            {
+            }
             //->16767
             column(Company_Picture; recCompanyInfo.Picture)
             {

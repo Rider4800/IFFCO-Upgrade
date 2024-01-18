@@ -32,7 +32,6 @@ tableextension 50050 tableextension50050 extends "Sales Line"
                     END;
                 END;
                 //acxcp_151122 +
-
             end;
 
             trigger OnAfterValidate()
@@ -41,7 +40,6 @@ tableextension 50050 tableextension50050 extends "Sales Line"
                 IF "Units per Parcel" <> 0 THEN
                     "No. of Loose Pack" := Quantity * "Units per Parcel";
                 //KM010721
-
             end;
         }
 

@@ -6,24 +6,29 @@ pageextension 50048 pageextension50048 extends "Vendor List"
         {
             field("GST Registration No."; Rec."GST Registration No.")
             {
+                ApplicationArea = All;
             }
             field("State Code"; Rec."State Code")
             {
+                ApplicationArea = All;
             }
         }
         addafter("Post Code")
         {
             field(Balance; Rec.Balance)
             {
+                ApplicationArea = All;
             }
         }
         addafter("Privacy Blocked")
         {
             field("Created By"; Rec."Created By")
             {
+                ApplicationArea = All;
             }
             field("Creation DateTime"; Rec."Creation DateTime")
             {
+                ApplicationArea = All;
                 Editable = false;
             }
         }
@@ -60,6 +65,9 @@ pageextension 50048 pageextension50048 extends "Vendor List"
                 Image = LedgerBook;
                 Promoted = true;
                 RunObject = Page 50010;
+                ApplicationArea = All;
+                PromotedIsBig = true;
+                PromotedCategory = New;
             }
         }
         addafter("Vendor - Detail Trial Balance")
@@ -72,6 +80,7 @@ pageextension 50048 pageextension50048 extends "Vendor List"
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
                 RunObject = Report 50012;
+                ApplicationArea = All;
             }
         }
     }

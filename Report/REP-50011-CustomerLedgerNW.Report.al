@@ -2,6 +2,8 @@ report 50011 "Customer Ledger-NW"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\CustomerLedgerNW.rdl';
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {
@@ -230,24 +232,29 @@ report 50011 "Customer Ledger-NW"
                     {
                         Caption = 'Customer Code';
                         TableRelation = Customer;
+                        ApplicationArea = All;
                     }
                     field(dtStartDate; dtStartDate)
                     {
                         Caption = 'From Date';
+                        ApplicationArea = All;
                     }
                     field(dtEndDate; dtEndDate)
                     {
                         Caption = 'To Date';
+                        ApplicationArea = All;
                     }
                     field(txtGlobalDim1Filter; txtGlobalDim1Filter)
                     {
                         CaptionClass = '1,2,1';
+                        ApplicationArea = All;
                         Caption = 'Global Dimension 1 Code';
                         TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
                     }
                     field(txtGlobalDim2Filter; txtGlobalDim2Filter)
                     {
                         CaptionClass = '1,2,2';
+                        ApplicationArea = All;
                         Caption = 'Global Dimension 2 Code';
                         TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
                     }

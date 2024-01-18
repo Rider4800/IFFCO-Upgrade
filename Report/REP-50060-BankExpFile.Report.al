@@ -1,6 +1,8 @@
 report 50060 BankExpFile
 {
     ProcessingOnly = true;
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
 
     dataset
     {

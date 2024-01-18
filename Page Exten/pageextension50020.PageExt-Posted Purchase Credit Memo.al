@@ -7,6 +7,7 @@ pageextension 50020 pageextension50020 extends "Posted Purchase Credit Memo"
             action("Posted Pur Cr.Memo Report")
             {
                 Caption = 'Posted Pur Cr.Memo Report';
+                ApplicationArea = All;
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";

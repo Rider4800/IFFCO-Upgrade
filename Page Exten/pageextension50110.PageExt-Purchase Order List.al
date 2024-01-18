@@ -6,6 +6,7 @@ pageextension 50110 pageextension50110 extends "Purchase Order List"
         {
             field("Creation DateTime"; rec."Creation DateTime")
             {
+                ApplicationArea = All;
             }
         }
     }
@@ -21,6 +22,7 @@ pageextension 50110 pageextension50110 extends "Purchase Order List"
                 PromotedIsBig = true;
                 RunObject = Page 50014;
                 RunPageMode = View;
+                ApplicationArea = All;
             }
             action("PO Detail Status")
             {
@@ -30,6 +32,7 @@ pageextension 50110 pageextension50110 extends "Purchase Order List"
                 PromotedIsBig = true;
                 RunObject = Page 50017;
                 RunPageMode = View;
+                ApplicationArea = All;
             }
         }
     }

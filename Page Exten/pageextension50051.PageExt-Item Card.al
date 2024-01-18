@@ -6,6 +6,7 @@ pageextension 50051 pageextension50051 extends "Item Card"
         {
             field("No. 2"; Rec."No. 2")
             {
+                ApplicationArea = All;
             }
         }
         addafter(Description)
@@ -13,9 +14,11 @@ pageextension 50051 pageextension50051 extends "Item Card"
             field("Description2"; Rec."Description 2")
             {
                 Caption = 'Description 2';
+                ApplicationArea = All;
             }
             field("Technical Name"; Rec."Technical Name")
             {
+                ApplicationArea = All;
             }
         }
         addafter(Inventory)
@@ -26,12 +29,14 @@ pageextension 50051 pageextension50051 extends "Item Card"
                 {
                     Editable = false;
                     ShowCaption = false;
+                    ApplicationArea = All;
                 }
                 field("Opening Balance Qty. in KG"; Rec."Opening Balance Qty. in KG")
                 {
                     Caption = 'Opening Balance Qty. in KG';
                     //OptionCaption = 'OpeningBal_Caption';
                     ShowCaption = false;
+                    ApplicationArea = All;
                 }
             }
         }
@@ -40,12 +45,14 @@ pageextension 50051 pageextension50051 extends "Item Card"
             field("Creation DateTime"; Rec."Creation DateTime")
             {
                 Editable = false;
+                ApplicationArea = All;
             }
         }
         addafter("Lead Time Calculation")
         {
             field("Units per Parcel"; Rec."Units per Parcel")
             {
+                ApplicationArea = All;
             }
         }
     }

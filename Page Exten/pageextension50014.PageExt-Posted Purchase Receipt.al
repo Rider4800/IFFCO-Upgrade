@@ -9,15 +9,17 @@ pageextension 50014 pageextension50014 extends "Posted Purchase Receipt"
         {
             action(MRN)
             {
+                ApplicationArea = All;
+                Promoted = true;
+                PromotedCategory = "Report";
 
                 trigger OnAction()
                 begin
                     recPurchaseHeader.RESET();
                     recPurchaseHeader.SETRANGE("No.", Rec."No.");
                     //recPurchaseHeader.SETRANGE("Posting Date",Rec."Posting Date");
-                    IF recPurchaseHeader.FIND('-') THEN BEGIN
+                    if recPurchaseHeader.FindFirst() then
                         REPORT.RUN(50013, TRUE, TRUE, recPurchaseHeader);
-                    END;
                 end;
             }
         }
