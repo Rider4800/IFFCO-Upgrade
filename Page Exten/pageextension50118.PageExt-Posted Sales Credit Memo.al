@@ -5,12 +5,11 @@ pageextension 50118 PostedSalesCreditMemo extends "Posted Sales Credit Memo"
     {
         modify("E-Inv. Cancelled Date")
         {
+            ApplicationArea = All;
             Editable = false;
         }
 
     }
-
-
 
     actions
     {
@@ -22,16 +21,15 @@ pageextension 50118 PostedSalesCreditMemo extends "Posted Sales Credit Memo"
                 Promoted = true;
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
                     //acxcp
                     SalesCrMemoHeader.RESET;
                     SalesCrMemoHeader.SETRANGE("No.", rec."No.");
-                    IF SalesCrMemoHeader.FINDFIRST THEN BEGIN
+                    IF SalesCrMemoHeader.FINDFIRST THEN
                         REPORT.RUN(50005, TRUE, FALSE, SalesCrMemoHeader);
-                    END;
-
                     //acxcp;
                 end;
             }
@@ -43,6 +41,7 @@ pageextension 50118 PostedSalesCreditMemo extends "Posted Sales Credit Memo"
             {
                 Promoted = true;
                 PromotedCategory = "Report";
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -50,6 +49,23 @@ pageextension 50118 PostedSalesCreditMemo extends "Posted Sales Credit Memo"
                     recSalesCrmHdr.SETRANGE("No.", Rec."No.");
                     IF recSalesCrmHdr.FIND('-') THEN
                         REPORT.RUN(50005, TRUE, FALSE, recSalesCrmHdr);
+                end;
+            }
+            action("E-Invoice SalesCrMemo")
+            {
+                ApplicationArea = All;
+                Caption = 'E-Invoice SalesCrMemo';
+                Ellipsis = true;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = CreateDocument;
+
+                trigger OnAction()
+                var
+                    CU50013: Codeunit 50013;
+                begin
+                    CU50013.CreateJsonSalesCrMemoOrder(Rec);
                 end;
             }
 

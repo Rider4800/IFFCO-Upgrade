@@ -421,11 +421,11 @@ table 50000 "E-Way Bill & E-Invoice"
                 END;
             end;
         }
-        field(49; "E-Invoice QR Code"; Text[100])
+        field(49; "E-Invoice QR Code"; Text[200])
         {
             DataClassification = ToBeClassified;
         }
-        field(50; "E-Invoice PDF"; Text[100])
+        field(50; "E-Invoice PDF"; Text[200])
         {
             DataClassification = ToBeClassified;
         }

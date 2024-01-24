@@ -140,10 +140,12 @@ page 50003 "E-Invoice (Sales)"
                 }
                 field("E-Invoice QR Code"; Rec."E-Invoice QR Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("E-Invoice PDF"; Rec."E-Invoice PDF")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("E-Invoice Cancel Date"; Rec."E-Invoice Cancel Date")

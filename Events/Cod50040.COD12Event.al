@@ -770,16 +770,16 @@ codeunit 50040 COD12Event
         ApplyingVendorLedgerEntry: Record "Vendor Ledger Entry";
         EntryNum: Integer;
     begin
-        Cu50041.GetOldCVLedgEntryBufEntryNo(EntryNum);
-        if not ApplyingVendorLedgerEntry.Get(EntryNum) then;
+        //Cu50041.GetOldCVLedgEntryBufEntryNo(EntryNum);
+        //if not ApplyingVendorLedgerEntry.Get(EntryNum) then;
 
-        if ApplyingVendorLedgerEntry."Document Type" = ApplyingVendorLedgerEntry."Document Type"::Invoice then begin
-            //ACX-RK 02092021 Bgin
-            IF ApplyingVendorLedgerEntry."GST Reverse Charge" THEN
-                IsHandled := true;
-            //ACX-RK End
+        //if ApplyingVendorLedgerEntry."Document Type" = ApplyingVendorLedgerEntry."Document Type"::Invoice then begin
+        //ACX-RK 02092021 Bgin
+        //IF ApplyingVendorLedgerEntry."GST Reverse Charge" THEN
+        IsHandled := true;
+        //ACX-RK End
 
-        end;
+        //end;
     end;
 
     //->17783   Flow "External Doc. No. New" field from GenJnlLine to BankAccLedgEntry

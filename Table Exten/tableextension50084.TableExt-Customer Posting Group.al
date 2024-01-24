@@ -7,6 +7,10 @@ tableextension 50084 tableextension50084 extends "Customer Posting Group"
             DataClassification = ToBeClassified;
             Description = 'ACXCP_08062022';
         }
+        field(50001; "Multi-Lot Selection Allowed"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 }
 

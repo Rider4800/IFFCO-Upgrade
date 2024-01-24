@@ -229,35 +229,48 @@ report 50021 "PO-SupplierCopy"
                 trigger OnAfterGetRecord()
                 begin
                     Srno += 1;
-                    SGST_Total := 0;
-                    recGSTLedgerBuffer.RESET();
-                    recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
-                    recGSTLedgerBuffer.SETRANGE("GST Component Code", 'SGST');
-                    IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
-                        REPEAT
-                            SGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
-                        UNTIL recGSTLedgerBuffer.NEXT = 0;
-                    END;
+                    //SGST_Total := 0;
+                    if Srno = 1 then begin
+                        PLRec.Reset();
+                        PLRec.SetRange("Document No.", "Purchase Line"."Document No.");
+                        if PLRec.findset() then
+                            repeat
+                                SGST_Total := SGST_Total + CU50200.PurchLineSGST(PLRec);
+                                CGST_Total := CGST_Total + CU50200.PurchLineCGST(PLRec);
+                                IGST_Total := IGST_Total + CU50200.PurchLineIGST(PLRec);
+                            until PLRec.Next() = 0;
+                    end;
+                    // recGSTLedgerBuffer.RESET();
+                    // recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
+                    // recGSTLedgerBuffer.SETRANGE("GST Component Code", 'SGST');
+                    // IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
+                    //     REPEAT
+                    //         SGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
+                    //     UNTIL recGSTLedgerBuffer.NEXT = 0;
+                    // END;
 
-                    CGST_Total := 0;
-                    recGSTLedgerBuffer.RESET();
-                    recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
-                    recGSTLedgerBuffer.SETRANGE("GST Component Code", 'CGST');
-                    IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
-                        REPEAT
-                            CGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
-                        UNTIL recGSTLedgerBuffer.NEXT = 0;
-                    END;
+                    //CGST_Total := 0;
 
-                    IGST_Total := 0;
-                    recGSTLedgerBuffer.RESET();
-                    recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
-                    recGSTLedgerBuffer.SETRANGE("GST Component Code", 'IGST');
-                    IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
-                        REPEAT
-                            IGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
-                        UNTIL recGSTLedgerBuffer.NEXT = 0;
-                    END;
+                    // recGSTLedgerBuffer.RESET();
+                    // recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
+                    // recGSTLedgerBuffer.SETRANGE("GST Component Code", 'CGST');
+                    // IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
+                    //     REPEAT
+                    //         CGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
+                    //     UNTIL recGSTLedgerBuffer.NEXT = 0;
+                    // END;
+
+                    //IGST_Total := 0;
+
+                    // recGSTLedgerBuffer.RESET();
+                    // recGSTLedgerBuffer.SETRANGE("Document No.", "Purchase Header"."No.");
+                    // recGSTLedgerBuffer.SETRANGE("GST Component Code", 'IGST');
+                    // IF recGSTLedgerBuffer.FIND('-') THEN BEGIN
+                    //     REPEAT
+                    //         IGST_Total += ABS(recGSTLedgerBuffer."GST Amount");
+                    //     UNTIL recGSTLedgerBuffer.NEXT = 0;
+                    // END;
+
                     //Loose per Pack
                     recItem.SETRANGE("No.", "Purchase Line"."No.");
                     IF recItem.FINDFIRST THEN
@@ -285,8 +298,8 @@ report 50021 "PO-SupplierCopy"
                     //acxcp
 
                     //Amount in word
-                    repCheck.InitTextVariable();
-                    repCheck.FormatNoText(NoToWord, totAmount, '');
+                    InitTextVariable();
+                    FormatNoText(NoToWord, totAmount, '');
 
                     IF "Purchase Header"."Vendor Posting Group" = 'FG SUPP' THEN
                         LineQty := "Purchase Line".Quantity;
@@ -531,7 +544,7 @@ report 50021 "PO-SupplierCopy"
         Comment_Header: Text;
         recItem: Record 27;
         LooseperPack: Decimal;
-        repCheck: Report Check;
+        repCheck: Report "Posted Voucher";
         NoToWord: array[1] of Text;
         totAmount: Decimal;
         recPurchLine: Record 39;
@@ -552,5 +565,162 @@ report 50021 "PO-SupplierCopy"
         recLoc: Record 14;
         recOrderAddress: Record 224;
         CU50200: Codeunit 50200;
+        OneLbl: Label 'ONE';
+        TwoLbl: Label 'TWO';
+        ThreeLbl: Label 'THREE';
+        FourLbl: Label 'FOUR';
+        FiveLbl: Label 'FIVE';
+        SixLbl: Label 'SIX';
+        SevenLbl: Label 'SEVEN';
+        EightLbl: Label 'EIGHT';
+        NineLbl: Label 'NINE';
+        TenLbl: Label 'TEN';
+        ElevenLbl: Label 'ELEVEN';
+        TwelveLbl: Label 'TWELVE';
+        ThirteenLbl: Label 'THIRTEEN';
+        FourteenLbl: Label 'FOURTEEN';
+        FifteenLbl: Label 'FIFTEEN';
+        SixteenLbl: Label 'SIXTEEN';
+        SeventeenLbl: Label 'SEVENTEEN';
+        EighteenLbl: Label 'EIGHTEEN';
+        NinteenLbl: Label 'NINETEEN';
+        TwentyLbl: Label 'TWENTY';
+        ThirtyLbl: Label 'THIRTY';
+        FortyLbl: Label 'FORTY';
+        FiftyLbl: Label 'FIFTY';
+        SixtyLbl: Label 'SIXTY';
+        SeventyLbl: Label 'SEVENTY';
+        EightyLbl: Label 'EIGHTY';
+        NinetyLbl: Label 'NINETY';
+        ThousandLbl: Label 'THOUSAND';
+        LakhLbl: Label 'LAKH';
+        CroreLbl: Label 'CRORE';
+        OnesText: array[20] of Text[30];
+        TensText: array[10] of Text[30];
+        ExponentText: array[5] of Text[30];
+        PLRec: Record "Purchase Line";
+
+    procedure FormatNoText(var NoText: array[2] of Text[800]; No: Decimal; CurrencyCode: Code[10])
+    var
+        CurrRec: Record Currency;
+        PrintExponent: Boolean;
+        Ones: Integer;
+        Tens: Integer;
+        Hundreds: Integer;
+        Exponent: Integer;
+        NoTextIndex: Integer;
+        TensDec: Integer;
+        OnesDec: Integer;
+        ZeroLbl: Label 'ZERO';
+        HundreadLbl: Label 'HUNDRED';
+        AndLbl: Label 'AND';
+    begin
+        Clear(NoText);
+        NoTextIndex := 1;
+        NoText[1] := '****';
+
+        if No < 1 then
+            AddToNoText(NoText, NoTextIndex, PrintExponent, ZeroLbl)
+        else
+            for Exponent := 4 DOWNTO 1 do begin
+                PrintExponent := false;
+                if No > 99999 then begin
+                    Ones := No DIV (Power(100, Exponent - 1) * 10);
+                    Hundreds := 0;
+                end else begin
+                    Ones := No DIV Power(1000, Exponent - 1);
+                    Hundreds := Ones DIV 100;
+                end;
+                Tens := (Ones MOD 100) DIV 10;
+                Ones := Ones MOD 10;
+                if Hundreds > 0 then begin
+                    AddToNoText(NoText, NoTextIndex, PrintExponent, OnesText[Hundreds]);
+                    AddToNoText(NoText, NoTextIndex, PrintExponent, HundreadLbl);
+                end;
+                if Tens >= 2 then begin
+                    AddToNoText(NoText, NoTextIndex, PrintExponent, TensText[Tens]);
+                    if Ones > 0 then
+                        AddToNoText(NoText, NoTextIndex, PrintExponent, OnesText[Ones]);
+                end else
+                    if (Tens * 10 + Ones) > 0 then
+                        AddToNoText(NoText, NoTextIndex, PrintExponent, OnesText[Tens * 10 + Ones]);
+                if PrintExponent and (Exponent > 1) then
+                    AddToNoText(NoText, NoTextIndex, PrintExponent, ExponentText[Exponent]);
+                if No > 99999 then
+                    No := No - (Hundreds * 100 + Tens * 10 + Ones) * Power(100, Exponent - 1) * 10
+                else
+                    No := No - (Hundreds * 100 + Tens * 10 + Ones) * Power(1000, Exponent - 1);
+            end;
+
+        if CurrencyCode <> '' then begin
+            CurrRec.Get(CurrencyCode);
+            AddToNoText(NoText, NoTextIndex, PrintExponent, ' ');
+        end else
+            AddToNoText(NoText, NoTextIndex, PrintExponent, 'RUPEES');
+
+        AddToNoText(NoText, NoTextIndex, PrintExponent, AndLbl);
+
+        TensDec := ((No * 100) MOD 100) DIV 10;
+        OnesDec := (No * 100) MOD 10;
+        if TensDec >= 2 then begin
+            AddToNoText(NoText, NoTextIndex, PrintExponent, TensText[TensDec]);
+            if OnesDec > 0 then
+                AddToNoText(NoText, NoTextIndex, PrintExponent, OnesText[OnesDec]);
+        end else
+            if (TensDec * 10 + OnesDec) > 0 then
+                AddToNoText(NoText, NoTextIndex, PrintExponent, OnesText[TensDec * 10 + OnesDec])
+            else
+                AddToNoText(NoText, NoTextIndex, PrintExponent, ZeroLbl);
+        if (CurrencyCode <> '') then
+            AddToNoText(NoText, NoTextIndex, PrintExponent, ' ' + ' ONLY')
+        else
+            AddToNoText(NoText, NoTextIndex, PrintExponent, ' PAISA ONLY');
+    end;
+
+    local procedure AddToNoText(
+        var NoText: array[2] of Text[800];
+        var NoTextIndex: Integer;
+        var PrintExponent: Boolean;
+        AddText: Text[30])
+    begin
+        PrintExponent := true;
+        NoText[NoTextIndex] := CopyStr(DelChr(NoText[NoTextIndex] + ' ' + AddText, '<'), 1, 200);
+    end;
+
+    procedure InitTextVariable()
+    begin
+        OnesText[1] := OneLbl;
+        OnesText[2] := TwoLbl;
+        OnesText[3] := ThreeLbl;
+        OnesText[4] := FourLbl;
+        OnesText[5] := FiveLbl;
+        OnesText[6] := SixLbl;
+        OnesText[7] := SevenLbl;
+        OnesText[8] := EightLbl;
+        OnesText[9] := NineLbl;
+        OnesText[10] := TenLbl;
+        OnesText[11] := ElevenLbl;
+        OnesText[12] := TwelveLbl;
+        OnesText[13] := ThirteenLbl;
+        OnesText[14] := FourteenLbl;
+        OnesText[15] := FifteenLbl;
+        OnesText[16] := SixteenLbl;
+        OnesText[17] := SeventeenLbl;
+        OnesText[18] := EighteenLbl;
+        OnesText[19] := NinteenLbl;
+        TensText[1] := '';
+        TensText[2] := TwentyLbl;
+        TensText[3] := ThirtyLbl;
+        TensText[4] := FortyLbl;
+        TensText[5] := FiftyLbl;
+        TensText[6] := SixtyLbl;
+        TensText[7] := SeventyLbl;
+        TensText[8] := EightyLbl;
+        TensText[9] := NinetyLbl;
+        ExponentText[1] := '';
+        ExponentText[2] := ThousandLbl;
+        ExponentText[3] := LakhLbl;
+        ExponentText[4] := CroreLbl;
+    end;
 }
 

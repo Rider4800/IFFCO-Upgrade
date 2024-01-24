@@ -1779,22 +1779,28 @@ codeunit 50200 CalcAmttoVendor
         Clear(GSTBaseAmt);
 
         DetGstLedEntry.RESET();
-        DetGstLedEntry.SetCurrentKey("Document No.", "HSN/SAC Code");
         DetGstLedEntry.SETRANGE("Document No.", DocumentNo);
         DetGstLedEntry.SetRange("Document Line No.", DocLineNo);
         DetGstLedEntry.SETRANGE("GST Component Code", 'IGST');
-        IF DetGstLedEntry.FindSet() THEN begin
+        IF DetGstLedEntry.FindFirst() THEN begin
             DetGstLedEntry.CalcSums("GST Base Amount");
             GSTBaseAmt := Abs(DetGstLedEntry."GST Base Amount");
         end;
 
-
         DetGstLedEntry.RESET();
-        DetGstLedEntry.SetCurrentKey("Document No.", "HSN/SAC Code");
         DetGstLedEntry.SETRANGE("Document No.", DocumentNo);
         DetGstLedEntry.SetRange("Document Line No.", DocLineNo);
         DetGstLedEntry.SETRANGE("GST Component Code", 'CGST');
-        IF DetGstLedEntry.FindSet() THEN begin
+        IF DetGstLedEntry.FindFirst() THEN begin
+            DetGstLedEntry.CalcSums("GST Base Amount");
+            GSTBaseAmt := Abs(DetGstLedEntry."GST Base Amount");
+        end;
+
+        DetGstLedEntry.RESET();
+        DetGstLedEntry.SETRANGE("Document No.", DocumentNo);
+        DetGstLedEntry.SetRange("Document Line No.", DocLineNo);
+        DetGstLedEntry.SETRANGE("GST Component Code", 'SGST');
+        IF DetGstLedEntry.FindFirst() THEN begin
             DetGstLedEntry.CalcSums("GST Base Amount");
             GSTBaseAmt := Abs(DetGstLedEntry."GST Base Amount");
         end;
@@ -1971,6 +1977,34 @@ codeunit 50200 CalcAmttoVendor
         Clear(TotalAmt);
         TotalAmt := IGSTAmt + SGSTAmt + CGSTAmt;
         EXIT(ABS(TotalAmt));
+    end;
+
+    procedure GetGSTPerPostedLine(DocumentNo: Code[20]; DocLineNo: Integer): Decimal
+    var
+        DetGstLedEntry: Record "Detailed GST Ledger Entry";
+        IGSTPer: Decimal;
+        CGSTPer: Decimal;
+        SGSTPer: Decimal;
+    begin
+        Clear(IGSTPer);
+        Clear(CGSTPer);
+        Clear(SGSTPer);
+
+        DetGstLedEntry.RESET();
+        DetGstLedEntry.SETRANGE("Document No.", DocumentNo);
+        DetGstLedEntry.SetRange("Document Line No.", DocLineNo);
+        IF DetGstLedEntry.FindFirst() THEN begin
+            repeat
+                IF DetGstLedEntry."GST Component Code" = 'IGST' then
+                    IGSTPer := abs(DetGstLedEntry."GST %");
+                IF DetGstLedEntry."GST Component Code" = 'SGST' then
+                    SGSTPer := abs(DetGstLedEntry."GST %");
+                IF DetGstLedEntry."GST Component Code" = 'CGST' then
+                    CGSTPer := abs(DetGstLedEntry."GST %");
+            until DetGstLedEntry.Next() = 0;
+        end;
+
+        EXIT(ABS(IGSTPer + SGSTPer + CGSTPer));
     end;
 
     procedure GetAmttoCustomerPostedLine(DocumentNo: Code[20]; DocLineNo: Integer): Decimal

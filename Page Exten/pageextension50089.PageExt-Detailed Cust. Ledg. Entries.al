@@ -21,6 +21,7 @@ pageextension 50089 pageextension50089 extends "Detailed Cust. Ledg. Entries"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
                 trigger OnAction()
                 var
                     CU50200: Codeunit 50200;
@@ -36,6 +37,7 @@ pageextension 50089 pageextension50089 extends "Detailed Cust. Ledg. Entries"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
                 trigger OnAction()
                 var
                     Rec7001: Record 7001;
@@ -56,6 +58,7 @@ pageextension 50089 pageextension50089 extends "Detailed Cust. Ledg. Entries"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
                 trigger OnAction()
                 begin
                     Xmlport.Run(50002, true, false);
@@ -70,6 +73,7 @@ pageextension 50089 pageextension50089 extends "Detailed Cust. Ledg. Entries"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                Visible = false;
                 trigger OnAction()
                 begin
                     Xmlport.Run(50003, false, true);

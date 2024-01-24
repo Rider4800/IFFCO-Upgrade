@@ -1,4 +1,4 @@
-page 50062 "Basic Reports"
+page 50061 "Basic Reports"
 {
     ApplicationArea = All;
     Caption = 'Basic Reports';

@@ -2,6 +2,16 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
 {
     layout
     {
+        modify("Buy-from Vendor No.")
+        {
+            trigger OnAfterValidate()
+            begin
+                VisiblityBool := false;
+                ShipToOptions := ShipToOptions::Location;
+                if ShipToOptions = ShipToOptions::Location then
+                    VisiblityBool := true;
+            end;
+        }
         modify("Location Code")
         {
             Editable = VisiblityBool;
@@ -67,29 +77,6 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
             }
         }
     }
-    trigger OnAfterGetCurrRecord()
-    begin
-        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
-            VisiblityBool := false
-        else
-            VisiblityBool := true;
-    end;
-
-    trigger OnAfterGetRecord()
-    begin
-        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
-            VisiblityBool := false
-        else
-            VisiblityBool := true;
-    end;
-
-    trigger OnModifyRecord(): Boolean
-    begin
-        if ShipToOptions = ShipToOptions::"Default (Company Address)" then
-            VisiblityBool := false
-        else
-            VisiblityBool := true;
-    end;
 
     var
         recPurchaseHeader: Record 38;

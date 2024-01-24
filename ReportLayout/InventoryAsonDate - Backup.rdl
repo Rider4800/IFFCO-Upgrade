@@ -64,59 +64,47 @@ End Function
   <DataSets>
     <DataSet Name="DataSet_Result">
       <Fields>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="LocationName">
-          <DataField>LocationName</DataField>
-        </Field>
-        <Field Name="StateCode">
-          <DataField>StateCode</DataField>
-        </Field>
-        <Field Name="PostingDate">
-          <DataField>PostingDate</DataField>
-        </Field>
         <Field Name="ItemNo">
           <DataField>ItemNo</DataField>
-        </Field>
-        <Field Name="ItemName">
-          <DataField>ItemName</DataField>
-        </Field>
-        <Field Name="UOM">
-          <DataField>UOM</DataField>
-        </Field>
-        <Field Name="LotNo">
-          <DataField>LotNo</DataField>
-        </Field>
-        <Field Name="Qty">
-          <DataField>Qty</DataField>
-        </Field>
-        <Field Name="QtyFormat">
-          <DataField>QtyFormat</DataField>
-        </Field>
-        <Field Name="EntryNoILE">
-          <DataField>EntryNoILE</DataField>
-        </Field>
-        <Field Name="CostAmountActual">
-          <DataField>CostAmountActual</DataField>
-        </Field>
-        <Field Name="CostAmountActualFormat">
-          <DataField>CostAmountActualFormat</DataField>
         </Field>
         <Field Name="LocationCode">
           <DataField>LocationCode</DataField>
         </Field>
-        <Field Name="TillDate">
-          <DataField>TillDate</DataField>
+        <Field Name="PostingDate">
+          <DataField>PostingDate</DataField>
         </Field>
-        <Field Name="InvPostGroup">
-          <DataField>InvPostGroup</DataField>
+        <Field Name="Quantity">
+          <DataField>Quantity</DataField>
         </Field>
-        <Field Name="UnitCost">
-          <DataField>UnitCost</DataField>
+        <Field Name="QuantityFormat">
+          <DataField>QuantityFormat</DataField>
         </Field>
-        <Field Name="UnitCostFormat">
-          <DataField>UnitCostFormat</DataField>
+        <Field Name="lotNo">
+          <DataField>lotNo</DataField>
+        </Field>
+        <Field Name="CostAmt">
+          <DataField>CostAmt</DataField>
+        </Field>
+        <Field Name="CostAmtFormat">
+          <DataField>CostAmtFormat</DataField>
+        </Field>
+        <Field Name="RemQty">
+          <DataField>RemQty</DataField>
+        </Field>
+        <Field Name="RemQtyFormat">
+          <DataField>RemQtyFormat</DataField>
+        </Field>
+        <Field Name="StateCode">
+          <DataField>StateCode</DataField>
+        </Field>
+        <Field Name="LocationName">
+          <DataField>LocationName</DataField>
+        </Field>
+        <Field Name="MFGDate">
+          <DataField>MFGDate</DataField>
+        </Field>
+        <Field Name="ExpDate">
+          <DataField>ExpDate</DataField>
         </Field>
         <Field Name="AlterConv">
           <DataField>AlterConv</DataField>
@@ -124,14 +112,47 @@ End Function
         <Field Name="AlterConvFormat">
           <DataField>AlterConvFormat</DataField>
         </Field>
+        <Field Name="InvenPostGroup">
+          <DataField>InvenPostGroup</DataField>
+        </Field>
+        <Field Name="TextItemName">
+          <DataField>TextItemName</DataField>
+        </Field>
+        <Field Name="UOM">
+          <DataField>UOM</DataField>
+        </Field>
         <Field Name="AlterUOM">
           <DataField>AlterUOM</DataField>
         </Field>
-        <Field Name="ExpDate">
-          <DataField>ExpDate</DataField>
+        <Field Name="NextExpQty">
+          <DataField>NextExpQty</DataField>
         </Field>
-        <Field Name="MFGDate">
-          <DataField>MFGDate</DataField>
+        <Field Name="NextExpQtyFormat">
+          <DataField>NextExpQtyFormat</DataField>
+        </Field>
+        <Field Name="ExpStock">
+          <DataField>ExpStock</DataField>
+        </Field>
+        <Field Name="ExpStockFormat">
+          <DataField>ExpStockFormat</DataField>
+        </Field>
+        <Field Name="ExpDays">
+          <DataField>ExpDays</DataField>
+        </Field>
+        <Field Name="NextDate">
+          <DataField>NextDate</DataField>
+        </Field>
+        <Field Name="RemCost">
+          <DataField>RemCost</DataField>
+        </Field>
+        <Field Name="RemCostFormat">
+          <DataField>RemCostFormat</DataField>
+        </Field>
+        <Field Name="MRPPrice">
+          <DataField>MRPPrice</DataField>
+        </Field>
+        <Field Name="MRPPriceFormat">
+          <DataField>MRPPriceFormat</DataField>
         </Field>
       </Fields>
       <Query>

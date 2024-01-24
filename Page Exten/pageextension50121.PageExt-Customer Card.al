@@ -46,7 +46,6 @@ pageextension 50121 CustomerCard extends "Customer Card"
             field("Created By"; Rec."Created By")
             {
                 ApplicationArea = all;
-
             }
             field("Creation DateTime"; Rec."Creation DateTime")
             {
@@ -79,75 +78,99 @@ pageextension 50121 CustomerCard extends "Customer Card"
                 Caption = 'KYC Documents';
                 field("Dealership Proposal"; rec."Dealership Proposal")
                 {
+                    ApplicationArea = All;
                 }
                 field("Dealership Proposal Remark"; rec."Dealership Proposal Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Firm Consititution Certificate"; rec."Firm Consititution Certificate")
                 {
+                    ApplicationArea = All;
                 }
                 field("Firm Const. Remark"; rec."Firm Const. Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Signed Blank Cheque"; rec."Signed Blank Cheque")
                 {
+                    ApplicationArea = All;
                 }
                 field("Signed Blank Cheq. Remark"; rec."Signed Blank Cheq. Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Security Deposite"; rec."Security Deposite")
                 {
+                    ApplicationArea = All;
                 }
                 field("Security Deposite Remark"; rec."Security Deposite Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Banker Varification Cert."; rec."Banker Varification Cert.")
                 {
+                    ApplicationArea = All;
                 }
                 field("Banker Varification Cert. Rem"; rec."Banker Varification Cert. Rem")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 3Yr B/Sheet"; rec."Last 3Yr B/Sheet")
                 {
+                    ApplicationArea = All;
                 }
                 field("Last 3Yr B/Sheet Remark"; rec."Last 3Yr B/Sheet Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("GST Cert."; rec."GST Cert.")
                 {
+                    ApplicationArea = All;
                 }
                 field("GST Cert. Remark"; rec."GST Cert. Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Firm PAN"; rec."Firm PAN")
                 {
+                    ApplicationArea = All;
                 }
                 field("Firm PAN Remark"; rec."Firm PAN Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("KYC Form"; rec."KYC Form")
                 {
+                    ApplicationArea = All;
                 }
                 field("KYC Form Remark"; rec."KYC Form Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("ITR Last 3Yr"; rec."ITR Last 3Yr")
                 {
+                    ApplicationArea = All;
                 }
                 field("ITR Last 3Yr Remark"; rec."ITR Last 3Yr Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Business Policy Signed"; rec."Business Policy Signed")
                 {
+                    ApplicationArea = All;
                 }
                 field("Business Policy Signed Remark"; rec."Business Policy Signed Remark")
                 {
+                    ApplicationArea = All;
                 }
                 field("Req. Letter -Dealership"; rec."Req. Letter -Dealership")
                 {
+                    ApplicationArea = All;
                 }
                 field("Req. Lette -Dealership Remark"; rec."Req. Lette -Dealership Remark")
                 {
+                    ApplicationArea = All;
                 }
             }
             group("Customer Class1")
@@ -155,9 +178,11 @@ pageextension 50121 CustomerCard extends "Customer Card"
                 Caption = 'Customer Class';
                 field("Customer Class"; rec."Customer Class")
                 {
+                    ApplicationArea = All;
                 }
                 field("Blocked/Unblocked Reason"; rec."Blocked/Unblocked Reason")
                 {
+                    ApplicationArea = All;
                 }
             }
         }

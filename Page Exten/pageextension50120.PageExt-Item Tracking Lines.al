@@ -177,7 +177,7 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                     SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
                     SLRec1.SetRange("No.", Rec."Item No.");
                     if SLRec1.FindFirst() then begin
-                        if CustRec.GetTotalAmountLCY + (SLRec1.Quantity * SLRec1."Unit Price") > CustRec."Credit Limit (LCY)" then
+                        if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * SLRec1."Unit Price") > CustRec."Credit Limit (LCY)" then
                             Error(Text003, CustRec."No.", CustRec."Credit Limit (LCY)");
                     end;
                 end;
@@ -205,7 +205,7 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                     SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
                     SLRec1.SetRange("No.", Rec."Item No.");
                     if SLRec1.FindFirst() then begin
-                        if CustRec.GetTotalAmountLCY + (SLRec1.Quantity * SLRec1."Unit Price") > CustRec."Credit Limit (LCY)" then
+                        if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * SLRec1."Unit Price") > CustRec."Credit Limit (LCY)" then
                             Error(Text003, CustRec."No.", CustRec."Credit Limit (LCY)");
                     end;
                 end;
