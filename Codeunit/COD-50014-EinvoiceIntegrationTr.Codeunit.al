@@ -67,7 +67,7 @@ codeunit 50014 EInvoiceIntegrationTr
         end;
     end;
 
-    procedure CreateJsonSalesCrMemoOrder(SalesCrMemoHeader: Record "Sales Cr.Memo Header")
+    procedure CreateJsonTransferShipOrder(TransferShipHeaderRec: Record "Transfer Shipment Header")
     var
         JsonObjectHeader: JsonObject;
         JsonObjectHeaderTransDet: JsonObject;
@@ -79,13 +79,14 @@ codeunit 50014 EInvoiceIntegrationTr
         JsonObjectHeaderExpDet: JsonObject;
         JsonObjectHeaderPmntDet: JsonObject;
         JsonObjectAddDocDtls: JsonObject;
+        JsonObjectEWayBillDtls: JsonObject;
         JsonArrayAddDocDtls: JsonArray;
         JsonObjectValueDet: JsonObject;
         JsonObjectLine: JsonObject;
         JsonObjectBatchDet: JsonObject;
         JsonArrayBatchDet: JsonArray;
         JsonArrayLine: JsonArray;
-        SalesCrMemoLineRec: Record "Sales Cr.Memo Line";
+        TransShipLineRec: Record "Transfer Shipment Line";
         i: Integer;
         ItemRec: Record Item;
         CompInfoRec: Record "Company Information";
@@ -124,112 +125,89 @@ codeunit 50014 EInvoiceIntegrationTr
         FldRef: FieldRef;
         recResponseLog: Record "Response Logs";
         EWayBillandEinvoice: Record "E-Way Bill & E-Invoice";
-        UnRegCusrErr: Label 'E-Invoicing is not applicable for Unregistered Customer.';
+        EInvoiceIntegration: Record "E-Way Bill & E-Invoice";
+        LocationBuff: Record Location;
+        StateBuff: Record State;
+        SalesLinesErr: Label 'E-Invoice allowes only 100 lines per Invoice. Curent transaction is having %1 lines.';
     begin
-        AuthenticateCredentials(SalesCrMemoHeader."No.");
+        AuthenticateCredentials(TransferShipHeaderRec."No.");
         CompInfoRec.Get();
-        LocRec.Get(SalesCrMemoHeader."Location Code");
+        LocRec.Get(TransferShipHeaderRec."Transfer-from Code");
 
-        IF SalesCrMemoHeader."GST Customer Type" IN ["GST Customer Type"::Unregistered, "GST Customer Type"::" "] THEN
-            ERROR(UnRegCusrErr);
+        EInvoiceIntegration.GET(TransferShipHeaderRec."No.");
         JsonObjectHeader.Add('access_token', accesstoken);
-        //JsonObjectHeader.Add('user_gstin', SalesCrMemoHeader."Location GST Reg. No."); //For production
+        //JsonObjectHeader.Add('user_gstin', EInvoiceIntegration."Location GST Reg. No."); //For production
         JsonObjectHeader.Add('user_gstin', '09AAAPG7885R002');                           //For Sandbox
         JsonObjectHeader.Add('data_source', 'erp');
 
-        SendSalesInvTransactionDetails(SalesCrMemoHeader);
-        JsonObjectHeaderTransDet.Add('supply_type', SIcatg);
+        JsonObjectHeaderTransDet.Add('supply_type', 'B2B');
         JsonObjectHeaderTransDet.Add('charge_type', 'N');
         JsonObjectHeaderTransDet.Add('igst_on_intra', 'N');
         JsonObjectHeaderTransDet.Add('ecommerce_gstin', '');
         JsonObjectHeader.Add('transaction_details', JsonObjectHeaderTransDet);
 
-        JsonObjectHeaderDocDet.Add('document_type', 'CRN');
-        JsonObjectHeaderDocDet.Add('document_number', SalesCrMemoHeader."No.");
-        JsonObjectHeaderDocDet.Add('document_date', FORMAT(SalesCrMemoHeader."Posting Date", 0, '<Day,2>/<Month,2>/<Year4>'));
+        JsonObjectHeaderDocDet.Add('document_type', 'INV');
+        JsonObjectHeaderDocDet.Add('document_number', TransferShipHeaderRec."No.");
+        JsonObjectHeaderDocDet.Add('document_date', FORMAT(TransferShipHeaderRec."Posting Date", 0, '<Day,2>/<Month,2>/<Year4>'));
         JsonObjectHeader.Add('document_details', JsonObjectHeaderDocDet);
 
-        SendSalesInvSellerDetails(LocRec."State Code");
-        //JsonObjectHeaderSellerDet.Add('gstin', SalesCrMemoHeader."Location GST Reg. No.");       //For production
+        SendSalesInvSellerDetails(TransferShipHeaderRec."Transfer-from Code");
+        //JsonObjectHeaderSellerDet.Add('gstin', LocRec."GST Registration No.");                    //For production
         JsonObjectHeaderSellerDet.Add('gstin', '09AAAPG7885R002');                                  //For sandbox
-        JsonObjectHeaderSellerDet.Add('legal_name', CompInfoRec.Name);
-        JsonObjectHeaderSellerDet.Add('trade_name', CompInfoRec.Name);
+        JsonObjectHeaderSellerDet.Add('legal_name', LocRec.Name);
+        JsonObjectHeaderSellerDet.Add('trade_name', LocRec.Name);
         JsonObjectHeaderSellerDet.Add('address1', LocRec.Address);
         JsonObjectHeaderSellerDet.Add('address2', LocRec."Address 2");
         JsonObjectHeaderSellerDet.Add('location', LocRec.City);
         //JsonObjectHeaderSellerDet.Add('pincode', COPYSTR(LocRec."Post Code", 1, 6));              //For productoin
-        JsonObjectHeaderSellerDet.Add('pincode', 201301);                                         //For sandbox
+        JsonObjectHeaderSellerDet.Add('pincode', 201301);                                           //For sandbox
         //JsonObjectHeaderSellerDet.Add('state_code', SIStateCodeDesc);                             //For productoin
         JsonObjectHeaderSellerDet.Add('state_code', 'Uttar Pradesh');                               //For sandbox
         JsonObjectHeaderSellerDet.Add('phone_number', COPYSTR(LocRec."Phone No.", 1, 10));
         JsonObjectHeaderSellerDet.Add('email', COPYSTR(LocRec."E-Mail", 1, 50));
         JsonObjectHeader.Add('seller_details', JsonObjectHeaderSellerDet);
 
-        SendSalesInvBuyerDetails(SalesCrMemoHeader);
-        /*
-        IF SalesCrMemoHeader."GST Customer Type" = SalesCrMemoHeader."GST Customer Type"::Export THEN
-            JsonObjectHeaderBuyerDet.Add('gstin', 'URP')
-        else
-            JsonObjectHeaderBuyerDet.Add('gstin', SalesCrMemoHeader."Customer GST Reg. No.");
-        */                                                                                          //For production
+        //JsonObjectHeaderBuyerDet.Add('gstin', LocRec."GST Registration No.");                     //For production
         JsonObjectHeaderBuyerDet.Add('gstin', '05AAAPG7885R002');                                   //For sandbox
-        JsonObjectHeaderBuyerDet.Add('legal_name', SalesCrMemoHeader."Bill-to Name");
-        JsonObjectHeaderBuyerDet.Add('trade_name', SalesCrMemoHeader."Bill-to Name");
-        JsonObjectHeaderBuyerDet.Add('address1', SalesCrMemoHeader."Bill-to Address");
-        if StrLen(SalesCrMemoHeader."Bill-to Address 2") < 3 then
-            JsonObjectHeaderBuyerDet.Add('address2', SalesCrMemoHeader."Bill-to Address 2" + '...')
-        else
-            JsonObjectHeaderBuyerDet.Add('address2', SalesCrMemoHeader."Bill-to Address 2");
-        JsonObjectHeaderBuyerDet.Add('location', SalesCrMemoHeader."Bill-to City");
-        /*
-        IF SalesCrMemoHeader."GST Customer Type" = SalesCrMemoHeader."GST Customer Type"::Export THEN
-            JsonObjectHeaderBuyerDet.Add('pincode', '999999')
-        else
-            JsonObjectHeaderBuyerDet.Add('pincode', SalesCrMemoHeader."Bill-to Post Code");
-        */                                                                                        //For production
-        JsonObjectHeaderBuyerDet.Add('pincode', 263001);                                        //For sandbox
-        JsonObjectHeaderBuyerDet.Add('place_of_supply', SIBuyerStcd);
-        //JsonObjectHeaderBuyerDet.Add('state_code', SIBuyerStatename);                           //For production
-        JsonObjectHeaderBuyerDet.Add('state_code', 'Uttarakhand');                                //For sandbox
-        JsonObjectHeaderBuyerDet.Add('phone_number', SIBuyerPh);
-        JsonObjectHeaderBuyerDet.Add('email', SIBuyerEm);
+        JsonObjectHeaderBuyerDet.Add('legal_name', LocRec.Name);
+        JsonObjectHeaderBuyerDet.Add('trade_name', LocRec.Name);
+        JsonObjectHeaderBuyerDet.Add('address1', LocRec.Address);
+        JsonObjectHeaderBuyerDet.Add('address2', LocRec."Address 2");
+        JsonObjectHeaderBuyerDet.Add('location', LocRec.City);
+        //JsonObjectHeaderBuyerDet.Add('pincode', COPYSTR(LocRec."Post Code", 1, 6));               //For production                                                                                 //For production
+        JsonObjectHeaderBuyerDet.Add('pincode', 263001);                                            //For sandbox
+        IF StateBuff.GET(LocRec."State Code") then;
+        JsonObjectHeaderBuyerDet.Add('place_of_supply', StateBuff."State Code (GST Reg. No.)");
+        //JsonObjectHeaderBuyerDet.Add('state_code', StateBuff.Description);                        //For production
+        JsonObjectHeaderBuyerDet.Add('state_code', 'Uttarakhand');                                  //For sandbox
+        JsonObjectHeaderBuyerDet.Add('phone_number', COPYSTR(LocRec."Phone No.", 1, 10));
+        JsonObjectHeaderBuyerDet.Add('email', COPYSTR(LocRec."E-Mail", 1, 50));
         JsonObjectHeader.Add('buyer_details', JsonObjectHeaderBuyerDet);
 
-        SendSalesInvDispath_Details(LocRec."State Code");
         //JsonObjectHeaderDispatchDet.Add('gstin', 'GSTIN :');
-        JsonObjectHeaderDispatchDet.Add('company_name', CompInfoRec.Name);
+        JsonObjectHeaderDispatchDet.Add('company_name', LocRec.Name);
         JsonObjectHeaderDispatchDet.Add('address1', LocRec.Address);
         JsonObjectHeaderDispatchDet.Add('address2', LocRec."Address 2");
         JsonObjectHeaderDispatchDet.Add('location', LocRec.City);
         //JsonObjectHeaderDispatchDet.Add('pincode', LocRec."Post Code");                   //For production
-        JsonObjectHeaderDispatchDet.Add('pincode', 201301);                               //For sandbox
-        //JsonObjectHeaderDispatchDet.Add('state_code', SIDispatchstate_code);              //For production
+        JsonObjectHeaderDispatchDet.Add('pincode', 201301);                                 //For sandbox
+        IF StateBuff.GET(LocRec."State Code") then;
+        //JsonObjectHeaderDispatchDet.Add('state_code', StateBuff.Description);             //For production
         JsonObjectHeaderDispatchDet.Add('state_code', 'Uttar Pradesh');                     //For sandbox
         JsonObjectHeader.Add('dispatch_details', JsonObjectHeaderDispatchDet);
 
-        SendSalesInvShipDetails(SalesCrMemoHeader);
-        //JsonObjectHeaderShipDet.Add('gstin', SIShipGSTIN);                      //For production
-        JsonObjectHeaderShipDet.Add('gstin', '05AAAPG7885R002');                  //For sandbox
-        JsonObjectHeaderShipDet.Add('legal_name', SIShipTrdNm);
-        JsonObjectHeaderShipDet.Add('trade_name', SIShipTrdNm);
-        JsonObjectHeaderShipDet.Add('address1', SIShipBno);
-        JsonObjectHeaderShipDet.Add('address2', SIShipBnm);
-        JsonObjectHeaderShipDet.Add('location', SIShipLoc);
-        //JsonObjectHeaderShipDet.Add('pincode', SIShipPin);                      //For production
-        JsonObjectHeaderShipDet.Add('pincode', 263001);                        //For sandbox
-        //JsonObjectHeaderShipDet.Add('state_code', SIShipStatename);             //for production            
-        JsonObjectHeaderShipDet.Add('state_code', 'UTTARAKHAND');                 //for sandbox
+        //JsonObjectHeaderShipDet.Add('gstin', LocRec."GST Registration No.");              //For production
+        JsonObjectHeaderShipDet.Add('gstin', '05AAAPG7885R002');                            //For sandbox
+        JsonObjectHeaderShipDet.Add('legal_name', LocRec.Name);
+        JsonObjectHeaderShipDet.Add('trade_name', LocRec.Name);
+        JsonObjectHeaderShipDet.Add('address1', LocRec.Address);
+        JsonObjectHeaderShipDet.Add('address2', LocRec."Address 2");
+        JsonObjectHeaderShipDet.Add('location', LocRec.City);
+        //JsonObjectHeaderShipDet.Add('pincode', COPYSTR(LocRec."Post Code", 1, 6));        //For production
+        JsonObjectHeaderShipDet.Add('pincode', 263001);                                     //For sandbox
+        //JsonObjectHeaderShipDet.Add('state_code', StateBuff.Description);                 //for production            
+        JsonObjectHeaderShipDet.Add('state_code', 'UTTARAKHAND');                           //for sandbox
         JsonObjectHeader.Add('ship_details', JsonObjectHeaderShipDet);
-
-        SendSalesInvExportDetails(SalesCrMemoHeader);
-        JsonObjectHeaderExpDet.Add('ship_bill_number', ship_bill_number);
-        JsonObjectHeaderExpDet.Add('ship_bill_date', ship_bill_date);
-        JsonObjectHeaderExpDet.Add('country_code', country_code);
-        JsonObjectHeaderExpDet.Add('foreign_currency', foreign_currency);
-        JsonObjectHeaderExpDet.Add('refund_claim', 'N');
-        JsonObjectHeaderExpDet.Add('port_code', port_code);
-        JsonObjectHeaderExpDet.Add('export_duty', export_duty);
-        JsonObjectHeader.Add('export_details', JsonObjectHeaderExpDet);
 
         JsonObjectHeaderPmntDet.Add('bank_account_number', '');
         JsonObjectHeaderPmntDet.Add('paid_balance_amount', 0);
@@ -250,53 +228,64 @@ codeunit 50014 EInvoiceIntegrationTr
         JsonArrayAddDocDtls.Add(JsonObjectAddDocDtls);
         JsonObjectHeader.Add('additional_document_details', JsonArrayAddDocDtls);
 
-        SendSalesInvValueDetails(SalesCrMemoHeader);
+        SendSalesInvValueDetails(TransferShipHeaderRec);
         JsonObjectValueDet.Add('total_assessable_value', SIValueDetTotAssVal);
         JsonObjectValueDet.Add('total_cgst_value', SIValueDetCGSTVal);
         JsonObjectValueDet.Add('total_sgst_value', SIValueDetSGSTVal);
         JsonObjectValueDet.Add('total_igst_value', SIValueDetIGSTVal);
-        //JsonObjectValueDet.Add('total_cess_value', SIValueDetTotCessVal);         //to be assigned to 0
         JsonObjectValueDet.Add('total_cess_value', 0);
         JsonObjectValueDet.Add('total_cess_nonadvol_value', SIValueDetCesNonAdval);
         JsonObjectValueDet.Add('total_discount', 0);
-        JsonObjectValueDet.Add('total_other_charge', SIValueDetOthrChrg);
+        JsonObjectValueDet.Add('total_other_charge', 0);
         JsonObjectValueDet.Add('total_invoice_value', SIValueDetTotInvVal);
-        //JsonObjectValueDet.Add('total_cess_value_of_state', SIValueDetTotCesValOfState);      //to be assigned to 0
         JsonObjectValueDet.Add('total_cess_value_of_state', 0);
-        JsonObjectValueDet.Add('round_off_amount', SIValueDetRoundOffAmt);
+        JsonObjectValueDet.Add('round_off_amount', 0);
         JsonObjectValueDet.Add('total_invoice_value_additional_currency', 0);
         JsonObjectHeader.Add('value_details', JsonObjectValueDet);
 
+        SendEWayBillDetails(TransferShipHeaderRec);
+        JsonObjectEWayBillDtls.Add('transporter_id', transporterid);
+        JsonObjectEWayBillDtls.Add('transporter_name', transportername);
+        JsonObjectEWayBillDtls.Add('transportation_mode', transportationmode);
+        JsonObjectEWayBillDtls.Add('transportation_distance', transportationdistance);
+        JsonObjectEWayBillDtls.Add('transporter_document_number', transporterdocumentnumber);
+        JsonObjectEWayBillDtls.Add('transporter_document_date', transporterdocumentdate);
+        JsonObjectEWayBillDtls.Add('vehicle_number', vehiclenumber);
+        JsonObjectEWayBillDtls.Add('vehicle_type', vehicletype);
+        JsonObjectHeader.Add('ewaybill_details', JsonObjectEWayBillDtls);
+
         i := 1;
-        SalesCrMemoLineRec.Reset();
-        SalesCrMemoLineRec.SetRange("Document No.", SalesCrMemoHeader."No.");
-        SalesCrMemoLineRec.SETFILTER(Quantity, '<>%1', 0);
-        SalesCrMemoLineRec.SETFILTER("No.", '<>%1', '427000210');
-        if SalesCrMemoLineRec.FindFirst() then begin
+        TransShipLineRec.Reset();
+        TransShipLineRec.SetRange("Document No.", TransferShipHeaderRec."No.");
+        TransShipLineRec.SETFILTER(Quantity, '<>%1', 0);
+        TransShipLineRec.SETFILTER("Item No.", '<>%1', '427000210');
+        if TransShipLineRec.FindFirst() then begin
             repeat
                 Clear(JsonObjectLine);
                 Clear(JsonObjectBatchDet);
-                SendSalesInvItemDetails(SalesCrMemoHeader, SalesCrMemoLineRec);
-                JsonObjectLine.Add('item_serial_number', SalesCrMemoLineRec."Line No.");
-                JsonObjectLine.Add('product_description', SalesCrMemoLineRec.Description);
-                JsonObjectLine.Add('is_service', SIItemIsService);
-                JsonObjectLine.Add('hsn_code', SalesCrMemoLineRec."HSN/SAC Code");
+                SendSalesInvItemDetails(TransferShipHeaderRec, TransShipLineRec);
+                IF TransShipLineRec.COUNT > 100 THEN
+                    ERROR(SalesLinesErr, TransShipLineRec.COUNT);
+                JsonObjectLine.Add('item_serial_number', TransShipLineRec."Line No.");
+                JsonObjectLine.Add('product_description', TransShipLineRec.Description);
+                JsonObjectLine.Add('is_service', 'N');
+                JsonObjectLine.Add('hsn_code', COPYSTR(TransShipLineRec."HSN/SAC Code", 1, 8));
                 JsonObjectLine.Add('bar_code', '');
-                JsonObjectLine.Add('quantity', SalesCrMemoLineRec.Quantity);
+                JsonObjectLine.Add('quantity', TransShipLineRec.Quantity);
                 JsonObjectLine.Add('free_quantity', 0);
-                JsonObjectLine.Add('unit', COPYSTR(SalesCrMemoLineRec."Unit of Measure Code", 1, 3));
-                JsonObjectLine.Add('unit_price', ROUND(SalesCrMemoLineRec."Unit Price" / SIItemCurrFector, 0.01) + 0);
-                JsonObjectLine.Add('total_amount', ROUND((SalesCrMemoLineRec.Quantity * SalesCrMemoLineRec."Unit Price") / SIItemCurrFector, 0.01) + 0);//ask ramesh g 
-                JsonObjectLine.Add('pre_tax_value', SIItemPreTaxValue);
-                JsonObjectLine.Add('discount', ROUND(SalesCrMemoLineRec."Line Discount Amount" / SIItemCurrFector, 0.01) + ROUND(SalesCrMemoLineRec."Inv. Discount Amount" / SIItemCurrFector, 0.01) + 0);      //ask ramesh g
+                JsonObjectLine.Add('unit', TransShipLineRec."Unit of Measure Code");
+                JsonObjectLine.Add('unit_price', TransShipLineRec."Unit Price");
+                JsonObjectLine.Add('total_amount', TransShipLineRec.Amount);
+                JsonObjectLine.Add('pre_tax_value', 0);
+                JsonObjectLine.Add('discount', 0);
                 JsonObjectLine.Add('other_charge', 0);
-                JsonObjectLine.Add('assessable_value', SIItemAssValue);
+                JsonObjectLine.Add('assessable_value', TransShipLineRec.Quantity * TransShipLineRec."Unit Price");
                 JsonObjectLine.Add('gst_rate', SIItemGSTPer);
                 JsonObjectLine.Add('igst_amount', SIItemIGSTRt);
                 JsonObjectLine.Add('cgst_amount', SIItemCGSTRt);
                 JsonObjectLine.Add('sgst_amount', SIItemSGSTRt);
                 JsonObjectLine.Add('cess_rate', SIItemCesRt);
-                JsonObjectLine.Add('cess_amount', SIItemCesAmt);
+                JsonObjectLine.Add('cess_amount', 0);
                 JsonObjectLine.Add('cess_nonadvol_amount', SIItemCesNonAdval);
                 JsonObjectLine.Add('state_cess_rate', SIItemStateCes);
                 JsonObjectLine.Add('state_cess_amount', 0);
@@ -306,7 +295,7 @@ codeunit 50014 EInvoiceIntegrationTr
                 JsonObjectLine.Add('order_line_reference', '');
                 JsonObjectLine.Add('product_serial_number', '');
 
-                SendSalesInvBatchDetails(SalesCrMemoLineRec);
+                SendSalesInvBatchDetails(TransShipLineRec);
                 JsonObjectBatchDet.Add('name', SIBatchName);
                 JsonObjectBatchDet.Add('expiry_date', SIBatchExpDate);
                 JsonObjectBatchDet.Add('warranty_date', SIBatchWarrDate);
@@ -314,7 +303,7 @@ codeunit 50014 EInvoiceIntegrationTr
 
                 i := i + 1;
                 JsonArrayLine.Add(JsonObjectLine);
-            until SalesCrMemoLineRec.Next() = 0;
+            until TransShipLineRec.Next() = 0;
         end;
         JsonObjectHeader.Add('item_list', JsonArrayLine);
 
@@ -362,24 +351,17 @@ codeunit 50014 EInvoiceIntegrationTr
                             QRCodeUrl := JOutputToken1.AsValue().AsText();
                             JOutputObject1.Get('EinvoicePdf', JOutputToken1);
                             EinvoicePdf := JOutputToken1.AsValue().AsText();
+                            JOutputObject1.Get('EwbNo', JOutputToken1);
+                            EwbNo := JOutputToken1.AsValue().AsText();
+                            JOutputObject1.Get('EwbDt', JOutputToken1);
+                            EwbDt := JOutputToken1.AsValue().AsText();
+                            JOutputObject1.Get('EwbValidTill', JOutputToken1);
+                            EwbValidTill := JOutputToken1.AsValue().AsText();
                         end;
-                        if SignedQRCode <> '' then begin
-                            Clear(RecRef);
-                            RecRef.Get(SalesCrMemoHeader.RecordId);
-                            if QRGenerator.GenerateQRCodeImage(SignedQRCode, TempBlob) then begin
-                                if TempBlob.HasValue() then begin
-                                    FldRef := RecRef.Field(SalesCrMemoHeader.FieldNo("QR Code"));
-                                    TempBlob.ToRecordRef(RecRef, SalesCrMemoHeader.FieldNo("QR Code"));
-                                    RecRef.Field(SalesCrMemoHeader.FieldNo("IRN Hash")).Value := Irn;
-                                    RecRef.Field(SalesCrMemoHeader.FieldNo("Acknowledgement No.")).Value := AckNo;
-                                    Evaluate(AckDtTimeVar, AckDt);
-                                    RecRef.Field(SalesCrMemoHeader.FieldNo("Acknowledgement Date")).Value := AckDtTimeVar;
-                                    RecRef.Modify();
-                                end;
-                            end;
-                        end;
+                        if SignedQRCode <> '' then
+                            QRGenerator.GenerateQRCodeImage(SignedQRCode, TempBlob);
                         recResponseLog.INIT;
-                        recResponseLog."Document No." := SalesCrMemoHeader."No.";
+                        recResponseLog."Document No." := TransferShipHeaderRec."No.";
                         recResponseLog."Response Date" := TODAY;
                         recResponseLog."Response Time" := TIME;
                         recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
@@ -403,13 +385,19 @@ codeunit 50014 EInvoiceIntegrationTr
                         recResponseLog.INSERT;
 
                         EWayBillandEinvoice.RESET();
-                        EWayBillandEinvoice.SETRANGE("No.", SalesCrMemoHeader."No.");
+                        EWayBillandEinvoice.SETRANGE("No.", TransferShipHeaderRec."No.");
                         IF EWayBillandEinvoice.FindFirst() THEN BEGIN
                             EWayBillandEinvoice.VALIDATE("E-Invoice IRN No", IRN);
                             EWayBillandEinvoice.VALIDATE("E-Invoice Acknowledge No.", AckNo);
                             EWayBillandEinvoice.VALIDATE("E-Invoice Acknowledge Date", AckDt);
                             EWayBillandEinvoice."E-Invoice QR Code" := QRCodeUrl;
                             EWayBillandEinvoice."E-Invoice PDF" := EinvoicePdf;
+                            IF EwbNo <> '' THEN
+                                EWayBillandEinvoice.VALIDATE("E-Way Bill No.", EwbNo);
+                            IF EwbDt <> '' THEN
+                                EWayBillandEinvoice."E-Way Bill Date" := EwbDt;
+                            IF EwbValidTill <> '' THEN
+                                EWayBillandEinvoice."E-Way Bill Valid Upto" := EwbValidTill;
                             EWayBillandEinvoice."E-Invoice IRN Status" := Status;
                             //EWayBillandEinvoice.VALIDATE("E-Invoice Cancel Date", '');
                             EWayBillandEinvoice."E-Invoice Cancel Reason" := EWayBillandEinvoice."E-Invoice Cancel Reason"::" ";
@@ -421,7 +409,7 @@ codeunit 50014 EInvoiceIntegrationTr
                         JOutputObject.Get('errorMessage', JOutputToken);
                         errorMessage := JOutputToken.AsValue().AsText();
                         recResponseLog.INIT;
-                        recResponseLog."Document No." := SalesCrMemoHeader."No.";
+                        recResponseLog."Document No." := TransferShipHeaderRec."No.";
                         recResponseLog."Response Date" := TODAY;
                         recResponseLog."Response Time" := TIME;
                         recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
@@ -445,7 +433,7 @@ codeunit 50014 EInvoiceIntegrationTr
                         recResponseLog.INSERT;
 
                         EWayBillandEinvoice.RESET();
-                        EWayBillandEinvoice.SETRANGE("No.", SalesCrMemoHeader."No.");
+                        EWayBillandEinvoice.SETRANGE("No.", TransferShipHeaderRec."No.");
                         IF EWayBillandEinvoice.FindFirst() THEN
                             EWayBillandEinvoice."E-Invoice Status" := 'Faliure' + ' ' + StatusCode;
                         MESSAGE('Error Message : ' + errorMessage);
@@ -454,28 +442,6 @@ codeunit 50014 EInvoiceIntegrationTr
                 end;
             end;
         end;
-    end;
-
-    procedure SendSalesInvTransactionDetails(SCrMHRec: Record "Sales Cr.Memo Header")
-    begin
-        SIcatg := '';
-        SITyp := '';
-        IF (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Registered) or (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Exempted) THEN
-            SIcatg := 'B2B'
-        ELSE
-            //    catg := 'EXP';
-            IF (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export) AND (SCrMHRec."GST Without Payment of Duty" = TRUE) THEN
-                SIcatg := 'EXPWOP'
-            ELSE
-                IF (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export) AND (SCrMHRec."GST Without Payment of Duty" = FALSE) THEN
-                    SIcatg := 'EXPWP'
-                ELSE
-                    //    catg := 'EXP';
-                    IF (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::"SEZ Unit") AND (SCrMHRec."GST Without Payment of Duty" = TRUE) THEN
-                        SIcatg := 'SEZWOP'
-                    ELSE
-                        IF (SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::"SEZ Unit") AND (SCrMHRec."GST Without Payment of Duty" = FALSE) THEN
-                            SIcatg := 'SEZWP';
     end;
 
     procedure SendSalesInvSellerDetails(DocNo: Code[20])
@@ -494,173 +460,7 @@ codeunit 50014 EInvoiceIntegrationTr
         end;
     end;
 
-    procedure SendSalesInvBuyerDetails(SCrMHRec: Record "Sales Cr.Memo Header")
-    var
-        SalesCrMemoLine: Record "Sales Cr.Memo Line";
-        StateBuff: Record State;
-        recState: Record State;
-        Contact: Record Contact;
-        recCust: Record Customer;
-        ShipToAddr: Record "Ship-to Address";
-    begin
-        SalesCrMemoLine.Reset();
-        SalesCrMemoLine.SETRANGE("Document No.", SCrMHRec."No.");
-        SalesCrMemoLine.SETFILTER(Quantity, '<>%1', 0);
-        IF SalesCrMemoLine.FINDFIRST THEN begin
-            IF SalesCrMemoLine."GST Place of Supply" = SalesCrMemoLine."GST Place of Supply"::"Bill-to Address" THEN BEGIN
-                IF NOT (SCrMHRec."GST Customer Type" = "GST Customer Type"::Export) THEN BEGIN
-                    StateBuff.GET(SCrMHRec."GST Bill-to State Code");
-                    SIBuyerStcd := StateBuff."State Code (GST Reg. No.)";
-                END ELSE
-                    SIBuyerStcd := '96';
-
-                IF SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export THEN
-                    SIBuyerStatename := '96'
-                ELSE
-                    IF SCrMHRec."GST Customer Type" <> SCrMHRec."GST Customer Type"::Export THEN BEGIN
-                        recState.SETRANGE("State Code (GST Reg. No.)", SIBuyerStcd);
-                        IF recState.FIND('-') THEN BEGIN
-                            SIBuyerStatename := recState.Description;
-                        END;
-                    END;
-                IF Contact.GET(SCrMHRec."Bill-to Contact No.") THEN BEGIN
-                    SIBuyerPh := '';// COPYSTR(Contact."Phone No.",1,10);
-                    SIBuyerEm := '';//COPYSTR(Contact."E-Mail",1,50);
-                END ELSE BEGIN
-                    IF recCust.GET(SCrMHRec."Sell-to Customer No.") THEN BEGIN
-                        SIBuyerPh := ''; //srecCust."Phone No.";
-                        SIBuyerEm := '';//recCust."E-Mail";
-                    END;
-                END;
-            end;
-        end else begin
-            IF SalesCrMemoLine."GST Place of Supply" = SalesCrMemoLine."GST Place of Supply"::"Ship-to Address" THEN BEGIN
-                IF NOT (SCrMHRec."GST Customer Type" = "GST Customer Type"::Export) THEN BEGIN
-                    StateBuff.GET(SCrMHRec."GST Ship-to State Code");
-                    SIBuyerStcd := StateBuff."State Code (GST Reg. No.)";
-                END ELSE
-                    SIBuyerStcd := '96';
-
-                IF SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export THEN
-                    SIBuyerStatename := '96'
-                ELSE
-                    IF SCrMHRec."GST Customer Type" <> SCrMHRec."GST Customer Type"::Export THEN BEGIN
-                        recState.SETRANGE("State Code (GST Reg. No.)", SIBuyerStcd);
-                        IF recState.FIND('-') THEN BEGIN
-                            SIBuyerStatename := recState.Description;
-                        END;
-                    END;
-                IF ShipToAddr.GET(SCrMHRec."Sell-to Customer No.", SCrMHRec."Ship-to Code") THEN BEGIN
-                    SIBuyerPh := '';//COPYSTR(ShipToAddr."Phone No.",1,10);
-                    SIBuyerEm := '';// COPYSTR(ShipToAddr."E-Mail",1,50);
-                END ELSE BEGIN
-                    IF recCust.GET(SCrMHRec."Sell-to Customer No.") THEN BEGIN
-                        SIBuyerPh := '';//recCust."Phone No.";
-                        SIBuyerEm := '';//recCust."E-Mail";
-                    END;
-                END;
-            end else begin
-                SIBuyerStcd := '';
-                SIBuyerPh := '';
-                SIBuyerEm := '';
-            end;
-        end;
-    end;
-
-    procedure SendSalesInvDispath_Details(DocNo: Code[20])
-    var
-        recState: Record State;
-    begin
-        SIDispatchstate_code := '';
-        if recState.Get(DocNo) then
-            SIDispatchstate_code := recState.Description;
-    end;
-
-    procedure SendSalesInvShipDetails(SCrMHRec: Record "Sales Cr.Memo Header")
-    var
-        ShipToAddr: Record "Ship-to Address";
-        recShiptoCode: Record "Ship-to Address";
-        recCust: Record Customer;
-        Cust: Record Customer;
-        StateBuff: Record State;
-        recState: Record State;
-    begin
-        SIShipGSTIN := '';
-        SIShipTrdNm := '';
-        SIShipBno := '';
-        SIShipBnm := '';
-        SIShipLoc := '';
-        SIShipPin := '';
-        SIShipStcd := '';
-        SIShipStatename := '';
-        if SCrMHRec."Ship-to Code" <> '' then begin
-            ShipToAddr.GET(SCrMHRec."Sell-to Customer No.", SCrMHRec."Ship-to Code");
-            SIShipGSTIN := ShipToAddr."GST Registration No.";
-            SIShipTrdNm := ShipToAddr.Name;
-            SIShipBno := ShipToAddr.Address;
-            SIShipBnm := ShipToAddr."Address 2";
-            IF STRLEN(SIShipBnm) < 3 THEN
-                SIShipBnm := SIShipBnm + '...';
-            SIShipLoc := ShipToAddr.City;
-            // IF SIShipLoc = '' THEN BEGIN
-            //     recShiptoCode.RESET();
-            //     recShiptoCode.SETRANGE(Code, SCrMHRec."Ship-to Code");
-            //     IF recShiptoCode.FINDFIRST THEN
-            //         SIShipLoc := recShiptoCode.City;
-            // END;
-            SIShipPin := COPYSTR(ShipToAddr."Post Code", 1, 6);
-            //IF SCrMHRec."GST Customer Type" <> SCrMHRec."GST Customer Type"::Export THEN begin
-            if StateBuff.GET(ShipToAddr.State) then
-                SIShipStcd := StateBuff."State Code (GST Reg. No.)";
-            //end;
-            IF SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export THEN BEGIN
-                SIShipStatename := 'Other Country';
-                SIShipPin := '999999';
-                SIShipStcd := '96';//ACXRaman 05022021
-                SIShipGSTIN := 'URP';
-            end else begin
-                IF SCrMHRec."GST Customer Type" IN [SCrMHRec."GST Customer Type"::Registered, SCrMHRec."GST Customer Type"::Unregistered, SCrMHRec."GST Customer Type"::"SEZ Unit"] THEN BEGIN
-                    recState.SETRANGE("State Code (GST Reg. No.)", SIShipStcd);
-                    IF recState.FindFirst() THEN
-                        SIShipStatename := recState.Description;
-                END;
-            end;
-        end else begin
-            Cust.GET(SCrMHRec."Sell-to Customer No.");
-            SIShipGSTIN := SCrMHRec."Customer GST Reg. No.";
-            SIShipTrdNm := SCrMHRec."Sell-to Customer Name";
-            SIShipBno := SCrMHRec."Sell-to Address";
-            SIShipBnm := SCrMHRec."Sell-to Address 2";
-            IF STRLEN(SIShipBnm) < 3 THEN
-                SIShipBnm := SIShipBnm + '...';
-            SIShipLoc := SCrMHRec."Sell-to City";
-            // IF SIShipLoc = '' THEN BEGIN
-            //     recCust.RESET();
-            //     recCust.SETRANGE("No.", SCrMHRec."Sell-to Customer No.");
-            //     IF recCust.FINDFIRST THEN
-            //         SIShipLoc := recCust.City;
-            // END;
-            SIShipPin := COPYSTR(SCrMHRec."Sell-to Post Code", 1, 6);
-            IF StateBuff.GET(Cust."State Code") THEN
-                SIShipStcd := StateBuff."State Code (GST Reg. No.)";
-            IF SCrMHRec."GST Customer Type" = SCrMHRec."GST Customer Type"::Export THEN begin
-                SIShipLoc := Cust.City;
-                SIShipPin := '999999';
-                SIShipStatename := '96';
-                SIShipGstin := 'URP';
-                SIShipStcd := '96';
-            end else begin
-                IF SCrMHRec."GST Customer Type" IN [SCrMHRec."GST Customer Type"::Registered, SCrMHRec."GST Customer Type"::Unregistered, SCrMHRec."GST Customer Type"::"SEZ Unit"] THEN BEGIN
-                    recState.SETRANGE("State Code (GST Reg. No.)", SIShipStcd);
-                    IF recState.FIND('-') THEN BEGIN
-                        SIShipStatename := recState.Description;
-                    END;
-                END;
-            end;
-        end;
-    end;
-
-    procedure SendSalesInvBatchDetails(SCrMLine: Record "Sales Cr.Memo Line")
+    procedure SendSalesInvBatchDetails(TSLRec: Record "Transfer Shipment Line")
     var
         recVE: Record "Value Entry";
         ItemLedgerEntry: Record "Item Ledger Entry";
@@ -670,8 +470,8 @@ codeunit 50014 EInvoiceIntegrationTr
         SIBatchWarrDate := '';
         recVE.Reset();
         //recVE.SetCurrentKey("Item Ledger Entry No.", "Document No.", "Document Line No.");
-        recVE.SETRANGE("Document No.", SCrMLine."Document No.");
-        recVE.SETRANGE("Document Line No.", SCrMLine."Line No.");
+        recVE.SETRANGE("Document No.", TSLRec."Document No.");
+        recVE.SETRANGE("Document Line No.", TSLRec."Line No.");
         IF recVE.FindFirst() THEN BEGIN
             repeat
                 ItemLedgerEntry.GET(recVE."Item Ledger Entry No.");
@@ -682,7 +482,7 @@ codeunit 50014 EInvoiceIntegrationTr
         END;
     end;
 
-    procedure SendSalesInvItemDetails(SCrMHRec: Record "Sales Cr.Memo Header"; SCrMLRec: Record "Sales Cr.Memo Line")
+    procedure SendSalesInvItemDetails(TSHRec: Record "Transfer Shipment Header"; TSLRec: Record "Transfer Shipment Line")
     var
         recDetailedGSTLedEntry: Record "Detailed GST Ledger Entry";
     begin
@@ -699,36 +499,24 @@ codeunit 50014 EInvoiceIntegrationTr
         SIItemCesNonAdval := 0;
         SIItemStateCes := 0;
         SIItemTotItemVal := 0;
-        IF SCrMLRec."GST Group Type" = SCrMLRec."GST Group Type"::Goods THEN
-            SIItemIsService := 'N'
-        ELSE
-            SIItemIsService := 'Y';
-        IF SCrMHRec."Currency Code" = '' THEN
-            SIItemCurrFector := 1
-        ELSE
-            SIItemCurrFector := SCrMHRec."Currency Factor";
         recDetailedGSTLedEntry.RESET();
         recDetailedGSTLedEntry.SetCurrentKey("Document No.", "Document Line No.", "GST Component Code");
-        recDetailedGSTLedEntry.SETRANGE("Document No.", SCrMLRec."Document No.");
-        recDetailedGSTLedEntry.SETRANGE("Document Line No.", SCrMLRec."Line No.");
+        recDetailedGSTLedEntry.SETRANGE("Document No.", TSLRec."Document No.");
+        recDetailedGSTLedEntry.SETRANGE("Document Line No.", TSLRec."Line No.");
         IF recDetailedGSTLedEntry.FINDFIRST THEN BEGIN
             //repeat
             SIItemPreTaxValue := ABS(recDetailedGSTLedEntry."GST Base Amount");
             //until recDetailedGSTLedEntry.Next() = 0;
         END;
-        IF SCrMLRec."GST Assessable Value (LCY)" <> 0 THEN
-            SIItemAssValue := SCrMLRec."GST Assessable Value (LCY)"
-        ELSE
-            SIItemAssValue := CU50200.GetGSTBaseAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
-        SIItemGSTPer := CU50200.GetGSTPerPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
-        SIItemIGSTRt := CU50200.GetIGSTAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
-        SIItemSGSTRt := CU50200.GetSGSTAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
-        SIItemCGSTRt := CU50200.GetCGSTAmtPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
+        SIItemGSTPer := CU50200.GetGSTPerPostedLine(TSLRec."Document No.", TSLRec."Line No.");
+        SIItemIGSTRt := CU50200.GetIGSTAmtPostedLine(TSLRec."Document No.", TSLRec."Line No.");
+        SIItemSGSTRt := CU50200.GetSGSTAmtPostedLine(TSLRec."Document No.", TSLRec."Line No.");
+        SIItemCGSTRt := CU50200.GetCGSTAmtPostedLine(TSLRec."Document No.", TSLRec."Line No.");
 
         recDetailedGSTLedEntry.Reset();
         recDetailedGSTLedEntry.SetCurrentKey("Document No.", "Document Line No.", "GST Component Code");
-        recDetailedGSTLedEntry.SETRANGE("Document No.", SCrMLRec."Document No.");
-        recDetailedGSTLedEntry.SETRANGE("Document Line No.", SCrMLRec."Line No.");
+        recDetailedGSTLedEntry.SETRANGE("Document No.", TSLRec."Document No.");
+        recDetailedGSTLedEntry.SETRANGE("Document Line No.", TSLRec."Line No.");
         recDetailedGSTLedEntry.SETRANGE("GST Component Code", 'CESS');
         IF recDetailedGSTLedEntry.FINDFIRST THEN begin
             IF (recDetailedGSTLedEntry."GST %" > 0) THEN
@@ -738,33 +526,31 @@ codeunit 50014 EInvoiceIntegrationTr
         end;
         recDetailedGSTLedEntry.Reset();
         recDetailedGSTLedEntry.SetCurrentKey("Document No.", "Document Line No.", "GST Component Code");
-        recDetailedGSTLedEntry.SETRANGE("Document No.", SCrMLRec."Document No.");
-        recDetailedGSTLedEntry.SETRANGE("Document Line No.", SCrMLRec."Line No.");
+        recDetailedGSTLedEntry.SETRANGE("Document No.", TSLRec."Document No.");
+        recDetailedGSTLedEntry.SETRANGE("Document Line No.", TSLRec."Line No.");
         recDetailedGSTLedEntry.SETRANGE("GST Component Code", 'INTERCESS');
         IF recDetailedGSTLedEntry.FINDFIRST THEN
             SIItemCesRt := recDetailedGSTLedEntry."GST %";
 
         recDetailedGSTLedEntry.Reset();
         recDetailedGSTLedEntry.SetCurrentKey("Document No.", "Document Line No.", "GST Component Code");
-        recDetailedGSTLedEntry.SETRANGE("Document No.", SCrMLRec."Document No.");
-        recDetailedGSTLedEntry.SETRANGE("Document Line No.", SCrMLRec."Line No.");
+        recDetailedGSTLedEntry.SETRANGE("Document No.", TSLRec."Document No.");
+        recDetailedGSTLedEntry.SETRANGE("Document Line No.", TSLRec."Line No.");
         IF recDetailedGSTLedEntry.FINDSET THEN
             REPEAT
-                IF NOT (recDetailedGSTLedEntry."GST Component Code" IN ['CGST', 'SGST', 'IGST', 'CESS', 'INTERCESS'])
-                THEN
+                IF NOT (recDetailedGSTLedEntry."GST Component Code" IN ['CGST', 'SGST', 'IGST', 'CESS', 'INTERCESS']) THEN
                     SIItemStateCes := recDetailedGSTLedEntry."GST %";
             UNTIL recDetailedGSTLedEntry.NEXT = 0;
 
-        SIItemTotItemVal := CU50200.GetAmttoCustomerPostedLine(SCrMLRec."Document No.", SCrMLRec."Line No.");
+        SIItemTotItemVal := TSLRec.Amount + CU50200.TotalGSTAmtDoc(TSLRec."Document No.");
     end;
 
-    procedure SendSalesInvValueDetails(SCrMHRec: Record "Sales Cr.Memo Header")
+    procedure SendSalesInvValueDetails(TSHRec: Record "Transfer Shipment Header")
     var
-        recSalesCrMHead: Record "Sales Cr.Memo Header";
-        recSalesCrMLine: Record "Sales Cr.Memo Line";
+        recTSLine: Record "Transfer Shipment Line";
         GSTLedgerEntry: Record "GST Ledger Entry";
         DetailedGSTLedgerEntry: Record "Detailed GST Ledger Entry";
-        recTCSEntry: Record "TCS Entry";
+        CU50200: Codeunit 50200;
     begin
         SIValueDetCurrFactor := 0;
         SIValueDetCGSTVal := 0;
@@ -777,14 +563,8 @@ codeunit 50014 EInvoiceIntegrationTr
         SIValueDetTotCesValOfState := 0;
         SIValueDetRoundOffAmt := 0;
         SIValueDetTotAssVal := 0;
-        if recSalesCrMHead.Get(SCrMHRec."No.") then begin
-            IF recSalesCrMHead."Currency Code" = '' THEN
-                SIValueDetCurrFactor := 1
-            ELSE
-                SIValueDetCurrFactor := recSalesCrMHead."Currency Factor";
-        END;
         GSTLedgerEntry.Reset();
-        GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        GSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         GSTLedgerEntry.SETRANGE("GST Component Code", 'CGST');
         IF GSTLedgerEntry.FindFirst() THEN begin
             REPEAT
@@ -792,7 +572,7 @@ codeunit 50014 EInvoiceIntegrationTr
             UNTIL GSTLedgerEntry.NEXT = 0;
         end;
         GSTLedgerEntry.Reset();
-        GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        GSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         GSTLedgerEntry.SETRANGE("GST Component Code", 'SGST');
         IF GSTLedgerEntry.FindFirst() THEN begin
             REPEAT
@@ -800,7 +580,7 @@ codeunit 50014 EInvoiceIntegrationTr
             UNTIL GSTLedgerEntry.NEXT = 0;
         END;
         GSTLedgerEntry.Reset();
-        GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        GSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         GSTLedgerEntry.SETRANGE("GST Component Code", 'IGST');
         IF GSTLedgerEntry.FindFirst() THEN begin
             REPEAT
@@ -808,7 +588,7 @@ codeunit 50014 EInvoiceIntegrationTr
             UNTIL GSTLedgerEntry.NEXT = 0;
         END;
         GSTLedgerEntry.Reset();
-        GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        GSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         GSTLedgerEntry.SETRANGE("GST Component Code", 'INTERCESS');
         IF GSTLedgerEntry.FindFirst() THEN begin
             REPEAT
@@ -816,7 +596,7 @@ codeunit 50014 EInvoiceIntegrationTr
             UNTIL GSTLedgerEntry.NEXT = 0;
         end;
         DetailedGSTLedgerEntry.Reset();
-        DetailedGSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        DetailedGSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         DetailedGSTLedgerEntry.SETRANGE("GST Component Code", 'CESS');
         IF DetailedGSTLedgerEntry.FINDFIRST THEN begin
             REPEAT
@@ -826,97 +606,76 @@ codeunit 50014 EInvoiceIntegrationTr
                     SIValueDetCesNonAdval += ABS(DetailedGSTLedgerEntry."GST Amount");
             UNTIL GSTLedgerEntry.NEXT = 0;
         end;
-        recTCSEntry.RESET;
-        recTCSEntry.SETRANGE("Document No.", SCrMHRec."No.");
-        IF recTCSEntry.FindFirst() THEN
-            SIValueDetOthrChrg := recTCSEntry."TCS Amount";
-        IF recSalesCrMHead."GST Customer Type" = recSalesCrMHead."GST Customer Type"::Export THEN BEGIN
-            GSTLedgerEntry.RESET();
-            GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
-            IF GSTLedgerEntry.FINDFIRST THEN
-                SIValueDetTotInvVal := ABS(GSTLedgerEntry."GST Base Amount" + GSTLedgerEntry."GST Amount");
-        END;
-        IF recSalesCrMHead."GST Customer Type" <> recSalesCrMHead."GST Customer Type"::Export THEN BEGIN
-            recSalesCrMLine.RESET;
-            recSalesCrMLine.SETRANGE("Document No.", SCrMHRec."No.");
-            IF recSalesCrMLine.FindFirst() THEN BEGIN
-                REPEAT
-                    SIValueDetTotInvVal += CU50200.GetAmttoCustomerPostedLine(recSalesCrMLine."Document No.", recSalesCrMLine."Line No.");
-                UNTIL recSalesCrMLine.NEXT = 0;
-            END;
-        END;
         GSTLedgerEntry.Reset();
-        GSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
+        GSTLedgerEntry.SETRANGE("Document No.", TSHRec."No.");
         GSTLedgerEntry.SETFILTER("GST Component Code", '<>CGST|<>SGST|<>IGST|<>CESS|<>INTERCESS');
         IF GSTLedgerEntry.FindFirst() THEN BEGIN
             REPEAT
                 SIValueDetTotCesValOfState += ABS(GSTLedgerEntry."GST Amount");
             UNTIL GSTLedgerEntry.NEXT = 0;
         END;
-        recSalesCrMLine.RESET();
-        recSalesCrMLine.SETRANGE("Document No.", SCrMHRec."No.");
-        recSalesCrMLine.SETRANGE(Type, recSalesCrMLine.Type::"G/L Account");
-        recSalesCrMLine.SETRANGE("No.", '427000210');
-        IF recSalesCrMLine.FindFirst() THEN
-            SIValueDetRoundOffAmt := ROUND(recSalesCrMLine.Amount / SIValueDetCurrFactor, 0.01);
-        DetailedGSTLedgerEntry.RESET;
-        DetailedGSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
-        DetailedGSTLedgerEntry.SETFILTER("GST Jurisdiction Type", 'Interstate');
-        IF DetailedGSTLedgerEntry.FindFirst() THEN BEGIN
+        recTSLine.Reset();
+        recTSLine.SETRANGE("Document No.", TSHRec."No.");
+        IF recTSLine.FINDSET THEN BEGIN
             REPEAT
-                SIValueDetTotAssVal += ABS(DetailedGSTLedgerEntry."GST Base Amount");
-            UNTIL DetailedGSTLedgerEntry.NEXT = 0;
+                SIValueDetTotAssVal += recTSLine.Quantity * recTSLine."Unit Price";
+                SIValueDetTotInvVal += recTSLine.Quantity * recTSLine."Unit Price" + CU50200.TotalGSTAmtDoc(recTSLine."Document No.");
+            UNTIL recTSLine.NEXT = 0;
         END;
-        DetailedGSTLedgerEntry.RESET;
-        DetailedGSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
-        DetailedGSTLedgerEntry.SETFILTER("GST Jurisdiction Type", 'Intrastate');
-        IF DetailedGSTLedgerEntry.FindFirst() THEN BEGIN
-            REPEAT
-                SIValueDetTotAssVal += ABS(DetailedGSTLedgerEntry."GST Base Amount") / 2;
-            UNTIL DetailedGSTLedgerEntry.NEXT = 0;
-        END;
-        IF SIValueDetTotAssVal = 0 THEN begin
-            IF recSalesCrMHead."GST Customer Type" = recSalesCrMHead."GST Customer Type"::Export THEN BEGIN
-                DetailedGSTLedgerEntry.RESET();
-                DetailedGSTLedgerEntry.SETRANGE("Document No.", SCrMHRec."No.");
-                IF DetailedGSTLedgerEntry.FINDFIRST THEN
-                    SIValueDetTotAssVal := ABS(DetailedGSTLedgerEntry."GST Base Amount" + DetailedGSTLedgerEntry."GST Amount");
-            END;
-            IF recSalesCrMHead."GST Customer Type" <> recSalesCrMHead."GST Customer Type"::Export THEN BEGIN
-                recSalesCrMLine.RESET;
-                recSalesCrMLine.SETRANGE("Document No.", SCrMHRec."No.");
-                IF recSalesCrMLine.FindFirst() THEN BEGIN
-                    REPEAT
-                        SIValueDetTotAssVal += CU50200.GetAmttoCustomerPostedLine(recSalesCrMLine."Document No.", recSalesCrMLine."Line No.")
-                    UNTIL
-                  recSalesCrMLine.NEXT = 0;
-                END;
-            END;
-        end;
     end;
 
-    procedure SendSalesInvExportDetails(SCrMHdrRec: Record "Sales Cr.Memo Header")
+    procedure SendEWayBillDetails(TSHRec: Record "Transfer Shipment Header")
     var
-        RecCountry: Record "Country/Region";
-        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        recVend: Record Vendor;
+        recEinvoice: Record 50000;
     begin
-        ship_bill_number := '';
-        ship_bill_date := '';
-        port_code := '';
-        country_code := '';
-        foreign_currency := '';
-        export_duty := '';
-        IF SCrMHdrRec."GST Customer Type" IN ["GST Customer Type"::Export, "GST Customer Type"::"Deemed Export", "GST Customer Type"::"SEZ Unit", "GST Customer Type"::"SEZ Development"] THEN BEGIN
-            ship_bill_number := COPYSTR(SCrMHdrRec."Bill Of Export No.", 1, 16);
-            ship_bill_date := FORMAT(SCrMHdrRec."Bill Of Export Date", 0, '<Day,2>/<Month,2>/<Year4>');
-            port_code := SCrMHdrRec."Exit Point";
-            foreign_currency := COPYSTR(SCrMHdrRec."Currency Code", 1, 3);
-            export_duty := Format(CU50200.TotalGSTAmtDoc(SCrMHdrRec."No."));
-            IF RecCountry.GET(SCrMHdrRec."Bill-to Country/Region Code") THEN
-                country_code := COPYSTR(SCrMHdrRec."Bill-to Country/Region Code", 1, 2)
-            ELSE
-                country_code := '';
+        transportername := '';
+        transporterid := '';
+        transportationmode := '';
+        transportationdistance := '';
+        transporterdocumentnumber := '';
+        transporterdocumentdate := '';
+        vehiclenumber := '';
+        vehicletype := '';
+        if recVend.GET(TSHRec."Transporter Code") then begin
+            transportername := recVend.Name;
+            transporterid := recVend."GST Registration No.";
         end;
+        IF TSHRec."Mode of Transport" = 'Road' THEN
+            transportationmode := '1'
+        ELSE
+            IF TSHRec."Mode of Transport" = 'Rail' THEN
+                transportationmode := '2'
+            ELSE
+                IF TSHRec."Mode of Transport" = 'Air' THEN
+                    transportationmode := '3'
+                ELSE
+                    IF TSHRec."Mode of Transport" = 'Ship' THEN
+                        transportationmode := '4'
+                    ELSE
+                        IF TSHRec."Mode of Transport" = '' THEN
+                            transportationmode := '';
+
+        recEinvoice.RESET();
+        recEinvoice.SETRANGE("No.", TSHRec."No.");
+        IF recEinvoice.FIND('-') THEN
+            transportationdistance := recEinvoice."Distance (Km)"
+        ELSE
+            transportationdistance := '';
+
+        transporterdocumentnumber := TSHRec."LR/RR No.";
+        transporterdocumentdate := FORMAT(TSHRec."LR/RR Date", 0, '<Day,2>/<Month,2>/<Year4>');
+
+        vehiclenumber := TSHRec."Vehicle No.";
+
+        IF TSHRec."Vehicle Type" = TSHRec."Vehicle Type"::ODC THEN
+            vehicletype := 'O'
+        ELSE
+            IF TSHRec."Vehicle Type" = TSHRec."Vehicle Type"::Regular THEN
+                vehicletype := 'R'
+            ELSE
+                IF TSHRec."Vehicle Type" = TSHRec."Vehicle Type"::" " THEN
+                    vehicletype := '';
     end;
 
     var
@@ -972,4 +731,15 @@ codeunit 50014 EInvoiceIntegrationTr
         foreign_currency: Text;
         port_code: Text;
         export_duty: Text;
+        EwbNo: Text;
+        EwbDt: Text;
+        EwbValidTill: Text;
+        transportername: Text;
+        transporterid: Text;
+        transportationmode: Text;
+        transportationdistance: Text;
+        transporterdocumentnumber: Text;
+        transporterdocumentdate: Text;
+        vehiclenumber: Text;
+        vehicletype: Text;
 }

@@ -9,7 +9,7 @@
             "server": "https://businesscentral.dynamics.com/94e89aca-caf5-4d20-9e99-b82e1731a486/",
             "environmentName": "IFFCO_UAT",
             "schemaUpdateMode": "Synchronize",
-            "startupObjectId": 144,
+            "startupObjectId": 22,
             "startupObjectType": "Page",
             "breakOnError": true,
             "launchBrowser": true,

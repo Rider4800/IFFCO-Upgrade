@@ -2,9 +2,10 @@ codeunit 50040 COD12Event
 {
 
     [EventSubscriber(ObjectType::Codeunit, 12, 'OnAfterRunWithCheck', '', false, false)]
-    local procedure OnAfterRunWithCheck(var GenJnlLine: Record "Gen. Journal Line"; sender: Codeunit "Gen. Jnl.-Post Line")
+    procedure OnAfterRunWithCheck(var GenJnlLine: Record "Gen. Journal Line"; sender: Codeunit "Gen. Jnl.-Post Line")
     var
         Cod12SingInst: Codeunit 50041;
+        a: Codeunit 12;
     begin
         Clear(Cod12SingInst);
         Cod12SingInst.ClearVariables();
@@ -37,7 +38,7 @@ codeunit 50040 COD12Event
 
 
     [EventSubscriber(ObjectType::Codeunit, 12, 'OnBeforeCode', '', false, false)]
-    local procedure OnBeforeCode(var GenJnlLine: Record "Gen. Journal Line")
+    procedure OnBeforeCode(var GenJnlLine: Record "Gen. Journal Line")
     var
         Cod12SingInst: Codeunit 50041;
     begin
@@ -77,7 +78,7 @@ codeunit 50040 COD12Event
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 12, 'OnBeforePostGLAcc', '', false, false)]
-    local procedure OnBeforePostGLAcc(GenJournalLine: Record "Gen. Journal Line")
+    procedure OnBeforePostGLAcc(GenJournalLine: Record "Gen. Journal Line")
     begin
         //Acx_Anubha28/07/2021
         IF TempDocNo <> GenJournalLine."Document No." THEN
@@ -86,7 +87,7 @@ codeunit 50040 COD12Event
         //Acx_Anubha28/07/2021
     end;
 
-    local procedure CreateBranchEntry(GenJnlLine: Record "Gen. Journal Line"; DocNo: Code[20])
+    procedure CreateBranchEntry(GenJnlLine: Record "Gen. Journal Line"; DocNo: Code[20])
     var
         RecGenJnl: Record "Gen. Journal Line";
         DimensionValue: Record "Dimension Value";
@@ -652,7 +653,6 @@ codeunit 50040 COD12Event
         END; //ACXZAK01-END
     end;
 
-
     [EventSubscriber(ObjectType::Codeunit, 12, 'OnPostDtldVendLedgEntriesOnAfterCreateGLEntriesForTotalAmounts', '', false, false)]
     local procedure OnPostDtldVendLedgEntriesOnAfterCreateGLEntriesForTotalAmounts(NextTransactionNo: Integer; var GlobalGLEntry: Record "G/L Entry"; var TempGLEntryBuf: Record "G/L Entry" temporary)
     var
@@ -797,6 +797,108 @@ codeunit 50040 COD12Event
         GLEntry."External Document No. New" := GenJournalLine."External Document No. New";
     end;
     //<-17783
+
+    [EventSubscriber(ObjectType::Codeunit, 12, 'OnCreateGLEntryForTotalAmountsOnBeforeInsertGLEntry', '', false, false)]    //pp
+    local procedure OnCreateGLEntryForTotalAmountsOnBeforeInsertGLEntry(var GenJnlLine: Record "Gen. Journal Line"; var GLEntry: Record "G/L Entry"; var IsHandled: Boolean)
+    var
+        Cu50041: Codeunit 50041;
+        TotalAmountLCY: Decimal;
+        TotalAmountAddCurr: Decimal;
+        Codeunit12Glb: Codeunit 12;
+        VendPostingGr: Record "Vendor Posting Group";
+        recdim: Record "Dimension Value";
+        PIHRec: Record "Purch. Inv. Header";
+        PCrMHRec: Record "Purch. Cr. Memo Hdr.";
+        CU12: Codeunit 12;
+        s: Codeunit 80;
+    begin
+        if PIHRec.get(GLEntry."Document No.") then
+            VendPostingGr.Get(PIHRec."Vendor Posting Group")
+        else begin
+            if PCrMHRec.get(GLEntry."Document No.") then
+                VendPostingGr.Get(PCrMHRec."Vendor Posting Group");
+        end;
+        //ACXZAK01-BEGIN Branch Accounts
+        IF GenJnlLine."Source Code" <> 'TRANSFER' THEN BEGIN
+            //ACXZAK01 - Branch Accounting
+            IF NOT ((GenJnlLine."Source Code" = 'TRANSFER') OR (GenJnlLine."Source Code" = '')) THEN BEGIN
+                strFinanceDimension := '';
+                strFinanceDimensionCode := '';
+                rsDimensionValue.RESET;
+                rsDimensionValue.SETRANGE("Global Dimension No.", 1);
+                IF rsDimensionValue.FIND('-') THEN BEGIN
+                    strFinanceDimension := rsDimensionValue."Dimension Code";
+                    DimSetEntry.RESET;
+                    DimSetEntry.SETRANGE("Dimension Set ID", GenJnlLine."Dimension Set ID");
+                    IF DimSetEntry.FINDSET THEN
+                        REPEAT
+                            IF DimSetEntry."Dimension Code" = strFinanceDimension THEN
+                                strFinanceDimensionCode := DimSetEntry."Dimension Value Code";
+                        UNTIL DimSetEntry.NEXT = 0;
+                END;
+                IF strFinanceDimensionCode = '' THEN
+                    strFinanceDimension := '';
+            END;
+            //ACXZAK01-END
+            IF (strFinanceDimensionCode <> GenJnlLine."Finance Branch A/c Code") AND (GenJnlLine."Finance Branch A/c Code" <> '') AND (strFinanceDimensionCode <> '') THEN BEGIN
+                //Voucher at Current Location
+                rsDimensionValue.RESET;
+                rsDimensionValue.SETRANGE("Global Dimension No.", 1);
+                rsDimensionValue.SETRANGE(Code, GenJnlLine."Finance Branch A/c Code");
+                rsDimensionValue.FIND('-');
+                rsDimensionValue.TESTFIELD("Branch G/L Account");
+                CU12.InitGLEntry(
+                   GenJnlLine, GLEntry, VendPostingGr."Payables Account", -TotalAmountLCY, -TotalAmountAddCurr, TRUE, TRUE);
+                GLEntry."Bal. Account Type" := GLEntry."Bal. Account Type"::"G/L Account";
+                GLEntry."Bal. Account No." := rsDimensionValue."Branch G/L Account";
+                GLEntry."Global Dimension 1 Code" := strFinanceDimensionCode;
+
+                GLEntry."Branch JV" := TRUE;
+                CU12.InsertGLEntry(GenJnlLine, GLEntry, TRUE);
+
+                CU12.InitGLEntry(
+                   GenJnlLine, GLEntry, rsDimensionValue."Branch G/L Account", TotalAmountLCY, TotalAmountAddCurr, TRUE, TRUE);
+                GLEntry."Bal. Account Type" := GenJnlLine."Account Type";
+                GLEntry."Bal. Account No." := GenJnlLine."Account No.";
+                GLEntry."Global Dimension 1 Code" := strFinanceDimensionCode;
+                GLEntry."Branch JV" := TRUE;
+                CU12.InsertGLEntry(GenJnlLine, GLEntry, TRUE);
+
+                //Voucher at Primary Branch Location
+                rsDimensionValue.RESET;
+                rsDimensionValue.SETRANGE("Global Dimension No.", 1);
+                rsDimensionValue.SETRANGE(Code, strFinanceDimensionCode);
+                rsDimensionValue.FIND('-');
+                rsDimensionValue.TESTFIELD("Branch G/L Account");
+                CU12.InitGLEntry(
+                   GenJnlLine, GLEntry, VendPostingGr."Payables Account", TotalAmountLCY, TotalAmountAddCurr, TRUE, TRUE);
+                GLEntry."Bal. Account Type" := GLEntry."Bal. Account Type"::"G/L Account";
+                GLEntry."Bal. Account No." := rsDimensionValue."Branch G/L Account";
+                GLEntry."Global Dimension 1 Code" := GenJnlLine."Finance Branch A/c Code";
+                recdim.RESET;
+                recdim.SETRANGE("Dimension Code", 'STATE');
+                recdim.SETRANGE(Code, GenJnlLine."Finance Branch A/c Code");
+                IF recdim.FINDFIRST THEN
+                    GLEntry.VALIDATE("Global Dimension 2 Code", recdim."STATE-FIN");
+                GLEntry."Branch JV" := TRUE;
+                CU12.InsertGLEntry(GenJnlLine, GLEntry, TRUE);
+
+                CU12.InitGLEntry(
+                   GenJnlLine, GLEntry, rsDimensionValue."Branch G/L Account", -TotalAmountLCY, -TotalAmountAddCurr, TRUE, TRUE);
+                GLEntry."Bal. Account Type" := GenJnlLine."Account Type";
+                GLEntry."Bal. Account No." := GenJnlLine."Account No.";
+                GLEntry."Global Dimension 1 Code" := GenJnlLine."Finance Branch A/c Code";
+                recdim.RESET;
+                recdim.SETRANGE("Dimension Code", 'STATE');
+                recdim.SETRANGE(Code, GenJnlLine."Finance Branch A/c Code");
+                IF recdim.FINDFIRST THEN
+                    GLEntry.VALIDATE("Global Dimension 2 Code", recdim."STATE-FIN");
+                GLEntry."Branch JV" := TRUE;
+                CU12.InsertGLEntry(GenJnlLine, GLEntry, TRUE);
+            END;
+        END;
+        //ACXZAK01
+    end;
 
     var
         strFinanceDimension: Code[20];
