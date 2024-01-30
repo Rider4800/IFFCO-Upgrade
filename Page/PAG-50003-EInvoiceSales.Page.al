@@ -64,10 +64,10 @@ page 50003 "E-Invoice (Sales)"
                 {
                     Editable = false;
                 }
-                field("Amount to Customer"; Rec."Amount to Customer")
-                {
-                    Editable = false;
-                }
+                // field("Amount to Customer"; Rec."Amount to Customer")
+                // {
+                //     Editable = false;
+                // }
                 field("Location GST Reg. No."; Rec."Location GST Reg. No.")
                 {
                     Editable = false;

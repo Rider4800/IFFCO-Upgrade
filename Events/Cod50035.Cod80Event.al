@@ -12,6 +12,7 @@ codeunit 50035 "Cod-80-Event"
         recSalesLine: Record "Sales Line";
         Cu50200: Codeunit 50200;
         BillAmt: Decimal;
+        a: Codeunit 80;
     begin
         IF RecSaleH."Campaign No." = '' THEN BEGIN
             recCustomer.RESET;
@@ -77,7 +78,7 @@ codeunit 50035 "Cod-80-Event"
     procedure ValidatUnitPriceOnSalesLine("DocNo.": Code[20]; Date: Date)
     var
         recSalesLine: Record "Sales Line";
-        recSalesPrice: Record "Sales Price";
+        //recSalesPrice: Record "Sales Price";
         PriceListLineRec: Record "Price List Line";
     begin
         recSalesLine.RESET();
@@ -243,27 +244,22 @@ codeunit 50035 "Cod-80-Event"
         recdim: Record "Dimension Value";
         recpaymentmethod: Record "Payment Method";
     begin
-        //Acx_Anubha
-        //HT  24022021-
-        /*
-         recpaymentmethod.RESET;
-           IF recpaymentmethod.GET("Payment Method Code") THEN
-               GenJnlLine.VALIDATE("Shortcut Dimension 1 Code", recpaymentmethod."Payment Method Branch");
-       */
-        SalesHeader.TESTFIELD("Shortcut Dimension 1 Code");
-        IF SalesHeader."Branch Accounting" = TRUE THEN BEGIN
-            SalesHeader.TESTFIELD("Finance Branch A/c Code");
-            GenJournalLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Finance Branch A/c Code");
-        END
-        ELSE
-            GenJournalLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Shortcut Dimension 1 Code");
-        //HT  24022021+
-        recdim.RESET();
-        recdim.SETRANGE("Dimension Code", 'STATE');
-        recdim.SETRANGE(Code, recpaymentmethod."Payment Method Branch");
-        IF recdim.FINDFIRST THEN
-            GenJournalLine.VALIDATE("Shortcut Dimension 2 Code", recdim."STATE-FIN");
-        //Acx_Anubha
+        if GenJournalLine."Document Type" = GenJournalLine."Document Type"::Refund then begin
+            SalesHeader.TESTFIELD("Shortcut Dimension 1 Code");
+            IF SalesHeader."Branch Accounting" = TRUE THEN BEGIN
+                SalesHeader.TESTFIELD("Finance Branch A/c Code");
+                GenJournalLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Finance Branch A/c Code");
+            END
+            ELSE
+                GenJournalLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Shortcut Dimension 1 Code");
+            //HT  24022021+
+            recdim.RESET();
+            recdim.SETRANGE("Dimension Code", 'STATE');
+            recdim.SETRANGE(Code, recpaymentmethod."Payment Method Branch");
+            IF recdim.FINDFIRST THEN
+                GenJournalLine.VALIDATE("Shortcut Dimension 2 Code", recdim."STATE-FIN");
+            //Acx_Anubha
+        end;
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeSalesShptHeaderInsert', '', false, false)]
@@ -575,4 +571,34 @@ codeunit 50035 "Cod-80-Event"
                     UNTIL recSIL.NEXT = 0;
             UNTIL recSIH.NEXT = 0;
     end;
+
+    [EventSubscriber(ObjectType::Table, 81, 'OnAfterCopyGenJnlLineFromSalesHeader', '', false, false)]
+    local procedure OnAfterCopyGenJnlLineFromSalesHeader(SalesHeader: Record "Sales Header"; var GenJournalLine: Record "Gen. Journal Line")
+    var
+        recdim: Record "Dimension Value";
+        recpaymentmethod: Record "Payment Method";
+    begin
+        GenJournalLine."Finance Branch A/c Code" := SalesHeader."Finance Branch A/c Code";//ACX-anu
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, 825, 'OnPostBalancingEntryOnBeforeGenJnlPostLine', '', false, false)]
+    local procedure OnPostBalancingEntryOnBeforeGenJnlPostLine(var GenJnlLine: Record "Gen. Journal Line"; var SalesHeader: Record "Sales Header")
+    var
+        recdim: Record "Dimension Value";
+        recpaymentmethod: Record "Payment Method";
+    begin
+        SalesHeader.TESTFIELD("Shortcut Dimension 1 Code");
+        IF SalesHeader."Branch Accounting" = TRUE THEN BEGIN
+            SalesHeader.TESTFIELD("Finance Branch A/c Code");
+            GenJnlLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Finance Branch A/c Code");
+        END
+        ELSE
+            GenJnlLine.VALIDATE("Shortcut Dimension 1 Code", SalesHeader."Shortcut Dimension 1 Code");
+        //HT  24022021+
+        recdim.RESET();
+        recdim.SETRANGE("Dimension Code", 'STATE');
+        recdim.SETRANGE(Code, recpaymentmethod."Payment Method Branch");
+        IF recdim.FINDFIRST THEN
+            GenJnlLine.VALIDATE("Shortcut Dimension 2 Code", recdim."STATE-FIN");
+    END;//Acx_Anubha
 }

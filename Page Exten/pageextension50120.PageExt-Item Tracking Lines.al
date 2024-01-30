@@ -334,7 +334,7 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         IF recItemTrack.FINDFIRST THEN BEGIN
             REPEAT
                 SalesLine.Reset();
-                SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
+                //SalesLine.SetRange("Document Type", SalesLine."Document Type"::Order);
                 SalesLine.SetRange("Document No.", Rec."Source ID");
                 SalesLine.SetRange("Line No.", Rec."Source Ref. No.");
                 SalesLine.SetRange("No.", Rec."Item No.");
@@ -362,13 +362,14 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                         SalesLine.Validate("Unit Price", PLLRec."Unit Price");
                     until TempTargetCampaignGr.Next() = 0;
                 end;
+                SalesLine.Modify();
             end else begin
                 SalesLine.ValidateMRPItemTracking := TRUE;
                 SalesLine.Validate("MRP Price New", LotMRP);
                 //SalesLine.Validate("MRP Price New", PriceListLine."MRP Price");
                 SalesLine.Validate("Unit Price", PLLRec."Unit Price");
+                SalesLine.Modify();
             end;
-            SalesLine.Modify();
 
             //acxcp_300622_CampaignCode +
             //acxcp_06062022 + for checking sale price line with campaign code

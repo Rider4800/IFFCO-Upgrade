@@ -35,6 +35,7 @@ codeunit 50044 COD90Event
     var
         recdim: Record "Dimension Value";
         recpaymentmethod: Record "Payment Method";
+        a: Record 81;
     begin
         PurchHeader.TESTFIELD("Shortcut Dimension 1 Code");
         IF PurchHeader."Branch Accounting" = TRUE THEN BEGIN

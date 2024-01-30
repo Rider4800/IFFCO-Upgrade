@@ -401,6 +401,7 @@ page 50005 "E-Invoice (Sales Return)"
                     RunObject = Page "Sales Invoice Statistics";
                     RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
+                    Visible = false;
                 }
             }
         }

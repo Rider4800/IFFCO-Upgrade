@@ -344,6 +344,7 @@ page 50006 "E-Invoice (Transfer)"
                     RunObject = Page "Sales Invoice Statistics";
                     RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
+                    Visible = false;
                 }
             }
         }

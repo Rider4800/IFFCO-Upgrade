@@ -94,7 +94,7 @@ codeunit 50036 ItemTrackingLine
 
     var
         myInt: Integer;
-        recSalesPrice: Record 7002;
+        //recSalesPrice: Record 7002;
         Expire: Boolean;
         recLotInfoInsert: Record 6505;
         recLotInfo: Record 6505;
@@ -105,6 +105,6 @@ codeunit 50036 ItemTrackingLine
         recSaleLine: Record 37;
         recCust: Record 18;
         recCPG: Record 92;
-        recSalePrice: Record 7002;
+    //recSalePrice: Record 7002;
 
 }

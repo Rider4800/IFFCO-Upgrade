@@ -180,6 +180,7 @@ page 50000 "E- Way Bill (Sales)"
         {
             group("&Invoice")
             {
+                Visible = false;
                 Caption = '&Invoice';
                 Image = Invoice;
                 action(Statistics)
@@ -192,11 +193,13 @@ page 50000 "E- Way Bill (Sales)"
                     RunObject = Page "Sales Invoice Statistics";
                     RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
+                    Visible = false;
                 }
                 action("Co&mments")
                 {
                     Caption = 'Co&mments';
                     Image = ViewComments;
+                    Visible = false;
                     Promoted = true;
                     PromotedCategory = Category4;
                     PromotedIsBig = true;
@@ -208,6 +211,7 @@ page 50000 "E- Way Bill (Sales)"
                 action(Dimensions)
                 {
                     AccessByPermission = TableData 348 = R;
+                    Visible = false;
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     Promoted = true;
@@ -223,6 +227,7 @@ page 50000 "E- Way Bill (Sales)"
                 action(Approvals)
                 {
                     Caption = 'Approvals';
+                    Visible = false;
                     Image = Approvals;
                     Promoted = true;
                     PromotedCategory = Category4;

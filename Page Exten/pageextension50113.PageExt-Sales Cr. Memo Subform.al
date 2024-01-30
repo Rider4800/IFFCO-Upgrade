@@ -11,6 +11,14 @@ pageextension 50113 pageextension50113 extends "Sales Cr. Memo Subform"
         {
             field("Excess/Short Qty."; Rec."Excess/Short Qty.")
             {
+                ApplicationArea = All;
+            }
+        }
+        addafter("GST Group Type")
+        {
+            field("GST Credit"; Rec."GST Credit")
+            {
+                ApplicationArea = All;
             }
         }
     }
