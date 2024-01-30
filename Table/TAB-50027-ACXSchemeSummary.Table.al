@@ -184,7 +184,7 @@ table 50027 "ACX Scheme Summary"
         {
             CalcFormula = Lookup(Customer.Blocked WHERE("No." = FIELD("Customer No.")));
             FieldClass = FlowField;
-	    OptionCaption = ' ,Ship,Invoice,All';
+            OptionCaption = ' ,Ship,Invoice,All';
             OptionMembers = " ",Ship,Invoice,All;
         }
     }

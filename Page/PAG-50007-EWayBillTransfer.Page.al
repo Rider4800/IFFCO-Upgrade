@@ -183,34 +183,50 @@ page 50007 "E-Way Bill (Transfer)"
                 Image = Administration;
                 action("Calculate Distance (KM)")
                 {
+                    Caption = 'Calculate Distance (KM)';
                     Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = Calculate;
 
                     trigger OnAction()
+                    var
+                        CU50114: Codeunit 50114;
                     begin
                         CurrPage.UPDATE();
 
                         Rec.TESTFIELD("Sell-to Post Code");
 
-                        txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
+                        // txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
 
-                        // IF Rec."Distance (Km)" <> '' THEN BEGIN
-                        //     IF CONFIRM(txtMessageDistancepre) THEN
-                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShipment(Rec."No.");
-                        // END; //17783
+                        // // IF Rec."Distance (Km)" <> '' THEN BEGIN
+                        // //     IF CONFIRM(txtMessageDistancepre) THEN
+                        // //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShipment(Rec."No.");
+                        // // END; 
 
                         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                        // IF Rec."Distance (Km)" = '' THEN BEGIN
-                        //     IF CONFIRM(txtMessageDistance) THEN
-                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShipment(Rec."No.");
-                        // END; //17783
+                        IF Rec."Distance (Km)" = '' THEN BEGIN
+                            IF CONFIRM(txtMessageDistance) THEN
+                                CU50114.CalculateDistance(Rec."No.", 3);
+                        END;
                     end;
                 }
-                action("Generate        E-Way Bill No.")
+                action("Generate E-Way Bill No.")
                 {
+                    Caption = 'Generate E-Way Bill No.';
                     Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = GetEntries;
 
                     trigger OnAction()
+                    var
+                        CU50114: Codeunit 50114;
                     begin
                         CurrPage.UPDATE();
 
@@ -219,7 +235,7 @@ page 50007 "E-Way Bill (Transfer)"
                         IF (Rec."E-Way Bill No." <> '') AND (Rec."Cancel E-Way Bill Date" = '') THEN
                             ERROR('E-Way Bill is already generated');
 
-                        Rec.TESTFIELD("Distance (Km)");
+                        //Rec.TESTFIELD("Distance (Km)");       //to be open in production
                         //TESTFIELD("LR/RR No.");
                         //TESTFIELD("LR/RR Date");
                         //TESTFIELD("Transportation Mode");
@@ -230,15 +246,23 @@ page 50007 "E-Way Bill (Transfer)"
                         txtMessage := 'Do you want to generate E-Way Bill No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Transfer ' + FORMAT(Rec."Amount to Transfer");
 
                         IF CONFIRM(txtMessage) THEN BEGIN
-                            //CodeunitEWayBillEInvoice.InitializeEwayBillGenerateTransferShipment(Rec."No.")    //17783
+                            CU50114.GenerateEWayBill(Rec."No.", 3);
                         END;
                     end;
                 }
                 action("Update Vehicle No.")
                 {
+                    Caption = 'Update Vehicle No.';
                     Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = UpdateDescription;
 
                     trigger OnAction()
+                    var
+                        CU50114: Codeunit 50114;
                     begin
                         CurrPage.UPDATE();
 
@@ -250,9 +274,9 @@ page 50007 "E-Way Bill (Transfer)"
 
                         IF CONFIRM(txtMessageVeh) THEN BEGIN
                             IF Rec."Vehicle No." = Rec."Old Vehicle No." THEN
-                                ERROR('Update new Vehicle No.');
-                            //ELSE
-                            //CodeunitEWayBillEInvoice.InitializeUpdateVehicleNoTransferShipment(Rec."No.", Rec."Vehicle No."); //17783
+                                ERROR('Update new Vehicle No.')
+                            ELSE
+                                CU50114.GenerateUpdateVehicleNo(Rec."No.", 3);
                         END;
                     end;
                 }

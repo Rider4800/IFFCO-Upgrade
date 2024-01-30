@@ -3,8 +3,8 @@ report 50020 "Consignment Branch Transfer"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\ConsignmentBranchTransfer.rdl';
     PreviewMode = PrintLayout;
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    // UsageCategory = ReportsAndAnalysis;
+    // ApplicationArea = All;
 
     dataset
     {
@@ -311,7 +311,7 @@ report 50020 "Consignment Branch Transfer"
                     column(TotalInvvalue; TotalInvvalue)
                     {
                     }
-                    column(AmountinWord; NotoWord[1])
+                    column(AmountinWord; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
                     {
                     }
                     column(TotlQtyBag; TotlQtyBag)
@@ -413,11 +413,7 @@ report 50020 "Consignment Branch Transfer"
                         END;
 
                         //
-                        //Round of Calculation
-                        TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
-                        RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
-                        repCheck.InitTextVariable();
-                        repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
+
                         TotalGstAmt := 0;
                         GStBaseAmt := 0;
 
@@ -472,6 +468,19 @@ report 50020 "Consignment Branch Transfer"
                                 TotLineQty += recTransShipLine.Quantity;
                             UNTIL recTransShipLine.NEXT = 0;
                         END;
+
+                        //Round of Calculation
+                        TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
+                        RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
+                        repCheck.InitTextVariable();
+                        repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
+
+                        //16767 NotoWord[1] := UpperCase(NotoWord[1]);
+
+
+
+
+
                     end;
                 }
 
@@ -753,6 +762,7 @@ report 50020 "Consignment Branch Transfer"
     end;
 
     var
+        Pos: Integer;
         recCompInfo: Record 79;
         recLoc: Record 14;
         arrLoc: array[12] of Text;
@@ -782,8 +792,9 @@ report 50020 "Consignment Branch Transfer"
         SGSTper: Decimal;
         decQtyper: Decimal;
         recItemUOM: Record 5404;
-        repCheck: Report Check;
-        NotoWord: array[1] of Text;
+        //  repCheck: Report Check;
+        repCheck: Report "Check Report";
+        NotoWord: array[2] of Text;
         TotlQtyBag: Decimal;
         recTransShipLine: Record 5745;
         TotalInvvalue: Decimal;
@@ -826,5 +837,7 @@ report 50020 "Consignment Branch Transfer"
         CGSTBaseAmt: Decimal;
         SGSTBaseAmt: Decimal;
         TotalGstAmt: Decimal;
+
+
 }
 

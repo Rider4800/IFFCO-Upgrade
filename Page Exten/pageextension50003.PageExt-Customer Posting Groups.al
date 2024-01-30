@@ -8,6 +8,10 @@ pageextension 50003 pageextension50003 extends "Customer Posting Groups"
             {
                 ApplicationArea = All;
             }
+            field("Multi-Lot Selection Allowed"; Rec."Multi-Lot Selection Allowed")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

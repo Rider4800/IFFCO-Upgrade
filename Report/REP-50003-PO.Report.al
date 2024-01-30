@@ -173,7 +173,7 @@ report 50003 PO
                 column(LooseperPack; LooseperPack)
                 {
                 }
-                column(AmountToWord; NoToWord[1])
+                column(AmountToWord; UpperCase(NoToWord[1] + ' ' + NoToWord[2]))
                 {
                 }
                 column(totAmount; totAmount)
@@ -400,8 +400,8 @@ report 50003 PO
         Comment_Header: Text;
         recItem: Record 27;
         LooseperPack: Decimal;
-        repCheck: Report Check;
-        NoToWord: array[1] of Text;
+        repCheck: Report "Check Report";
+        NoToWord: array[2] of Text;
         totAmount: Decimal;
         recPurchLine: Record 39;
         recPurchHeaderArchive: Record 5109;

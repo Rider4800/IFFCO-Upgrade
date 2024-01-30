@@ -51,23 +51,40 @@ pageextension 50118 PostedSalesCreditMemo extends "Posted Sales Credit Memo"
                         REPORT.RUN(50005, TRUE, FALSE, recSalesCrmHdr);
                 end;
             }
-            action("E-Invoice SalesCrMemo")
-            {
-                ApplicationArea = All;
-                Caption = 'E-Invoice SalesCrMemo';
-                Ellipsis = true;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = CreateDocument;
+            // action("E-Invoice SalesCrMemo")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'E-Invoice SalesCrMemo';
+            //     Ellipsis = true;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     Image = CreateDocument;
 
-                trigger OnAction()
-                var
-                    CU50013: Codeunit 50013;
-                begin
-                    CU50013.CreateJsonSalesCrMemoOrder(Rec);
-                end;
-            }
+            //     trigger OnAction()
+            //     var
+            //         CU50013: Codeunit 50013;
+            //     begin
+            //         CU50013.CreateJsonSalesCrMemoOrder(Rec);
+            //     end;
+            // }
+            // action("Cancel E-Invoice SalesCrMemo")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Cancel E-Invoice SalesCrMemo';
+            //     Ellipsis = true;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     Image = CreateDocument;
+
+            //     trigger OnAction()
+            //     var
+            //         CU50013: Codeunit 50013;
+            //     begin
+            //         CU50013.CanceSalesCrMemoEInvoice(Rec."No.", Rec."IRN Hash");
+            //     end;
+            // }
 
         }
     }

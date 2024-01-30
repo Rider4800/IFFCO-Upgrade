@@ -881,6 +881,12 @@ End Function
         <Field Name="intCompany">
           <DataField>intCompany</DataField>
         </Field>
+        <Field Name="TDS_Group">
+          <DataField>TDS_Group</DataField>
+        </Field>
+        <Field Name="TDS_Section">
+          <DataField>TDS_Section</DataField>
+        </Field>
         <Field Name="Description">
           <DataField>Description</DataField>
         </Field>

@@ -189,67 +189,54 @@ page 50005 "E-Invoice (Sales Return)"
                 Image = Administration;
                 action("Generate E-Invoice")
                 {
+                    Caption = 'Generate E-Invoice';
                     Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = CreateDocument;
 
                     trigger OnAction()
                     var
                         SalesCrMemoLine: Record 115;
                         decAmount2Cust: Decimal;
                         CU50200: Codeunit 50200;
+                        CU50013: Codeunit 50013;
                     begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
                         CurrPage.UPDATE;
 
                         IF (Rec."E-Invoice IRN No" <> '') AND (Rec."E-Invoice Cancel Date" = '') THEN
                             ERROR('E-Invoice is already generated');
-                        /*
-                        TESTFIELD("Distance (Km)");
-                        TESTFIELD("LR/RR No.");
-                        TESTFIELD("LR/RR Date");
-                        TESTFIELD("Transporter Code");
-                        TESTFIELD("Vehicle No.");
-                        TESTFIELD("Distance (Km)");
-                        TESTFIELD("Mode of Transport");
-                        */
 
                         decAmount2Cust := 0;
-                        //->Team-17783
-                        // SalesCrMemoLine.RESET();
-                        // SalesCrMemoLine.SETRANGE("Document No.", Rec."No.");
-                        // IF SalesCrMemoLine.FIND('-') THEN BEGIN
-                        //     REPEAT
-                        //         decAmount2Cust += SalesCrMemoLine."Amount To Customer";
-                        //     UNTIL
-                        //       SalesCrMemoLine.NEXT = 0;
-                        // END;
-                        //<-Team-17783  Commented
                         decAmount2Cust := CU50200.GetAmttoCustomerPostedDoc(Rec."No."); //Team-17783    Added
-
-                        Rec.CALCFIELDS("Amount to Customer");
                         txtMessage := 'Do you want to generate E-Invoice IRN No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Customer ' + FORMAT(decAmount2Cust);
 
                         IF CONFIRM(txtMessage) THEN BEGIN
                             SalesCrMemoHeader.RESET;
                             SalesCrMemoHeader.SETRANGE("No.", Rec."No.");
-                            IF SalesCrMemoHeader.FINDFIRST THEN BEGIN
-                                // CodeunitEWayBillEInvoice.SetCrMemoHeader(SalesCrMemoHeader);
-                                // CodeunitEWayBillEInvoice.CreateJsonforSalesCRM(SalesCrMemoHeader."No."); //17783
-                            END;
+                            IF SalesCrMemoHeader.FINDFIRST THEN
+                                CU50013.CreateJsonSalesCrMemoOrder(SalesCrMemoHeader);
                         END;
-
                         CurrPage.UPDATE;
                         CLEAR(CodeunitEWayBillEInvoice);
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-
                     end;
                 }
-                action("Cancel     E-Invoice")
+                action("Cancel E-Invoice")
                 {
+                    Caption = 'Cancel E-Invoice';
                     Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = Cancel;
 
                     trigger OnAction()
+                    var
+                        CU50013: Codeunit 50013;
                     begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
                         CurrPage.UPDATE;
 
                         Rec.TESTFIELD("E-Invoice IRN No");
@@ -258,154 +245,152 @@ page 50005 "E-Invoice (Sales Return)"
 
                         txtMessagecancel := 'Do you want to Cancel the E-Invoice IRN No. ' + Rec."E-Invoice IRN No";
 
-                        IF CONFIRM(txtMessagecancel) THEN BEGIN
-                            //CodeunitEWayBillEInvoice.InitializeCancelEinvoice(Rec."No.", Rec."E-Invoice IRN No"); //17783
-                        END;
+                        IF CONFIRM(txtMessagecancel) THEN
+                            CU50013.CanceSalesCrMemoEInvoice(Rec."No.", Rec."E-Invoice IRN No");
 
                         CurrPage.UPDATE;
                         CLEAR(CodeunitEWayBillEInvoice);
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
                     end;
                 }
-                action("Get          E-Invoice")
-                {
-                    Promoted = true;
+                // action("Get          E-Invoice")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    var
-                        txtGetIRNNo: Text;
-                    begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                        CurrPage.UPDATE;
+                //     trigger OnAction()
+                //     var
+                //         txtGetIRNNo: Text;
+                //     begin
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                //         CurrPage.UPDATE;
 
-                        Rec.TESTFIELD("Location GST Reg. No.");
-                        Rec.TESTFIELD("E-Invoice IRN No");
+                //         Rec.TESTFIELD("Location GST Reg. No.");
+                //         Rec.TESTFIELD("E-Invoice IRN No");
 
-                        txtGetIRNNo := 'Do you want to Get E-Invoice IRN No. for Document No. ' + Rec."No.";
+                //         txtGetIRNNo := 'Do you want to Get E-Invoice IRN No. for Document No. ' + Rec."No.";
 
-                        IF CONFIRM(txtGetIRNNo) THEN BEGIN
-                            //CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");    //17783
-                        END;
+                //         IF CONFIRM(txtGetIRNNo) THEN BEGIN
+                //             //CodeunitEWayBillEInvoice.InitializeGetEInvoive(Rec."No.", Rec."E-Invoice IRN No");    //17783
+                //         END;
 
-                        CurrPage.UPDATE;
-                        CLEAR(CodeunitEWayBillEInvoice);
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                    end;
-                }
-                action("Calculate Distance (KM)")
-                {
-                    Promoted = true;
+                //         CurrPage.UPDATE;
+                //         CLEAR(CodeunitEWayBillEInvoice);
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                //     end;
+                // }
+                // action("Calculate Distance (KM)")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                        CurrPage.UPDATE();
+                //     trigger OnAction()
+                //     begin
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                //         CurrPage.UPDATE();
 
-                        IF Rec."GST Customer Type" IN [Rec."GST Customer Type"::Export, Rec."GST Customer Type"::"SEZ Development", Rec."GST Customer Type"::"SEZ Unit"] THEN BEGIN
-                            Rec.TESTFIELD("Port Code");
-                        END;
+                //         IF Rec."GST Customer Type" IN [Rec."GST Customer Type"::Export, Rec."GST Customer Type"::"SEZ Development", Rec."GST Customer Type"::"SEZ Unit"] THEN BEGIN
+                //             Rec.TESTFIELD("Port Code");
+                //         END;
 
-                        IF Rec."GST Customer Type" IN [Rec."GST Customer Type"::" ", Rec."GST Customer Type"::"Deemed Export", Rec."GST Customer Type"::Exempted, Rec."GST Customer Type"::Registered, Rec."GST Customer Type"::Unregistered] THEN BEGIN
-                            IF Rec."Ship-to Code" = '' THEN
-                                Rec.TESTFIELD("Sell-to Post Code")
-                            ELSE
-                                Rec.TESTFIELD("Ship-to Post Code");
-                        END;
+                //         IF Rec."GST Customer Type" IN [Rec."GST Customer Type"::" ", Rec."GST Customer Type"::"Deemed Export", Rec."GST Customer Type"::Exempted, Rec."GST Customer Type"::Registered, Rec."GST Customer Type"::Unregistered] THEN BEGIN
+                //             IF Rec."Ship-to Code" = '' THEN
+                //                 Rec.TESTFIELD("Sell-to Post Code")
+                //             ELSE
+                //                 Rec.TESTFIELD("Ship-to Post Code");
+                //         END;
 
-                        txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
+                //         txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
 
-                        // IF Rec."Distance (Km)" <> '' THEN BEGIN
-                        //     IF CONFIRM(txtMessageDistancepre) THEN
-                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                        // END; //17783
+                //         // IF Rec."Distance (Km)" <> '' THEN BEGIN
+                //         //     IF CONFIRM(txtMessageDistancepre) THEN
+                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
+                //         // END; //17783
 
-                        txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
+                //         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                        // IF Rec."Distance (Km)" = '' THEN BEGIN
-                        //     IF CONFIRM(txtMessageDistance) THEN
-                        //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                        // END; //17783
+                //         // IF Rec."Distance (Km)" = '' THEN BEGIN
+                //         //     IF CONFIRM(txtMessageDistance) THEN
+                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
+                //         // END; //17783
 
-                        CurrPage.UPDATE;
-                        CLEAR(CodeunitEWayBillEInvoice);
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                    end;
-                }
-                action("Generate E-Way Bill By IRN")
-                {
-                    Promoted = true;
+                //         CurrPage.UPDATE;
+                //         CLEAR(CodeunitEWayBillEInvoice);
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                //     end;
+                // }
+                // action("Generate E-Way Bill By IRN")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    var
-                        txtGenerateEwayBillByIrn: Text;
-                    begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                        CurrPage.UPDATE;
+                //     trigger OnAction()
+                //     var
+                //         txtGenerateEwayBillByIrn: Text;
+                //     begin
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                //         CurrPage.UPDATE;
 
-                        Rec.TESTFIELD("Transporter Code");
-                        Rec.TESTFIELD("Location GST Reg. No.");
-                        Rec.TESTFIELD("Distance (Km)");
-                        Rec.TESTFIELD("Vehicle No.");
+                //         Rec.TESTFIELD("Transporter Code");
+                //         Rec.TESTFIELD("Location GST Reg. No.");
+                //         Rec.TESTFIELD("Distance (Km)");
+                //         Rec.TESTFIELD("Vehicle No.");
 
-                        IF Rec."E-Invoice IRN Status" <> 'ACT' THEN
-                            ERROR('E-Invoice IRN Status must be Active (ACT)');
+                //         IF Rec."E-Invoice IRN Status" <> 'ACT' THEN
+                //             ERROR('E-Invoice IRN Status must be Active (ACT)');
 
-                        txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
+                //         txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
 
-                        IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
-                            //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
-                        END;
+                //         IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
+                //             //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
+                //         END;
 
-                        CurrPage.UPDATE;
-                        CLEAR(CodeunitEWayBillEInvoice);
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                    end;
-                }
-                action("Cancel E-Way Bill No.")
-                {
-                    Promoted = true;
+                //         CurrPage.UPDATE;
+                //         CLEAR(CodeunitEWayBillEInvoice);
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                //     end;
+                // }
+                // action("Cancel E-Way Bill No.")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    begin
-                        // TESTFIELD("E-Way Bill No.");
-                        // TESTFIELD("Reason Code for Cancel");
-                        // TESTFIELD("Reason for Cancel Remarks");
-                        //
-                        // txtMessagecancel :=  'Do you want to Cancel the E-Way Bill No. ' + Rec."E-Way Bill No.";
-                        //
-                        // IF CONFIRM(txtMessagecancel) THEN BEGIN
-                        //  CodeunitEWayBill.InitializeCancelBillNoSalesReturn(Rec."No.",Rec."E-Way Bill No.")
-                        // END;
-                    end;
-                }
-                action("E-Invoice QR Code")
-                {
-                    Promoted = true;
+                //     trigger OnAction()
+                //     begin
+                //         // TESTFIELD("E-Way Bill No.");
+                //         // TESTFIELD("Reason Code for Cancel");
+                //         // TESTFIELD("Reason for Cancel Remarks");
+                //         //
+                //         // txtMessagecancel :=  'Do you want to Cancel the E-Way Bill No. ' + Rec."E-Way Bill No.";
+                //         //
+                //         // IF CONFIRM(txtMessagecancel) THEN BEGIN
+                //         //  CodeunitEWayBill.InitializeCancelBillNoSalesReturn(Rec."No.",Rec."E-Way Bill No.")
+                //         // END;
+                //     end;
+                // }
+                // action("E-Invoice QR Code")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                        HYPERLINK(Rec."E-Invoice QR Code");
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                    end;
-                }
-                action("E-Invoice PDF")
-                {
-                    Promoted = true;
+                //     trigger OnAction()
+                //     begin
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                //         HYPERLINK(Rec."E-Invoice QR Code");
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                //     end;
+                // }
+                // action("E-Invoice PDF")
+                // {
+                //     Promoted = true;
 
-                    trigger OnAction()
-                    begin
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                        HYPERLINK(Rec."E-Invoice PDF");
-                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                    end;
-                }
-                action("Response Logs")
-                {
-                    Promoted = true;
-                    RunObject = Page "Response Logs";
-                    RunPageLink = "Document No." = FIELD("No.");
-                }
+                //     trigger OnAction()
+                //     begin
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                //         HYPERLINK(Rec."E-Invoice PDF");
+                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                //     end;
+                // }
+                // action("Response Logs")
+                // {
+                //     Promoted = true;
+                //     RunObject = Page "Response Logs";
+                //     RunPageLink = "Document No." = FIELD("No.");
+                // }
                 action(Statistics)
                 {
                     Caption = 'Statistics';

@@ -62,12 +62,12 @@ report 50028 "TDS Register - ACX"
                 column(intCompany; intCompany)
                 {
                 }
-                /* column(TDS_Group; "TDS Group")
+                column(TDS_Group; '')//16767 "TDS Group"
                 {
                 }
-                column(TDS_Section; "TDS Section")
+                column(TDS_Section; '') //16767 Not found "TDS Section"
                 {
-                } */ //16767 
+                }
                 column(Description; recAssessCode.Description)
                 {
                 }

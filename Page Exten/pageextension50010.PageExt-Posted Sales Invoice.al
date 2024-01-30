@@ -71,23 +71,40 @@ pageextension 50010 pageextension50010 extends "Posted Sales Invoice"
                         REPORT.RUN(50004, TRUE, FALSE, recSalesInvHdr);
                 end;
             }
-            action("E-Invoice SalesInvoice")
-            {
-                ApplicationArea = All;
-                Caption = 'E-Invoice SalesInvoice';
-                Ellipsis = true;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = CreateDocument;
+            // action("E-Invoice SalesInvoice")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'E-Invoice SalesInvoice';
+            //     Ellipsis = true;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     Image = CreateDocument;
 
-                trigger OnAction()
-                var
-                    CU50012: Codeunit 50012;
-                begin
-                    CU50012.CreateJsonSalesInvoiceOrder(Rec);
-                end;
-            }
+            //     trigger OnAction()
+            //     var
+            //         CU50012: Codeunit 50012;
+            //     begin
+            //         CU50012.CreateJsonSalesInvoiceOrder(Rec);
+            //     end;
+            // }
+            // action("Cancel EInvoice")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'Cancel E-Invoice';
+            //     Ellipsis = true;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     Image = CancelAllLines;
+
+            //     trigger OnAction()
+            //     var
+            //         CU50012: Codeunit 50012;
+            //     begin
+            //         CU50012.CanceSalesInvEInvoice(Rec."No.", Rec."IRN Hash");
+            //     end;
+            // }
         }
     }
 

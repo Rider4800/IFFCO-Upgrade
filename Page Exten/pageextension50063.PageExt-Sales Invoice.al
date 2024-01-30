@@ -8,13 +8,15 @@ pageextension 50063 pageextension50063 extends "Sales Invoice"
             {
             }
         }
-        addafter("Location Code")
+        addafter("External Document No.")
         {
             field("Branch Accounting"; Rec."Branch Accounting")
             {
+                ApplicationArea = All;
             }
             field("Finance Branch A/c Code"; Rec."Finance Branch A/c Code")
             {
+                ApplicationArea = All;
             }
             field("Posting No. Series"; Rec."Posting No. Series")
             {
@@ -61,7 +63,7 @@ pageextension 50063 pageextension50063 extends "Sales Invoice"
             }
         }
         moveafter("Job Queue Status"; "Shortcut Dimension 1 Code")
-        moveafter("Shortcut Dimension 2 Code"; "Location Code")
+        moveafter("Salesperson Code"; "Location Code")
     }
 }
 

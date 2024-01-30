@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompState">
+          <DataField>CompState</DataField>
+        </Field>
+        <Field Name="Reg_State">
+          <DataField>Reg_State</DataField>
+        </Field>
+        <Field Name="Company_Country">
+          <DataField>Company_Country</DataField>
+        </Field>
+        <Field Name="CompName">
+          <DataField>CompName</DataField>
+        </Field>
+        <Field Name="Reg_Address">
+          <DataField>Reg_Address</DataField>
+        </Field>
+        <Field Name="Reg_Address2">
+          <DataField>Reg_Address2</DataField>
+        </Field>
+        <Field Name="Reg_City">
+          <DataField>Reg_City</DataField>
+        </Field>
+        <Field Name="Reg_Postcode">
+          <DataField>Reg_Postcode</DataField>
+        </Field>
+        <Field Name="CIN">
+          <DataField>CIN</DataField>
+        </Field>
+        <Field Name="CompTIN">
+          <DataField>CompTIN</DataField>
+        </Field>
+        <Field Name="Company_Picture">
+          <DataField>Company_Picture</DataField>
+        </Field>
+        <Field Name="Company_Name">
+          <DataField>Company_Name</DataField>
+        </Field>
+        <Field Name="Company_Phone_No">
+          <DataField>Company_Phone_No</DataField>
+        </Field>
+        <Field Name="Company_CIN">
+          <DataField>Company_CIN</DataField>
+        </Field>
+        <Field Name="Company_PAN">
+          <DataField>Company_PAN</DataField>
+        </Field>
+        <Field Name="Company_GST_No">
+          <DataField>Company_GST_No</DataField>
+        </Field>
+        <Field Name="Company_Email">
+          <DataField>Company_Email</DataField>
+        </Field>
+        <Field Name="Company_Bank_Name">
+          <DataField>Company_Bank_Name</DataField>
+        </Field>
+        <Field Name="CompAdd">
+          <DataField>CompAdd</DataField>
+        </Field>
+        <Field Name="CompAdd2">
+          <DataField>CompAdd2</DataField>
+        </Field>
+        <Field Name="CompCity">
+          <DataField>CompCity</DataField>
+        </Field>
+        <Field Name="CompPC">
+          <DataField>CompPC</DataField>
+        </Field>
+        <Field Name="Website">
+          <DataField>Website</DataField>
+        </Field>
+        <Field Name="CompEmail">
+          <DataField>CompEmail</DataField>
+        </Field>
+        <Field Name="FAX">
+          <DataField>FAX</DataField>
+        </Field>
+        <Field Name="InvoiceNo">
+          <DataField>InvoiceNo</DataField>
+        </Field>
+        <Field Name="CompNamr">
+          <DataField>CompNamr</DataField>
+        </Field>
+        <Field Name="CompPAN">
+          <DataField>CompPAN</DataField>
+        </Field>
+        <Field Name="BuyerVATTIN">
+          <DataField>BuyerVATTIN</DataField>
+        </Field>
+        <Field Name="BuyerCST">
+          <DataField>BuyerCST</DataField>
+        </Field>
+        <Field Name="TFName">
+          <DataField>TFName</DataField>
+        </Field>
+        <Field Name="TFName2">
+          <DataField>TFName2</DataField>
+        </Field>
+        <Field Name="TFAdd">
+          <DataField>TFAdd</DataField>
+        </Field>
+        <Field Name="TFAdd2">
+          <DataField>TFAdd2</DataField>
+        </Field>
+        <Field Name="TFPosrtCode">
+          <DataField>TFPosrtCode</DataField>
+        </Field>
+        <Field Name="TFCity">
+          <DataField>TFCity</DataField>
+        </Field>
+        <Field Name="TFState">
+          <DataField>TFState</DataField>
+        </Field>
+        <Field Name="TFStateCode">
+          <DataField>TFStateCode</DataField>
+        </Field>
+        <Field Name="TFGSTIN">
+          <DataField>TFGSTIN</DataField>
+        </Field>
+        <Field Name="InvoiceDt">
+          <DataField>InvoiceDt</DataField>
+        </Field>
+        <Field Name="ModeForPay">
+          <DataField>ModeForPay</DataField>
+        </Field>
+        <Field Name="SuppliyRef">
+          <DataField>SuppliyRef</DataField>
+        </Field>
+        <Field Name="OtherRef">
+          <DataField>OtherRef</DataField>
+        </Field>
+        <Field Name="Dated">
+          <DataField>Dated</DataField>
+        </Field>
+        <Field Name="DispDoc">
+          <DataField>DispDoc</DataField>
+        </Field>
+        <Field Name="BuyerOrNo">
+          <DataField>BuyerOrNo</DataField>
+        </Field>
+        <Field Name="dispThrought">
+          <DataField>dispThrought</DataField>
+        </Field>
+        <Field Name="Destination">
+          <DataField>Destination</DataField>
+        </Field>
+        <Field Name="IssueTm">
+          <DataField>IssueTm</DataField>
+        </Field>
+        <Field Name="VehicelNo">
+          <DataField>VehicelNo</DataField>
+        </Field>
+        <Field Name="DurationofProcess">
+          <DataField>DurationofProcess</DataField>
+        </Field>
+        <Field Name="NatureofProcessing">
+          <DataField>NatureofProcessing</DataField>
+        </Field>
+        <Field Name="PartyName">
+          <DataField>PartyName</DataField>
+        </Field>
+        <Field Name="PartyAdd">
+          <DataField>PartyAdd</DataField>
+        </Field>
+        <Field Name="PartyAdd2">
+          <DataField>PartyAdd2</DataField>
+        </Field>
+        <Field Name="PartyPC">
+          <DataField>PartyPC</DataField>
+        </Field>
+        <Field Name="PartyCity">
+          <DataField>PartyCity</DataField>
+        </Field>
+        <Field Name="PartyStateName">
+          <DataField>PartyStateName</DataField>
+        </Field>
+        <Field Name="PartyGSTIN">
+          <DataField>PartyGSTIN</DataField>
+        </Field>
+        <Field Name="PartyStateCode">
+          <DataField>PartyStateCode</DataField>
+        </Field>
+        <Field Name="SrNo">
+          <DataField>SrNo</DataField>
+        </Field>
+        <Field Name="Item">
+          <DataField>Item</DataField>
+        </Field>
+        <Field Name="Qty">
+          <DataField>Qty</DataField>
+        </Field>
+        <Field Name="QtyFormat">
+          <DataField>QtyFormat</DataField>
+        </Field>
+        <Field Name="ItemDesc">
+          <DataField>ItemDesc</DataField>
+        </Field>
+        <Field Name="UOM">
+          <DataField>UOM</DataField>
+        </Field>
+        <Field Name="Rate">
+          <DataField>Rate</DataField>
+        </Field>
+        <Field Name="RateFormat">
+          <DataField>RateFormat</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="TotalQty">
+          <DataField>TotalQty</DataField>
+        </Field>
+        <Field Name="TotalQtyFormat">
+          <DataField>TotalQtyFormat</DataField>
+        </Field>
+        <Field Name="TotalAmount">
+          <DataField>TotalAmount</DataField>
+        </Field>
+        <Field Name="TotalAmountFormat">
+          <DataField>TotalAmountFormat</DataField>
+        </Field>
+        <Field Name="Amountinword">
+          <DataField>Amountinword</DataField>
+        </Field>
+        <Field Name="Ile_ItemNo">
+          <DataField>Ile_ItemNo</DataField>
+        </Field>
+        <Field Name="Ile_DocNo">
+          <DataField>Ile_DocNo</DataField>
+        </Field>
+        <Field Name="Ile_Qty">
+          <DataField>Ile_Qty</DataField>
+        </Field>
+        <Field Name="Ile_QtyFormat">
+          <DataField>Ile_QtyFormat</DataField>
+        </Field>
+        <Field Name="Ile_LotNO">
+          <DataField>Ile_LotNO</DataField>
+        </Field>
+        <Field Name="CostPerUnit">
+          <DataField>CostPerUnit</DataField>
+        </Field>
+        <Field Name="CostPerUnitFormat">
+          <DataField>CostPerUnitFormat</DataField>
+        </Field>
+        <Field Name="CostAmtActual">
+          <DataField>CostAmtActual</DataField>
+        </Field>
+        <Field Name="CostAmtActualFormat">
+          <DataField>CostAmtActualFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

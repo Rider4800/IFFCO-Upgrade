@@ -3,8 +3,8 @@ report 50004 "Sales Tax Invoice"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\SalesTaxInvoice.rdl';
     ApplicationArea = All;
-    UsageCategory = ReportsAndAnalysis;
-    PreviewMode = PrintLayout;
+    // UsageCategory = ReportsAndAnalysis;
+    // PreviewMode = PrintLayout;
 
     dataset
     {
@@ -203,7 +203,7 @@ report 50004 "Sales Tax Invoice"
                 column(Ship_GST_State_Code; txtConsignee[11])
                 {
                 }
-                column(Amount_In_Words_Total; Numbertxt[1])
+                column(Amount_In_Words_Total; UpperCase(Numbertxt[1] + ' ' + Numbertxt[2]))
                 {
                 }
                 column(Bill_to_Name; "Sales Invoice Header"."Bill-to Name")
@@ -635,6 +635,7 @@ report 50004 "Sales Tax Invoice"
 
                     RecCheck.InitTextVariable;
                     RecCheck.FormatNoText(Numbertxt, (decAmounttoCust), "Sales Invoice Header"."Currency Code");//ACXCP_250822
+                                                                                                                //  Numbertxt[1] := UpperCase(Numbertxt[1]);
                                                                                                                 //RecCheck.FormatNoText(Numbertxt,(decAmounttoCust+decRoundOff),"Sales Invoice Header"."Currency Code");
                                                                                                                 //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
 
@@ -771,8 +772,9 @@ report 50004 "Sales Tax Invoice"
         decRoundOff: Decimal;
         decTotalAmount: Decimal;
         decAmounttoCust: Decimal;
-        RecCheck: Report 1401;
-        Numbertxt: array[1] of Text;
+        //  RecCheck: Report 1401;
+        RecCheck: Report "Check Report";
+        Numbertxt: array[2] of Text;
         Sno: Integer;
         recVE: Record 5802;
         recILE: Record 32;

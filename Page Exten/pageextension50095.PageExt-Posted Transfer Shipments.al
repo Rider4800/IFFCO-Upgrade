@@ -28,12 +28,14 @@ pageextension 50095 pageextension50095 extends "Posted Transfer Shipments"
                 //The property 'PromotedIsBig' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedIsBig = true;
                 RunObject = Page 50015;
+                ApplicationArea = ALL;
             }
             action("Material Out")
             {
                 Promoted = true;
                 PromotedCategory = "Report";
                 Visible = true;
+                ApplicationArea = ALL;
 
                 trigger OnAction()
                 begin
@@ -48,6 +50,7 @@ pageextension 50095 pageextension50095 extends "Posted Transfer Shipments"
             {
                 Promoted = true;
                 PromotedCategory = "Report";
+                ApplicationArea = ALL;
 
                 trigger OnAction()
                 begin

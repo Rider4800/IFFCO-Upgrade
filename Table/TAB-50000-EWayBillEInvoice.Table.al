@@ -631,6 +631,7 @@ table 50000 "E-Way Bill & E-Invoice"
         field(71; "QR Code"; BLOB)
         {
             DataClassification = ToBeClassified;
+            Subtype = Bitmap;
         }
         field(72; "Transporter GSTIN"; Code[15])
         {

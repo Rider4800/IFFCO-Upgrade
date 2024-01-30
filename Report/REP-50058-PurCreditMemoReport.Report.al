@@ -203,7 +203,7 @@ report 50058 PurCreditMemoReport
             column(AmounttoVendorHdr; Codeunit50200.AmttoVendorPurchCrMemoHdr("Purch. Cr. Memo Hdr."))
             {
             }
-            column(Amount_In_Words_Total; Numbertxt[1])
+            column(Amount_In_Words_Total; UpperCase(Numbertxt[1] + ' ' + Numbertxt[2])) //16767
             {
             }
             column(CGST; ABS(dcCGST))
@@ -534,8 +534,8 @@ report 50058 PurCreditMemoReport
         decRoundOff: Decimal;
         recPCML: Record 125;
         //RecCheck: Report "Posted Voucher";
-        RecCheck: Report Check;
-        Numbertxt: array[1] of Text;
+        RecCheck: Report "Check Report";
+        Numbertxt: array[2] of Text;
         txtCmpInfo: array[10] of Text;
         recDGLE: Record "Detailed GST Ledger Entry";
         dcCGST: Decimal;

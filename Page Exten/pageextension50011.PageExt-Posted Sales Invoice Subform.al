@@ -15,6 +15,7 @@ pageextension 50011 pageextension50011 extends "Posted Sales Invoice Subform"
         {
             action("Get Scheme Discount")
             {
+                ApplicationArea = ALL;
                 Image = Discount;
                 RunObject = Page 50033;
                 RunPageLink = "Document No." = FIELD("Document No."),

@@ -2,8 +2,8 @@ report 50013 "GRN Report"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\GRNReport.rdl';
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //UsageCategory = ReportsAndAnalysis;
+    //ApplicationArea = All;
 
     dataset
     {

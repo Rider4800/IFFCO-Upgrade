@@ -69,23 +69,23 @@ pageextension 50092 pageextension50092 extends "Posted Transfer Shipment"
                     END;
                 end;
             }
-            action("E-Invoice TransferShipment")
-            {
-                ApplicationArea = All;
-                Caption = 'E-Invoice TransferShipment';
-                Ellipsis = true;
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = CreateDocument;
+            // action("E-Invoice TransferShipment")
+            // {
+            //     ApplicationArea = All;
+            //     Caption = 'E-Invoice TransferShipment';
+            //     Ellipsis = true;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     PromotedIsBig = true;
+            //     Image = CreateDocument;
 
-                trigger OnAction()
-                var
-                    CU50014: Codeunit 50014;
-                begin
-                    CU50014.CreateJsonTransferShipOrder(Rec);
-                end;
-            }
+            //     trigger OnAction()
+            //     var
+            //         CU50014: Codeunit 50014;
+            //     begin
+            //         CU50014.CreateJsonTransferShipOrder(Rec);
+            //     end;
+            // }
         }
     }
 

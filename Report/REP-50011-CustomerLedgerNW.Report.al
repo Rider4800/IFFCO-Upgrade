@@ -2,8 +2,8 @@ report 50011 "Customer Ledger-NW"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\CustomerLedgerNW.rdl';
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //  UsageCategory = ReportsAndAnalysis;
+    // ApplicationArea = All;
 
     dataset
     {

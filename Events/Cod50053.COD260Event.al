@@ -32,6 +32,7 @@ codeunit 50053 COD260Event
     var
         ItemRec: Record Item;//pp
         ILERec: Record "Item Ledger Entry";
+        a: Record 37;
         ILERemQty: Decimal;
         Text001: Label 'The quantity on inventory is not sufficient to cover the net change in inventory. Do you still want to record the quantity?';
         Text002: Label 'The update has been interrupted to respect the warning.';
@@ -48,10 +49,12 @@ codeunit 50053 COD260Event
                 ILERemQty := ILERemQty + ILERec."Remaining Quantity"
             until ILERec.Next() = 0;
         end;
-        if (ILERemQty - SalesLine.Quantity) <= 0 then begin
-            if CONFIRM(Text001, TRUE) THEN begin
-            end else
-                Error(Text002);
+        if SalesLine.Type = SalesLine.Type::Item then begin
+            if (ILERemQty - SalesLine.Quantity) <= 0 then begin
+                if CONFIRM(Text001, TRUE) THEN begin
+                end else
+                    Error(Text002);
+            end;
         end;
         // if CustRec.Get(SalesLine."Sell-to Customer No.") then begin
         //     if CustRec.GetTotalAmountLCY + (SalesLine.Quantity * SalesLine."Unit Price") > CustRec."Credit Limit (LCY)" then

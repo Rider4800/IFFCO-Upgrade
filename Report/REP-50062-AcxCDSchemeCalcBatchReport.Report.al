@@ -68,7 +68,7 @@ report 50062 "AcxCD Scheme Calc Batch Report"
 
     trigger OnPostReport()
     begin
-        MESSAGE('done');
+        MESSAGE('Sccuess');
     end;
 
     var

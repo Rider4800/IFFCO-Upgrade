@@ -162,9 +162,10 @@ codeunit 50055 ItemTrackingDataCollection
                     IF "Qty." - "RevQty." > 0 THEN BEGIN
                         IF ILE."Expiration Date" <= TODAY THEN //acxcp_23052022
                             Expire := FALSE //acxcp_23052022
-                        ELSE //acxcp_23052022
+                        ELSE begin//acxcp_23052022
                             Expire := TRUE;
-                        ERROR('Wrong Selection, as per near expiration please select %1, Lot...', ILE2."Lot No."); //17783->Newly Added, correction found.
+                            ERROR('Wrong Selection, as per near expiration please select %1, Lot...', ILE2."Lot No."); //17783->Newly Added, correction found.
+                        end;
                     END;
                 END;
             UNTIL ILE.NEXT = 0;
@@ -188,6 +189,7 @@ codeunit 50055 ItemTrackingDataCollection
             ItemLedgerEntry.SetRange("Item No.", TrackingSpecification."Item No.");
             ItemLedgerEntry.SetRange("Location Code", TrackingSpecification."Location Code");
             ItemLedgerEntry.SetRange(Open, true);
+            ItemLedgerEntry.SETFILTER("Expiration Date", '>%1', Today);
             if ItemLedgerEntry.FindFirst() then begin
                 TempTrackingSpecification.Init();
                 TempTrackingSpecification := (TrackingSpecification);
@@ -237,8 +239,8 @@ codeunit 50055 ItemTrackingDataCollection
                                         LotNoInfo.SetRange("Lot No.", ItemLedgerEntry."Lot No.");
                                         LotNoInfo.SetFilter("Batch MRP", '<>%1', 0);
                                         if LotNoInfo.FindFirst() then begin
-                                            if LotNoInfo."Batch MRP" <> TrackingSpecification."Batch MRP" then
-                                                Error('MRP Price Should be Same As in First Line in Tracking Specification');
+                                            if LotNoInfo."Batch MRP" <> TrackingSpecification."Batch MRP" then;
+                                            Error('MRP Price Should be Same As in First Line in Tracking Specification');
                                         end;
                                     end;
                                 TrackingSpecification.SetRange("Lot No.");

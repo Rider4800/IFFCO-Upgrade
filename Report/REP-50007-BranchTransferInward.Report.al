@@ -229,7 +229,7 @@ report 50007 "Branch Transfer Inward"
                 column(HSN; "Transfer Shipment Line"."HSN/SAC Code")
                 {
                 }
-                column(Amountinword; NotoWord[1])
+                column(Amountinword; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
                 {
                 }
                 dataitem("Item Ledger Entry"; "Item Ledger Entry")
@@ -387,8 +387,8 @@ report 50007 "Branch Transfer Inward"
         recTransShipLine: Record 5745;
         TotalQty: Decimal;
         TotAmt: Decimal;
-        repCheck: Report Check;
-        NotoWord: array[1] of Text;
+        repCheck: Report "Check report";
+        NotoWord: array[2] of Text;
         BuyerTIN: Code[15];
         BuyerCST: Code[15];
         recCompanyInfo: Record 79;

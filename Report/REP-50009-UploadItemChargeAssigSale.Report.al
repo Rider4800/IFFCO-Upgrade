@@ -30,14 +30,16 @@ report 50009 "Upload Item Charge Assig. Sale"
                                 Outstr: OutStream;
                                 Instr: InStream;
                                 TemBlb: Codeunit "Temp Blob";
+                                TempBlbCodeu: Codeunit "Temp Blob";
                             begin
-                                TemBlb.CreateInStream(Instr);
-                                TemBlb.CreateOutStream(Outstr);
-                                ExcelBuf.SaveToStream(Outstr, false);
-                                RequestFile;
+                                // RequestFile;
+                                // TemBlb.CreateOutStream(Outstr);
+                                // TemBlb.CreateInStream(Instr);
+                                // ExcelBuf.SaveToStream(Outstr, false);
+                                // SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
                                 // FileName := RecFileManagement.GetFileName(ServerFileName);
-                                SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
                                 // SheetName := ExcelBuf.SelectSheetsName(ServerFileName);
+                                RequestFileNew;
                             end;
                         }
                         field("Excel Sheet Name"; SheetName)
@@ -49,13 +51,14 @@ report 50009 "Upload Item Charge Assig. Sale"
                                 Instr: InStream;
                                 TemBlb: Codeunit "Temp Blob";
                             begin
-                                TemBlb.CreateInStream(Instr);
-                                TemBlb.CreateOutStream(Outstr);
-                                ExcelBuf.SaveToStream(Outstr, false);
+                                // TemBlb.CreateInStream(Instr);
+                                // TemBlb.CreateOutStream(Outstr);
+                                // ExcelBuf.SaveToStream(Outstr, false);
                                 IF ServerFileName = '' THEN
-                                    RequestFile;
+                                    // RequestFile;
+                                RequestFileNew;
                                 //16767 SheetName := ExcelBuf.SelectSheetsName(ServerFileName);
-                                SheetName := ExcelBuf.SelectSheetsNameStream(Instr)
+                                // SheetName := ExcelBuf.SelectSheetsNameStream(Instr)
                             end;
                         }
                         field("Customer No."; cdLOc)
@@ -89,7 +92,7 @@ report 50009 "Upload Item Charge Assig. Sale"
     trigger OnPreReport()
     begin
         CLEARLASTERROR();
-        ReadExcelSheet(ServerFileName, SheetName);
+        ReadExcelSheet(FileName, SheetName);
     end;
 
     var
@@ -144,31 +147,47 @@ report 50009 "Upload Item Charge Assig. Sale"
         SalesLine: Record 37;
         ApplDocLineNo: Integer;
         Doc_Line_No: Integer;
+        Instr: InStream;
 
-    local procedure RequestFile()
+
+    local procedure RequestFileNew()
     var
         Outstr: OutStream;
-        InStr: Instream;
         TempBlbCodeu: Codeunit "Temp Blob";
+        Text006: Label 'Import Excel File';
     begin
-        // IF FileName <> '' THEN
-        //     ServerFileName := FileMgt.UploadFile(Text001, FileName)
-        // ELSE
-        //     ServerFileName := FileMgt.UploadFile(Text001, '.xlsx');
-        // ValidateServerFileName;
-        // FileName := FileMgt.GetFileName(ServerFileName);
         Clear(TempBlbCodeu);
         Clear(InStr);
         TempBlbCodeu.CreateInStream(InStr);
-
-        if FileName = '' then
-            FileName := '.xlsx';
-        UploadIntoStream('', '', '', FileName, InStr);
-
-        ServerFileName := FileName;
-        ValidateServerFileName;
+        UploadIntoStream(Text006, '', '', ServerFileName, Instr);
         FileName := FileMgt.GetFileName(ServerFileName);
+        SheetName := ExcelBuf.SelectSheetsNameStream(Instr);
     end;
+
+    // local procedure RequestFile()
+    // var
+    //     Outstr: OutStream;
+    //     InStr: Instream;
+    //     TempBlbCodeu: Codeunit "Temp Blob";
+    // begin
+    // IF FileName <> '' THEN
+    //     ServerFileName := FileMgt.UploadFile(Text001, FileName)
+    // ELSE
+    //     ServerFileName := FileMgt.UploadFile(Text001, '.xlsx');
+    // ValidateServerFileName;
+    // FileName := FileMgt.GetFileName(ServerFileName);
+    //     Clear(TempBlbCodeu);
+    //     Clear(InStr);
+    //     TempBlbCodeu.CreateOutStream(Outstr);
+    //     TempBlbCodeu.CreateInStream(InStr);
+    //     if FileName = '' then
+    //         FileName := '.xlsx';
+    //     ServerFileName := FileName;
+    //     ValidateServerFileName;
+    //     FileName := FileMgt.GetFileName(ServerFileName);
+
+    //     UploadIntoStream('', '', '', FileName, InStr);
+    // end;
 
     local procedure ValidateServerFileName()
     begin
@@ -187,12 +206,12 @@ report 50009 "Upload Item Charge Assig. Sale"
         BlobCu: Codeunit "Temp Blob";
     begin
         ExcelBuf.LOCKTABLE;
-        //ExcelBuf.OpenBook(p_FileName, p_SheetName);
-        ExcelBuf.LOCKTABLE;
-        BlobCu.CreateInStream(instrm);
-        BlobCu.CreateOutStream(otstr);
-        ExcelBuf.SaveToStream(otstr, false);
-        ExcelBuf.OpenBookStream(instrm, p_SheetName);
+        ExcelBuf.OpenBookStream(Instr, p_SheetName);
+        // ExcelBuf.LOCKTABLE;
+        // BlobCu.CreateInStream(instrm);
+        // BlobCu.CreateOutStream(otstr);
+        // ExcelBuf.SaveToStream(otstr, false);
+        // ExcelBuf.OpenBookStream(instrm, p_SheetName);
 
         ExcelBuf.ReadSheet;
         ExcelBuf.SETRANGE("Row No.", 1);

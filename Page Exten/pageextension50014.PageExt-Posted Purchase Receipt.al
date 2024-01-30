@@ -12,7 +12,6 @@ pageextension 50014 pageextension50014 extends "Posted Purchase Receipt"
                 ApplicationArea = All;
                 Promoted = true;
                 PromotedCategory = "Report";
-
                 trigger OnAction()
                 begin
                     recPurchaseHeader.RESET();

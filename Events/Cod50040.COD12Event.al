@@ -559,6 +559,7 @@ codeunit 50040 COD12Event
         GLEntry: Record "G/L Entry";
         SIHRec: Record "Sales Invoice Header";
         SCrMHRec: Record "Sales Cr.Memo Header";
+        e: Codeunit 90;
     begin
         Cu50041.GetDataPostDtldVendLedgEntries(TotalAmountLCY, TotalAmountAddCurr, GenJnlLine);
         Cu50041.GetData(Codeunit12Glb);
@@ -769,6 +770,7 @@ codeunit 50040 COD12Event
         Cu50041: Codeunit 50041;
         ApplyingVendorLedgerEntry: Record "Vendor Ledger Entry";
         EntryNum: Integer;
+        a: Codeunit 18430;
     begin
         //Cu50041.GetOldCVLedgEntryBufEntryNo(EntryNum);
         //if not ApplyingVendorLedgerEntry.Get(EntryNum) then;

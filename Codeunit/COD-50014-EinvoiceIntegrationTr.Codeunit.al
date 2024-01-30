@@ -128,7 +128,10 @@ codeunit 50014 EInvoiceIntegrationTr
         EInvoiceIntegration: Record "E-Way Bill & E-Invoice";
         LocationBuff: Record Location;
         StateBuff: Record State;
+        T50000: Record 50000;
         SalesLinesErr: Label 'E-Invoice allowes only 100 lines per Invoice. Curent transaction is having %1 lines.';
+        InstreamVar: InStream;
+        ToFileName: Variant;
     begin
         AuthenticateCredentials(TransferShipHeaderRec."No.");
         CompInfoRec.Get();
@@ -308,7 +311,7 @@ codeunit 50014 EInvoiceIntegrationTr
         JsonObjectHeader.Add('item_list', JsonArrayLine);
 
         JSONText := Format(JsonObjectHeader);
-        Message('Generate E-Invoice : ' + Format(JSONText));
+        Message('Generate E-Invoice : ' + JSONText);
 
         EinvoiceHttpContent.WriteFrom(JSONText);
         EinvoiceHttpContent.GetHeaders(EinvoiceHttpHeader);
@@ -351,15 +354,7 @@ codeunit 50014 EInvoiceIntegrationTr
                             QRCodeUrl := JOutputToken1.AsValue().AsText();
                             JOutputObject1.Get('EinvoicePdf', JOutputToken1);
                             EinvoicePdf := JOutputToken1.AsValue().AsText();
-                            JOutputObject1.Get('EwbNo', JOutputToken1);
-                            EwbNo := JOutputToken1.AsValue().AsText();
-                            JOutputObject1.Get('EwbDt', JOutputToken1);
-                            EwbDt := JOutputToken1.AsValue().AsText();
-                            JOutputObject1.Get('EwbValidTill', JOutputToken1);
-                            EwbValidTill := JOutputToken1.AsValue().AsText();
                         end;
-                        if SignedQRCode <> '' then
-                            QRGenerator.GenerateQRCodeImage(SignedQRCode, TempBlob);
                         recResponseLog.INIT;
                         recResponseLog."Document No." := TransferShipHeaderRec."No.";
                         recResponseLog."Response Date" := TODAY;
@@ -392,12 +387,6 @@ codeunit 50014 EInvoiceIntegrationTr
                             EWayBillandEinvoice.VALIDATE("E-Invoice Acknowledge Date", AckDt);
                             EWayBillandEinvoice."E-Invoice QR Code" := QRCodeUrl;
                             EWayBillandEinvoice."E-Invoice PDF" := EinvoicePdf;
-                            IF EwbNo <> '' THEN
-                                EWayBillandEinvoice.VALIDATE("E-Way Bill No.", EwbNo);
-                            IF EwbDt <> '' THEN
-                                EWayBillandEinvoice."E-Way Bill Date" := EwbDt;
-                            IF EwbValidTill <> '' THEN
-                                EWayBillandEinvoice."E-Way Bill Valid Upto" := EwbValidTill;
                             EWayBillandEinvoice."E-Invoice IRN Status" := Status;
                             //EWayBillandEinvoice.VALIDATE("E-Invoice Cancel Date", '');
                             EWayBillandEinvoice."E-Invoice Cancel Reason" := EWayBillandEinvoice."E-Invoice Cancel Reason"::" ";
@@ -405,6 +394,16 @@ codeunit 50014 EInvoiceIntegrationTr
                             EWayBillandEinvoice."E-Invoice Status" := Status + ' ' + StatusCode;
                             EWayBillandEinvoice.MODIFY;
                         END;
+                        if SignedQRCode <> '' then begin
+                            Clear(RecRef);
+                            RecRef.Get(EWayBillandEinvoice.RecordId);
+                            QRGenerator.GenerateQRCodeImage(SignedQRCode, TempBlob);
+                            if TempBlob.HasValue() then begin
+                                FldRef := RecRef.Field(EWayBillandEinvoice.FieldNo("QR Code"));
+                                TempBlob.ToRecordRef(RecRef, EWayBillandEinvoice.FieldNo("QR Code"));
+                                RecRef.Modify();
+                            end;
+                        end;
                     end else begin
                         JOutputObject.Get('errorMessage', JOutputToken);
                         errorMessage := JOutputToken.AsValue().AsText();
@@ -434,6 +433,162 @@ codeunit 50014 EInvoiceIntegrationTr
 
                         EWayBillandEinvoice.RESET();
                         EWayBillandEinvoice.SETRANGE("No.", TransferShipHeaderRec."No.");
+                        IF EWayBillandEinvoice.FindFirst() THEN
+                            EWayBillandEinvoice."E-Invoice Status" := 'Faliure' + ' ' + StatusCode;
+                        MESSAGE('Error Message : ' + errorMessage);
+                        EWayBillandEinvoice.MODIFY;
+                    end;
+                end;
+            end;
+        end;
+    end;
+
+    procedure CanceTransShpmntEInvoice(DocNo: Code[20]; EinvoiceBillNo: Code[200])
+    var
+        JsonObjectHeader: JsonObject;
+        recEinvoice: Record 50000;
+        JSONText: Text;
+        EinvoiceHttpContent: HttpContent;
+        EinvoiceHttpHeader: HttpHeaders;
+        EinvoiceHttpRequest: HttpRequestMessage;
+        EinvoiceHttpClient: HttpClient;
+        EinvoiceHttpResponse: HttpResponseMessage;
+        JResultObject: JsonObject;
+        JResultToken: JsonToken;
+        OutputMessage: Text;
+        JOutputObject: JsonObject;
+        JOutputObject1: JsonObject;
+        JOutputToken: JsonToken;
+        JOutputToken1: JsonToken;
+        ResultMessage: Text;
+        ResponseCode: Text;
+        AckNo: Text;
+        AckDt: Text;
+        AckDtTimeVar: DateTime;
+        Irn: Text;
+        SignedInvoice: Text;
+        SignedQRCode: Text;
+        errorMessage: Text;
+        InfoDtls: Text;
+        status: Text;
+        StatusCode: Text;
+        requestId: Text;
+        QRCodeUrl: Text;
+        EinvoicePdf: Text;
+        QRGenerator: Codeunit "QR Generator";
+        TempBlob: Codeunit "Temp Blob";
+        RecRef: RecordRef;
+        FldRef: FieldRef;
+        recResponseLog: Record "Response Logs";
+        EWayBillandEinvoice: Record "E-Way Bill & E-Invoice";
+    begin
+        Clear(accesstoken);
+        AuthenticateCredentials(DocNo);
+        recEinvoice.RESET();
+        recEinvoice.SETRANGE("No.", DocNo);
+        IF recEinvoice.FindFirst then;
+        JsonObjectHeader.Add('access_token', accesstoken);
+        //JsonObjectHeader.Add('user_gstin', recEinvoice."Location GST Reg. No.");
+        JsonObjectHeader.Add('user_gstin', '09AAAPG7885R002');
+        JsonObjectHeader.Add('irn', recEinvoice."E-Invoice IRN No");
+        IF recEinvoice."E-Invoice Cancel Reason" = recEinvoice."E-Invoice Cancel Reason"::"Wrong entry" THEN
+            JsonObjectHeader.Add('cancel_reason', '1');
+        JsonObjectHeader.Add('cancel_remarks', FORMAT(recEinvoice."E-Invoice Cancel Remarks"));
+
+        JSONText := Format(JsonObjectHeader);
+        Message('Cancel E-Invoice : ' + Format(JSONText));
+
+        EinvoiceHttpContent.WriteFrom(JSONText);
+        EinvoiceHttpContent.GetHeaders(EinvoiceHttpHeader);
+        EinvoiceHttpHeader.Clear();
+        EinvoiceHttpClient.DefaultRequestHeaders.Add('Authorization', StrSubstNo('JWT %1', accesstoken));
+        EinvoiceHttpHeader.Add('Content-Type', 'application/json');
+        EinvoiceHttpRequest.Content := EinvoiceHttpContent;
+        EinvoiceHttpRequest.SetRequestUri('https://sandb-api.mastersindia.co/api/v1/cancel-einvoice/');
+        EinvoiceHttpRequest.Method := 'POST';
+        if EinvoiceHttpClient.Send(EinvoiceHttpRequest, EinvoiceHttpResponse) then begin
+            EinvoiceHttpResponse.Content.ReadAs(ResultMessage);
+            JResultObject.ReadFrom(ResultMessage);
+            Message('Return Value of Cancel E-Invoice : ' + Format(JResultObject));
+            if JResultObject.Get('results', JResultToken) then begin
+                if JResultToken.IsObject then begin
+                    JResultToken.WriteTo(OutputMessage);
+                    JOutputObject.ReadFrom(OutputMessage);
+                    JOutputObject.Get('code', JOutputToken);
+                    StatusCode := JOutputToken.AsValue().AsText();
+                    JOutputObject.Get('status', JOutputToken);
+                    status := JOutputToken.AsValue().AsText();
+                    if StatusCode = '200' then begin
+                        if JOutputObject.Get('message', JOutputToken) then begin
+                            Clear(OutputMessage);
+                            JOutputToken.WriteTo(OutputMessage);
+                            JOutputObject1.ReadFrom(OutputMessage);
+                            JOutputObject1.Get('Irn', JOutputToken1);
+                            AckNo := JOutputToken1.AsValue().AsText();
+                            JOutputObject1.Get('CancelDate', JOutputToken1);
+                            AckDt := JOutputToken1.AsValue().AsText();
+                        end;
+                        recResponseLog.INIT;
+                        recResponseLog."Document No." := DocNo;
+                        recResponseLog."Response Date" := TODAY;
+                        recResponseLog."Response Time" := TIME;
+                        recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                        recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                        recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                        recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                        recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                        recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                        recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                        recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                        recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                        recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                        recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                        recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                        recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                        recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                        recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                        recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                        recResponseLog.Status := 'Success';
+                        recResponseLog."Called API" := 'Cancel IRN';
+                        recResponseLog.INSERT;
+
+                        EWayBillandEinvoice.RESET();
+                        EWayBillandEinvoice.SETRANGE("No.", DocNo);
+                        //EWayBillandEinvoice.SETRANGE("E-Invoice IRN No", EinvoiceBillNo);
+                        IF EWayBillandEinvoice.FindFirst() THEN BEGIN
+                            EWayBillandEinvoice.VALIDATE("E-Invoice Cancel Date", AckDt);
+                            EWayBillandEinvoice."E-Invoice Status" := Status + ' ' + StatusCode;
+                            EWayBillandEinvoice.MODIFY;
+                        END;
+                    end else begin
+                        JOutputObject.Get('errorMessage', JOutputToken);
+                        errorMessage := JOutputToken.AsValue().AsText();
+                        recResponseLog.INIT;
+                        recResponseLog."Document No." := DocNo;
+                        recResponseLog."Response Date" := TODAY;
+                        recResponseLog."Response Time" := TIME;
+                        recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                        recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                        recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                        recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                        recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                        recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                        recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                        recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                        recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                        recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                        recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                        recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                        recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                        recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                        recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                        recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                        recResponseLog.Status := 'Failure';
+                        recResponseLog."Called API" := 'Cancel IRN';
+                        recResponseLog.INSERT;
+
+                        EWayBillandEinvoice.RESET();
+                        EWayBillandEinvoice.SETRANGE("No.", DocNo);
                         IF EWayBillandEinvoice.FindFirst() THEN
                             EWayBillandEinvoice."E-Invoice Status" := 'Faliure' + ' ' + StatusCode;
                         MESSAGE('Error Message : ' + errorMessage);

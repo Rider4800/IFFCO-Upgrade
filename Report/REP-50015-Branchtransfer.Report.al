@@ -3,8 +3,8 @@ report 50015 "Branch transfer"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\Branchtransfer.rdl';
     PreviewMode = PrintLayout;
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    // UsageCategory = ReportsAndAnalysis;
+    // ApplicationArea = All;
 
     dataset
     {
@@ -313,7 +313,7 @@ report 50015 "Branch transfer"
                     column(TotalInvvalue; TotalInvvalue)
                     {
                     }
-                    column(AmountinWord; NotoWord[1])
+                    column(AmountinWord; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
                     {
                     }
                     column(TotlQtyBag; TotlQtyBag)
@@ -409,11 +409,6 @@ report 50015 "Branch transfer"
                         END;
 
                         //
-                        //Round of Calculation
-                        TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
-                        RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
-                        repCheck.InitTextVariable();
-                        repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
 
                         IGSTamt := 0;
                         IGSTper := 0;
@@ -470,7 +465,17 @@ report 50015 "Branch transfer"
                                 TotLineQty += recTransShipLine.Quantity;
                             UNTIL recTransShipLine.NEXT = 0;
                         END;
+
+                        //Round of Calculation
+                        TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
+                        RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
+                        repCheck.InitTextVariable();
+                        repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
+                        //16767 NotoWord[1] := UpperCase(NotoWord[1])
+
                     end;
+
+
                 }
 
                 trigger OnAfterGetRecord()
@@ -501,6 +506,8 @@ report 50015 "Branch transfer"
                         IF recCountry.FIND('-') THEN
                             arrLoc[10] := recCountry.Name;
                     END;
+
+
 
                     //Transfer-to Location Details
                     recLoc.RESET();
@@ -626,18 +633,22 @@ report 50015 "Branch transfer"
                     field(AllCopies; AllCopies)
                     {
                         Caption = 'All Copies';
+                        ApplicationArea = all;
                     }
                     field("Duplicate For Transporter"; "Duplicate For Transporter")
                     {
                         Caption = 'Duplicate For Transporter';
+                        ApplicationArea = all;
                     }
                     field("Triplicate For Assee"; "Triplicate For Assee")
                     {
                         Caption = 'Triplicate For Assee';
+                        ApplicationArea = all;
                     }
                     field("Extra Copy"; "Extra Copy")
                     {
                         Caption = 'Extra Copy';
+                        ApplicationArea = all;
                     }
                 }
             }
@@ -731,8 +742,9 @@ report 50015 "Branch transfer"
         SGSTper: Decimal;
         decQtyper: Decimal;
         recItemUOM: Record 5404;
-        repCheck: Report 1401;
-        NotoWord: array[1] of Text;
+        //16767 repCheck: Report 1401;
+        repCheck: Report "Check Report";
+        NotoWord: array[2] of Text;
         TotlQtyBag: Decimal;
         recTransShipLine: Record 5745;
         TotalInvvalue: Decimal;

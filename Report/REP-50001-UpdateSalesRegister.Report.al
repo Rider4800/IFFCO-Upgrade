@@ -2,9 +2,9 @@ report 50001 "Update Sales Register"
 {
     // //ACXCP_04102021 /Sales Register Changes
 
-    Permissions = TableData 113 = rm,
-                  TableData 115 = rm,
-                  TableData 5745 = rm;
+    Permissions = TableData 113 = rmid,
+                  TableData 115 = rmid,
+                  TableData 5745 = rmid;
     ProcessingOnly = true;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = all;
@@ -122,6 +122,7 @@ report 50001 "Update Sales Register"
                 }
                 group("Delete Data")
                 {
+                    Visible = false;
                     field("Regenerate Sales"; blnRegenerateSales)
                     {
                         Editable = true;
@@ -169,7 +170,8 @@ report 50001 "Update Sales Register"
             SalesRegister.DELETEALL;
 
             lSalesInvLine.RESET;
-            lSalesInvLine.MODIFYALL("Exported to Sales Register", FALSE);
+            if lSalesInvLine.FindFirst() then
+                lSalesInvLine.ModifyAll("Exported to Sales Register", false);
         END;
 
         IF blnRegenerateSalesCr THEN BEGIN
@@ -178,7 +180,8 @@ report 50001 "Update Sales Register"
             SalesRegister.DELETEALL;
 
             lSalesCrMemoLine.RESET;
-            lSalesCrMemoLine.MODIFYALL("Exported to Sales Register", FALSE);
+            if lSalesCrMemoLine.FindFirst() then
+                lSalesCrMemoLine.ModifyAll("Exported to Sales Register", false);
         END;
 
         IF blnRegenerateTransShpt THEN BEGIN
@@ -188,7 +191,8 @@ report 50001 "Update Sales Register"
             SalesRegister.DELETEALL;
 
             lTransShptLine.RESET;
-            lTransShptLine.MODIFYALL("Exported to Sales Register", FALSE);
+            if lTransShptLine.FindFirst() then
+                lTransShptLine.ModifyAll("Exported to Sales Register", false);
         END;
     end;
 
@@ -1572,7 +1576,7 @@ report 50001 "Update Sales Register"
         lTransShptLine.SETRANGE("Document No.", lTransShptHdr."No.");
         lTransShptLine.SETFILTER("Item No.", '<>%1', '');
         lTransShptLine.SETRANGE("Exported to Sales Register", FALSE);
-        IF lTransShptLine.FIND('-') THEN BEGIN
+        IF lTransShptLine.FindFirst() THEN BEGIN
             REPEAT
                 //16767 WITH lTransShptLine DO BEGIN
 

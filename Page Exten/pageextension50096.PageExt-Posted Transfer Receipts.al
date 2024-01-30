@@ -21,6 +21,7 @@ pageextension 50096 pageextension50096 extends "Posted Transfer Receipts"
                 PromotedIsBig = true;
                 RunObject = Page 50016;
                 RunPageMode = View;
+                ApplicationArea = ALL;
             }
         }
     }

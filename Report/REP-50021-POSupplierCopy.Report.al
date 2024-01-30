@@ -2,8 +2,8 @@ report 50021 "PO-SupplierCopy"
 {
     DefaultLayout = RDLC;
 
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //  UsageCategory = ReportsAndAnalysis;
+    // ApplicationArea = All;
     RDLCLayout = '.\ReportLayout\POSupplierCopy.rdl';
     PreviewMode = PrintLayout;
 

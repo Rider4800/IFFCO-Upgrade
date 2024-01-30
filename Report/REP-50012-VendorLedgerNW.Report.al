@@ -1,8 +1,8 @@
 report 50012 "Vendor Ledger-NW"
 {
     DefaultLayout = RDLC;
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //  UsageCategory = ReportsAndAnalysis;
+    //  ApplicationArea = All;
     RDLCLayout = '.\ReportLayout\VendorLedgerNW.rdl';
 
     dataset
@@ -217,23 +217,28 @@ report 50012 "Vendor Ledger-NW"
                     {
                         Caption = 'Vendor Code';
                         TableRelation = Vendor;
+                        ApplicationArea = all;
                     }
                     field(dtStartDate; dtStartDate)
                     {
                         Caption = 'From Date';
+                        ApplicationArea = all;
                     }
                     field(dtEndDate; dtEndDate)
                     {
                         Caption = 'To Date';
+                        ApplicationArea = all;
                     }
                     field(txtGlobalDim1Filter; txtGlobalDim1Filter)
                     {
+                        ApplicationArea = all;
                         CaptionClass = '1,2,1';
                         Caption = 'Global Dimension 1 Code';
                         TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
                     }
                     field(txtGlobalDim2Filter; txtGlobalDim2Filter)
                     {
+                        ApplicationArea = all;
                         CaptionClass = '1,2,2';
                         Caption = 'Global Dimension 2 Code';
                         TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));

@@ -87,6 +87,16 @@ pageextension 50023 pageextension50023 extends "Posted Sales Invoices"
                     //acxcp_26052021
                 end;
             }
+            action("Sales Tax Invoice-Many To One")
+            {
+                Caption = 'Sales Tax Invoice-Many To One';
+                Image = Sales;
+                Promoted = true;
+                PromotedCategory = "Report";
+                PromotedIsBig = true;
+                RunObject = report 50034;
+                ApplicationArea = ALL;
+            }
         }
     }
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean

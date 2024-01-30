@@ -24,7 +24,7 @@ pageextension 50024 pageextension50024 extends "Posted Sales Credit Memos"
                 Promoted = true;
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
-
+                ApplicationArea = ALL;
                 trigger OnAction()
                 begin
                     //acxcp

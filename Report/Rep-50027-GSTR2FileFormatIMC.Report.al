@@ -520,6 +520,7 @@ report 50027 "GSTR-2 File Format-IMC"
             recCompInfo.Name, FALSE, '', FALSE, FALSE, FALSE, '', TempExcelBuffer."Cell Type"::Text);
         end;
         //16767 End
+        TempExcelBuffer.NewRow();
         TempExcelBuffer.AddColumn(GSTR2B2BQuery.Document_No_, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
 
         GetPostingDateImps(pDate, GSTR2B2BQuery.Document_No_);

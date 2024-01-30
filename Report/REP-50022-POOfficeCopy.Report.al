@@ -3,8 +3,8 @@ report 50022 "PO-OfficeCopy"
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\POOfficeCopy.rdl';
     PreviewMode = PrintLayout;
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
+    //  UsageCategory = ReportsAndAnalysis;
+    // ApplicationArea = All;
 
     dataset
     {

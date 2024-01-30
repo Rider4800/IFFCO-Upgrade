@@ -2,8 +2,8 @@ report 50005 "Sales Return Tax Invoice"
 {
     DefaultLayout = RDLC;
     RDLCLayout = '.\ReportLayout\SalesReturnTaxInvoice.rdl';
-    ApplicationArea = All;
-    UsageCategory = ReportsAndAnalysis;
+    //  ApplicationArea = All;
+    // UsageCategory = ReportsAndAnalysis;
     PreviewMode = PrintLayout;
 
     dataset
@@ -215,7 +215,7 @@ report 50005 "Sales Return Tax Invoice"
                 column(ship_Name3; txtConsignee[13])
                 {
                 }
-                column(Amount_In_Words_Total; Numbertxt[1])
+                column(Amount_In_Words_Total; UpperCase(Numbertxt[1] + ' ' + Numbertxt[2]))
                 {
                 }
                 column(Bill_to_Name; "Sales Cr.Memo Header"."Bill-to Name")
@@ -680,6 +680,7 @@ report 50005 "Sales Return Tax Invoice"
 
                     RecCheck.InitTextVariable;
                     RecCheck.FormatNoText(Numbertxt, (decAmounttoCust + decRoundOff), "Sales Cr.Memo Header"."Currency Code");
+                    // Numbertxt[1] := UpperCase(Numbertxt[1]);
 
                     txtCurrCode := '';
                     IF "Sales Cr.Memo Header"."Currency Code" = '' THEN
@@ -818,8 +819,9 @@ report 50005 "Sales Return Tax Invoice"
         decRoundOff: Decimal;
         decTotalAmount: Decimal;
         decAmounttoCust: Decimal;
-        RecCheck: Report 1401;
-        Numbertxt: array[1] of Text;
+        // RecCheck: Report 1401;
+        RecCheck: Report "Check Report";
+        Numbertxt: array[2] of Text;
         Sno: Integer;
         recVE: Record 5802;
         recILE: Record 32;

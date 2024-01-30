@@ -3,8 +3,9 @@ report 50002 "Update Purchase Register"
     // acxcp_110322 //code edit due to round off g/l error
     // //acxcp_10012023 //GR No.& Date
 
-    Permissions = TableData 123 = rmd,
-                  TableData 125 = rmd;
+    Permissions = TableData 123 = rmid,
+                  TableData 125 = rmid,
+                  TableData 5746 = rmid;
     ProcessingOnly = true;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = all;
@@ -121,6 +122,7 @@ report 50002 "Update Purchase Register"
                 }
                 group("Delete Data")
                 {
+                    Visible = false;
                     field("Regenerate Purchase"; blnRegenerateSales)
                     {
                     }
@@ -268,8 +270,8 @@ report 50002 "Update Purchase Register"
         recPOH: Record 38;
         recOrAdd: Record 224;
         recDetGSTLedEntry: Record "Detailed GST Ledger Entry";
-    //17144  recPostedStrOrdrDtl: Record 13760;
-
+        //17144  recPostedStrOrdrDtl: Record 13760;
+        s: Report 18011;
 
     procedure InsertPurchInv(var lPurchInvLine: Record 123)
     var
