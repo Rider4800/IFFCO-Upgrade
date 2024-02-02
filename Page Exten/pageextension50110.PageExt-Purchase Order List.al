@@ -24,6 +24,21 @@ pageextension 50110 pageextension50110 extends "Purchase Order List"
                 RunPageMode = View;
                 ApplicationArea = All;
             }
+            //->17783
+            action("Update Older POs & SOs")
+            {
+                Image = UpdateDescription;
+                Promoted = true;
+                PromotedCategory = Report;
+                PromotedIsBig = true;
+                ApplicationArea = All;
+                trigger OnAction()
+                var
+                    CU50015: Codeunit 50015;
+                begin
+                    CU50015.Run();
+                end;
+            }
             action("PO Detail Status")
             {
                 Image = ListPage;

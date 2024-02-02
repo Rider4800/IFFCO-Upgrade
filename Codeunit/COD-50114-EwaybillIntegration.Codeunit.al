@@ -869,6 +869,32 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
         // Message(JsonTxt);
     end;
 
+    procedure GSTRegValidations(DocNo: Code[20]): Text
+    var
+        RecGSTNO: Record "GST Registration Nos.";
+        RECEwayBillEinvoice: Record "E-Way Bill & E-Invoice";
+    begin
+        RECEwayBillEinvoice.RESET();
+        RECEwayBillEinvoice.SETRANGE("No.", DocNo);
+        IF RECEwayBillEinvoice.FINDFIRST THEN BEGIN
+            RecGSTNO.RESET();
+            RecGSTNO.SETRANGE(Code, RECEwayBillEinvoice."Location GST Reg. No.");
+            IF RecGSTNO.FINDFIRST THEN BEGIN
+                IF RecGSTNO.Username = '' THEN
+                    ERROR('Username must have a value in GST Registration No. Table for GST Reg. No. is %1', RecGSTNO.Code);
+                IF RecGSTNO.Password = '' THEN
+                    ERROR('Password must have a value in GST Registration No. Table for GST Reg. No. is %1', RecGSTNO.Code);
+                IF RecGSTNO."Client ID" = '' THEN
+                    ERROR('Client ID must have a value in GST Registration No. Table for GST Reg. No. is %1', RecGSTNO.Code);
+                IF RecGSTNO."Client Secret" = '' THEN
+                    ERROR('Client Secret must have a value in GST Registration No. Table for GST Reg. No. is %1', RecGSTNO.Code);
+                IF RecGSTNO."Grant Type" = '' THEN
+                    ERROR('Grant Type must have a value in GST Registration No. Table for GST Reg. No. is %1', RecGSTNO.Code);
+            END
+            ELSE
+                ERROR('Location GST Reg. No. cannot be blank');
+        end;
+    end;
 
     local procedure GetTotalInvValue(DocNo: Code[20]): Decimal
     var
@@ -970,7 +996,7 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                             PrintURL := MessageToken.AsValue().AsText();
                         end;
                         case
-                                DocumentType of
+                            DocumentType of
                             DocumentType::Invoice:
                                 begin
                                     RecSalesInvHdr.RESET();
@@ -1013,19 +1039,13 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                                     END;
                                 end;
                         end;
-                    end;
-                    MESSAGE('E-Way Bill has Generated Successfully');
-                end;
-                // end else begin
-                //     if JResultObject.Get('results', JResultToken) then
-                //         ErrorMsg := JResultToken.AsValue().AsText();
-                //     Message('%1,%2', ErrorMsg, 'E-Way Bill Generation Failed');
-                // end;
-            end else
-                MESSAGE('status code not ok');
-        end else
-            MESSAGE('no response from api');
-
+                        MESSAGE('E-Way Bill has Generated Successfully');
+                    end else
+                        MESSAGE('status code not ok');
+                end else
+                    MESSAGE('no response from api');
+            end;
+        end;
         IF SCode = FORMAT(200) THEN BEGIN
             RecSalesInvHdr.RESET();
             RecSalesInvHdr.SETRANGE("No.", DocNo);
@@ -1033,8 +1053,7 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                 RecSalesInvHdr."E-Way Bill Status" := StatusCode + ' ' + SCode;
                 RecSalesInvHdr.MODIFY;
             end;
-        END
-        ELSE BEGIN
+        END ELSE BEGIN
             RecSalesInvHdr.RESET();
             RecSalesInvHdr.SETRANGE("No.", DocNo);
             IF RecSalesInvHdr.FIND('-') THEN begin
@@ -1049,8 +1068,7 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                 EwayBill."E-Way Bill Status" := StatusCode + ' ' + SCode;
                 EwayBill.MODIFY;
             end;
-        END
-        ELSE BEGIN
+        END ELSE BEGIN
             EwayBill.RESET();
             EwayBill.SETRANGE("No.", DocNo);
             IF EwayBill.FIND('-') THEN begin
@@ -1290,13 +1308,13 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                                     END;
                                 end;
                         end;
-                    end;
-                    MESSAGE('Vehicle No. has been Updated Successfully');
-
+                        MESSAGE('Vehicle No. has been Updated Successfully');
+                    end else
+                        MESSAGE('status code not ok');
                 end else
-                    MESSAGE('status code not ok');
-            end else
-                MESSAGE('no response from api');
+                    MESSAGE('no response from api');
+            end;
+
         end;
         IF SCode = FORMAT(200) THEN BEGIN
             RecSalesInvHdr.RESET();
@@ -1467,13 +1485,12 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
                                         END;
                                     end;
                             end;
-                        end;
-                        MESSAGE('E-Way Bill has been Cancelled Successfully');
-
+                            MESSAGE('E-Way Bill has been Cancelled Successfully');
+                        end else
+                            MESSAGE('status code not ok');
                     end else
-                        MESSAGE('status code not ok');
-                end else
-                    MESSAGE('no response from api');
+                        MESSAGE('no response from api');
+                end;
             end;
         end;
         IF SCode = FORMAT(200) THEN BEGIN
@@ -1708,6 +1725,41 @@ VehicleType, GenrateStatus, DataSource, UserRef, LocationCode, EwayBillType)
         end;
     end;
     //E-way With Irn Case//
+    procedure GenerateEWayBillWithIRN(DocNo: Code[20]; DocumentType: Option " ",Invoice,"Credit Memo","Transfer Shipment")
+    var
+        JEWayPayload: JsonObject;
+        GSTIN: Code[20];
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        TransferShipmentHeader: Record "Transfer Shipment Header";
+        LocationG: Record Location;
+        PayloadText: Text;
+    begin
+        case
+            DocumentType of
+            DocumentType::Invoice:
+                begin
+                    if SalesInvoiceHeader.get(DocNo) then begin
+                    end;
+                end;
+            DocumentType::"Credit Memo":
+                begin
+                    if SalesCrMemoHeader.get(DocNo) then begin
+                    end;
+
+                end;
+            DocumentType::"Transfer Shipment":
+                begin
+                    if TransferShipmentHeader.get(DocNo) then begin
+                    end;
+                end;
+        end;
+        ReadEwayDataWithIrn(JEWayPayload, DocNo, DocumentType);
+        JEWayPayload.WriteTo(PayloadText);
+        Message(PayloadText);
+        GenerateEwayRequestSendWithIRN(DocNo, DocumentType, PayloadText)
+    end;
+
     local procedure ReadEwayDataWithIrn(var JReadActionDtls: JsonObject; DocNo: Code[20]; DocumentType: Option " ",Invoice,"Credit Memo","Transfer Shipment")
     var
         EWay_SalesInvoiceHeader: Record "Sales Invoice Header";
@@ -1858,8 +1910,11 @@ Distance, VehicleNo, VehicleType, TransportName, DataSource)
 
     begin
         JActionDtls.Add('access_token', AuthenticateToken());
+        // JActionDtls.Add('user_gstin', UserGstin);//ForProd//
+        JActionDtls.Add('user_gstin', '09AAAPG7885R002');//ForUAT//
         JActionDtls.Add('irn', Irn);
-        JActionDtls.Add('transporter_id', TransportId);
+        // JActionDtls.Add('transporter_id', TransportId);//ForProd
+        JActionDtls.Add('transporter_id', '05AAABC0181E1ZE');//ForUAT
         JActionDtls.Add('transportation_mode', TransportMode);
         JActionDtls.Add('transporter_document_number', TransportDocNo);
         JActionDtls.Add('transporter_document_date', TransportDocumentDate);
@@ -1868,5 +1923,339 @@ Distance, VehicleNo, VehicleType, TransportName, DataSource)
         JActionDtls.Add('vehicle_type', VehicleType);
         JActionDtls.Add('transporter_name', TransportName);
         JActionDtls.Add('data_source', DataSource);
+    end;
+
+    local procedure GenerateEwayRequestSendWithIRN(DocNo: Code[20]; DocumentType: Option " ",Invoice,"Credit Memo","Transfer Shipment"; JsonPayload: Text)
+    var
+        Outstrm: OutStream;
+        RequestResponse: BigText;
+        EwayBillN: Text[50];
+        GSTRegistrationNos: Record "GST Registration Nos.";
+        EinvoiceHttpContent: HttpContent;
+        EinvoiceHttpHeader: HttpHeaders;
+        EinvoiceHttpRequest: HttpRequestMessage;
+        EinvoiceHttpClient: HttpClient;
+        EinvoiceHttpResponse: HttpResponseMessage;
+        JOutputObject: JsonObject;
+        JOutputToken: JsonToken;
+        JResultToken: JsonToken;
+        JResultObject: JsonObject;
+        OutputMessage: Text;
+        ResultMessage: Text;
+        NewJsonObject: JsonObject;
+        NewJsonToken: JsonToken;
+        MessageToken: JsonToken;
+        ErrorJsonObject: JsonObject;
+        ErrorMassageToken: JsonToken;
+        RecSalesInvHdr: Record "Sales Invoice Header";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        TransferShipmentHeader: Record "Transfer Shipment Header";
+        EwayBill: Record "E-Way Bill & E-Invoice";
+        ErrorMsg: Text;
+        EWayGenerated: Boolean;
+        //
+        temp01: Text;
+        StatusCode: Text;
+        SCode: Text;
+        GetGenerateBillNo: Text;
+        GetGenerateBillDate: Text;
+        GetGenerateBillValidUpto: Text;
+        Alert: Text;
+        Error: Text;
+        PrintURL: Text;
+        G_Authenticate_URLIRN: Text;
+        recResponseLog: Record 50003;
+        recEinvoice: Record "E-Way Bill & E-Invoice";
+    begin
+        // G_Authenticate_URL2 := 'https://pro.mastersindia.co/generateEwaybillByIrn';For Prod
+        G_Authenticate_URLIRN := ' https://sandb-api.mastersindia.co/api/v1/gen-ewb-by-irn/';//ForUat
+        EwayBillN := '';
+        ErrorMsg := '';
+        EinvoiceHttpContent.WriteFrom(Format(JsonPayload));
+        EinvoiceHttpContent.GetHeaders(EinvoiceHttpHeader);
+        EinvoiceHttpHeader.Clear();
+        EinvoiceHttpClient.DefaultRequestHeaders.Add('Authorization', StrSubstNo('JWT %1', AuthenticateToken()));
+        EinvoiceHttpHeader.Add('Content-Type', 'application/json');
+        EinvoiceHttpRequest.Content := EinvoiceHttpContent;
+        EinvoiceHttpRequest.SetRequestUri(G_Authenticate_URLIRN);
+        EinvoiceHttpRequest.Method := 'POST';
+        if EinvoiceHttpClient.Send(EinvoiceHttpRequest, EinvoiceHttpResponse) then begin
+            EinvoiceHttpResponse.Content.ReadAs(ResultMessage);
+            JResultObject.ReadFrom(ResultMessage);
+            Message('Generate E-Way Bill By Irn : ' + Format(JResultObject));
+            if JResultObject.Get('results', JResultToken) then begin
+                if JResultToken.IsObject then begin
+                    JResultToken.WriteTo(OutputMessage);
+                    JOutputObject.ReadFrom(OutputMessage);
+                    JOutputObject.Get('errorMessage', NewJsonToken);
+                    ErrorMsg := NewJsonToken.AsValue().AsText();
+                    JOutputObject.Get('status', NewJsonToken);
+                    StatusCode := NewJsonToken.AsValue().AsText();
+                    JOutputObject.Get('code', NewJsonToken);
+                    SCode := NewJsonToken.AsValue().AsText();
+                    if SCode = '200' then begin
+                        if JOutputObject.Get('message', MessageToken) then begin
+                            Clear(OutputMessage);
+                            MessageToken.WriteTo(OutputMessage);
+                            NewJsonObject.ReadFrom(OutputMessage);
+                            NewJsonObject.Get('EwbNo', MessageToken);
+                            GetGenerateBillNo := MessageToken.AsValue().AsText();
+                            NewJsonObject.Get('EwbDt', MessageToken);
+                            GetGenerateBillDate := MessageToken.AsValue().AsText();
+                            NewJsonObject.Get('EwbValidTill', MessageToken);
+                            if MessageToken.AsValue().IsNull then
+                                GetGenerateBillValidUpto := ''
+                            else
+                                GetGenerateBillValidUpto := MessageToken.AsValue().AsText();
+
+                            recResponseLog.INIT;
+                            recResponseLog."Document No." := DocNo;
+                            recResponseLog."Response Date" := TODAY;
+                            recResponseLog."Response Time" := TIME;
+                            recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                            recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                            recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                            recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                            recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                            recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                            recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                            recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                            recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                            recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                            recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                            recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                            recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                            recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                            recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                            recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                            recResponseLog.Status := 'Success';
+                            recResponseLog."Called API" := 'Generate E-Way Bill By IRN';
+                            recResponseLog.INSERT;
+
+                            recEinvoice.RESET();
+                            recEinvoice.SETRANGE("No.", DocNo);
+                            //    recEinvoice.SETRANGE("E-Invoice IRN No", GetGenerateBillNo);
+                            IF recEinvoice.FIND('-') THEN BEGIN
+                                recEinvoice.VALIDATE("E-Way Bill No.", FORMAT(GetGenerateBillNo));
+                                recEinvoice."E-Way Bill Date" := FORMAT(GetGenerateBillDate);
+                                recEinvoice."E-Way Bill Valid Upto" := FORMAT(GetGenerateBillValidUpto);
+                                recEinvoice."E-Invoice Status" := StatusCode + ' ' + SCode;
+                                recEinvoice.MODIFY;
+                            END
+                        end;
+                    end else begin
+                        recResponseLog.INIT;
+                        recResponseLog."Document No." := DocNo;
+                        recResponseLog."Response Date" := TODAY;
+                        recResponseLog."Response Time" := TIME;
+                        recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                        recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                        recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                        recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                        recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                        recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                        recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                        recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                        recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                        recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                        recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                        recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                        recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                        recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                        recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                        recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                        recResponseLog.Status := 'Failure';
+                        recResponseLog."Called API" := 'Generate E-Way Bill By IRN';
+                        recResponseLog.INSERT;
+
+                        recEinvoice.RESET();
+                        recEinvoice.SETRANGE("No.", DocNo);
+                        IF recEinvoice.FIND('-') THEN
+                            recEinvoice."E-Invoice Status" := 'Faliure' + ' ' + SCode;
+                        MESSAGE('Error Message : ' + ErrorMsg);
+                        recEinvoice.MODIFY;
+                    end;
+                end;
+            end else
+                MESSAGE('no response from api');
+        end;
+    end;
+
+    //DistanseWitHIRN
+    procedure CalculateDistanceWithIRN(DocNo: Code[20]; DocType: Option " ",Invoice,"Credit Memo","Transfer Shipment")
+    var
+        DtldGSTLedgerEntry: Record "Detailed GST Ledger Entry";
+        Remarks: Text;
+        Status: Text;
+        Location: Record 14;
+        OriginPinCode: Text;
+        ShipPinCode: Text;
+        SalesInvoiceHeader: Record 112;
+        ApproxDistance: Text;
+        ReturnMsg: Label 'Status : %1\ %2';
+        EinvoiceHttpContent: HttpContent;
+        EinvoiceHttpHeader: HttpHeaders;
+        EinvoiceHttpRequest: HttpRequestMessage;
+        EinvoiceHttpClient: HttpClient;
+        EinvoiceHttpResponse: HttpResponseMessage;
+        JOutputObject: JsonObject;
+        JOutputToken: JsonToken;
+        JResultToken: JsonToken;
+        JResultObject: JsonObject;
+        JResMassageToken: JsonToken;
+        JMessageToken: JsonToken;
+        NewJsonObject: JsonObject;
+        OutputMessage: Text;
+        ResultMessage: Text;
+        JResultArray: JsonArray;
+        Dis_Int: Integer;
+        ROBOSetup: Record "GST Registration Nos.";
+        frompincode: text;
+        topincode: Text;
+        EINV: Record "E-Way Bill & E-Invoice";
+        RecLoc: Record Location;
+        Url: text;
+        StatusCode: text;
+        SCode: Text;
+        ErrorMasg: Text;
+        GetCalculatedDistance: Text;
+        RecSalesInvHdr: Record "Sales Invoice Header";
+        RecVendor: Record Vendor;
+        recResponseLog: Record 50003;
+    begin
+        EINV.RESET();
+        EINV.SETRANGE("No.", DocNo);
+        IF EINV.FIND('-') THEN BEGIN
+            IF EINV."GST Customer Type" IN [EINV."GST Customer Type"::Export, EINV."GST Customer Type"::"SEZ Development", EINV."GST Customer Type"::"SEZ Unit"] THEN BEGIN
+                frompincode := '';
+                topincode := '';
+                RecVendor.RESET();
+                RecVendor.SETRANGE("No.", EINV."Port Code");
+                IF RecVendor.FIND('-') THEN
+                    frompincode := FORMAT(RecVendor."Post Code");
+
+                RecLoc.RESET();
+                RecLoc.SETRANGE(Code, EINV."Location Code");
+                IF RecLoc.FIND('-') THEN
+                    topincode := FORMAT(RecLoc."Post Code");
+            END;
+        END;
+
+        EINV.RESET();
+        EINV.SETRANGE("No.", DocNo);
+        IF EINV.FIND('-') THEN BEGIN
+            IF EINV."GST Customer Type" IN [EINV."GST Customer Type"::" ", EINV."GST Customer Type"::"Deemed Export", EINV."GST Customer Type"::Exempted, EINV."GST Customer Type"::Registered, EINV."GST Customer Type"::Unregistered]
+                  THEN BEGIN
+                frompincode := '';
+                topincode := '';
+                IF EINV."Ship-to Code" = '' THEN
+                    frompincode := FORMAT(EINV."Sell-to Post Code")
+                ELSE
+                    frompincode := FORMAT(EINV."Ship-to Post Code");
+
+                RecLoc.RESET();
+                RecLoc.SETRANGE(Code, EINV."Location Code");
+                IF RecLoc.FIND('-') THEN
+                    topincode := FORMAT(RecLoc."Post Code");
+            END;
+        END;
+
+        // ForProd   Url := 'http://pro.mastersindia.co/distance?access_token=' + AuthenticateToken() + '&fromPincode=' + frompincode + '&toPincode=' + topincode;
+
+        EinvoiceHttpHeader.Clear();
+        //  EinvoiceHttpClient.DefaultRequestHeaders.Add('Authorization', StrSubstNo('JWT %1', AuthenticateToken()));
+        // EinvoiceHttpHeader.Add('Content-Type', 'application/json');
+        EinvoiceHttpRequest.Content := EinvoiceHttpContent;
+        EinvoiceHttpRequest.SetRequestUri(Url);
+        EinvoiceHttpRequest.Method := 'GET';
+        if EinvoiceHttpClient.Send(EinvoiceHttpRequest, EinvoiceHttpResponse) then begin
+            EinvoiceHttpResponse.Content.ReadAs(ResultMessage);
+            JResultObject.ReadFrom(ResultMessage);
+            Message('Return Value of Calculate Distance for E-Way Bill : ' + Format(JResultObject));
+            if JResultObject.Get('results', JResultToken) then begin
+                if JResultObject.Get('results', JResultToken) then begin
+                    if JResultToken.IsObject then begin
+                        JResultToken.WriteTo(OutputMessage);
+                        JOutputObject.ReadFrom(OutputMessage);
+                        JOutputObject.Get('errorMessage', JResMassageToken);
+                        ErrorMasg := JResMassageToken.AsValue().AsText();
+                        JOutputObject.Get('status', JResMassageToken);
+                        StatusCode := JResMassageToken.AsValue().AsText();
+                        JOutputObject.Get('code', JResMassageToken);
+                        SCode := JResMassageToken.AsValue().AsText();
+                        if SCode = '200' then begin
+                            if JOutputObject.Get('message', JMessageToken) then begin
+                                Clear(OutputMessage);
+                                JMessageToken.WriteTo(OutputMessage);
+                                NewJsonObject.ReadFrom(OutputMessage);
+                                NewJsonObject.ReadFrom(OutputMessage);
+                                NewJsonObject.Get('distance', JMessageToken);
+                                GetCalculatedDistance := JMessageToken.AsValue().AsText();
+                            end;
+                            recResponseLog.INIT;
+                            recResponseLog."Document No." := DocNo;
+                            recResponseLog."Response Date" := TODAY;
+                            recResponseLog."Response Time" := TIME;
+                            recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                            recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                            recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                            recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                            recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                            recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                            recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                            recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                            recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                            recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                            recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                            recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                            recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                            recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                            recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                            recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                            recResponseLog.Status := 'Success';
+                            recResponseLog."Called API" := 'Calculate Distance';
+                            recResponseLog.INSERT;
+                            EINV.RESET();
+                            EINV.SETRANGE("No.", DocNo);
+                            IF EINV.FIND('-') THEN BEGIN
+                                EVALUATE(EINV."Distance (Km)", GetCalculatedDistance);
+                                EINV.MODIFY;
+                            END;
+                        end else
+                            recResponseLog.INIT;
+                        recResponseLog."Document No." := DocNo;
+                        recResponseLog."Response Date" := TODAY;
+                        recResponseLog."Response Time" := TIME;
+                        recResponseLog."Response Log 1" := COPYSTR(ResultMessage, 1, 250);
+                        recResponseLog."Response Log 2" := COPYSTR(ResultMessage, 251, 250);
+                        recResponseLog."Response Log 3" := COPYSTR(ResultMessage, 501, 250);
+                        recResponseLog."Response Log 4" := COPYSTR(ResultMessage, 751, 250);
+                        recResponseLog."Response Log 5" := COPYSTR(ResultMessage, 1001, 250);
+                        recResponseLog."Response Log 6" := COPYSTR(ResultMessage, 1251, 250);
+                        recResponseLog."Response Log 7" := COPYSTR(ResultMessage, 1501, 250);
+                        recResponseLog."Response Log 8" := COPYSTR(ResultMessage, 1751, 250);
+                        recResponseLog."Response Log 9" := COPYSTR(ResultMessage, 2001, 250);
+                        recResponseLog."Response Log 10" := COPYSTR(ResultMessage, 2251, 250);
+                        recResponseLog."Response Log 11" := COPYSTR(ResultMessage, 2501, 250);
+                        recResponseLog."Response Log 12" := COPYSTR(ResultMessage, 2751, 250);
+                        recResponseLog."Response Log 13" := COPYSTR(ResultMessage, 3001, 250);
+                        recResponseLog."Response Log 14" := COPYSTR(ResultMessage, 3251, 250);
+                        recResponseLog."Response Log 15" := COPYSTR(ResultMessage, 3501, 250);
+                        recResponseLog."Response Log 16" := COPYSTR(ResultMessage, 3751, 100);
+                        recResponseLog.Status := 'Failure';
+                        recResponseLog."Called API" := 'Calculate Distance';
+                        recResponseLog.INSERT;
+
+                        EINV.RESET();
+                        EINV.SETRANGE("No.", DocNo);
+                        IF EINV.FIND('-') THEN
+                            EINV."E-Invoice Status" := 'Faliure' + ' ' + SCode;
+                        Message(ErrorMasg);
+                        EINV.Modify();
+                    end;
+                end;
+                MESSAGE('no response from api');
+            end;
+        end;
     end;
 }

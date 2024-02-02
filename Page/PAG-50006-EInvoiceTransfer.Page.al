@@ -226,67 +226,73 @@ page 50006 "E-Invoice (Transfer)"
                 //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
                 //     end;
                 // }
-                // action("Calculate Distance (KM)")
-                // {
-                //     Caption = 'Calculate Distance (KM)';
-                //     Promoted = true;
+                action("Calculate Distance (KM)")
+                {
+                    Caption = 'Calculate Distance (KM)';
+                    Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = Calculate;
 
-                //     trigger OnAction()
-                //     begin
-                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                //         CurrPage.UPDATE();
-                //         CLEAR(CodeunitEWayBillEInvoice);
+                    trigger OnAction()
+                    var
+                        CU50114: Codeunit 50114;
+                    begin
+                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                        CurrPage.UPDATE();
+                        CLEAR(CodeunitEWayBillEInvoice);
 
-                //         txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
+                        txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                //         // IF Rec."Distance (Km)" <> '' THEN BEGIN
-                //         //     IF CONFIRM(txtMessageDistancepre) THEN
-                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
-                //         // END; //17783
+                        IF Rec."Distance (Km)" = '' THEN BEGIN
+                            IF CONFIRM(txtMessageDistance) THEN
+                                CU50114.CalculateDistanceWithIRN(Rec."No.", 3);
+                        END;
 
-                //         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
+                        CurrPage.UPDATE;
+                        CLEAR(CodeunitEWayBillEInvoice);
+                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                    end;
+                }
+                action("Generate E-Way Bill By IRN")
+                {
+                    Caption = 'Generate E-Way Bill By IRN';
+                    Promoted = true;
+                    ApplicationArea = All;
+                    PromotedCategory = Report;
+                    PromotedIsBig = true;
+                    PromotedOnly = true;
+                    Image = Create;
 
-                //         // IF Rec."Distance (Km)" = '' THEN BEGIN
-                //         //     IF CONFIRM(txtMessageDistance) THEN
-                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistanceTransferShip(Rec."No.");
-                //         // END; //17783
+                    trigger OnAction()
+                    var
+                        txtGenerateEwayBillByIrn: Text;
+                        CU50114: Codeunit 50114;
+                    begin
+                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
+                        CurrPage.UPDATE;
+                        CLEAR(CodeunitEWayBillEInvoice);
+                        Rec.TESTFIELD("Transporter Code");
+                        Rec.TESTFIELD("Location GST Reg. No.");
+                        Rec.TESTFIELD("Distance (Km)");
+                        Rec.TESTFIELD("Vehicle No.");
 
-                //         CurrPage.UPDATE;
-                //         CLEAR(CodeunitEWayBillEInvoice);
-                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                //     end;
-                // }
-                // action("Generate E-Way Bill By IRN")
-                // {
-                //     Caption = 'Generate E-Way Bill By IRN';
-                //     Promoted = true;
+                        IF Rec."E-Invoice IRN Status" <> 'ACT' THEN
+                            ERROR('E-Invoice IRN Status must be Active (ACT)');
 
-                //     trigger OnAction()
-                //     var
-                //         txtGenerateEwayBillByIrn: Text;
-                //     begin
-                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
-                //         CurrPage.UPDATE;
-                //         CLEAR(CodeunitEWayBillEInvoice);
-                //         Rec.TESTFIELD("Transporter Code");
-                //         Rec.TESTFIELD("Location GST Reg. No.");
-                //         Rec.TESTFIELD("Distance (Km)");
-                //         Rec.TESTFIELD("Vehicle No.");
+                        txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
 
-                //         IF Rec."E-Invoice IRN Status" <> 'ACT' THEN
-                //             ERROR('E-Invoice IRN Status must be Active (ACT)');
+                        IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
+                            CU50114.GenerateEWayBillWithIRN(Rec."No.", 3);
+                        END;
 
-                //         txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
-
-                //         IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
-                //             //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
-                //         END;
-
-                //         CurrPage.UPDATE;
-                //         CLEAR(CodeunitEWayBillEInvoice);
-                //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
-                //     end;
-                // }
+                        CurrPage.UPDATE;
+                        CLEAR(CodeunitEWayBillEInvoice);
+                        //HT 24082020 (For E-Way Bill and E-Invoice Integration)+
+                    end;
+                }
                 // action("Cancel E-Way Bill No.")
                 // {
                 //     Promoted = true;

@@ -62,6 +62,9 @@ codeunit 50035 "Cod-80-Event"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterValidatePostingAndDocumentDate', '', false, false)]
     local procedure OnAfterValidatePostingAndDocumentDate(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; ReplacePostingDate: Boolean; ReplaceDocumentDate: Boolean)
+    var
+        CustRec: Record Customer;
+        CPGRec: Record "Customer Posting Group";
     begin
         IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) OR (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice) THEN BEGIN
             //ValidatBatchMRPOnSalesLine(Rec."No.");//KM240621
@@ -69,7 +72,12 @@ codeunit 50035 "Cod-80-Event"
             CheckSameBatch(SalesHeader);//ACXCP_290722
         END;
         MasterValidation(SalesHeader);//KM
-        CheckMultiLot(SalesHeader."No.");//KM
+        if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
+            if CPGRec.Get(CustRec."Customer Posting Group") then begin
+                if not CPGRec."Multi-Lot Selection Allowed" then
+                    CheckMultiLot(SalesHeader."No.");//KM
+            end;
+        end;
         //acxcp_300622_CampaignCode +
         CheckCampaign(SalesHeader);//acxcp_230921
         //acxcp_300622_CampaignCode -

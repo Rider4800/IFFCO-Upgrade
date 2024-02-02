@@ -357,22 +357,50 @@ report 50004 "Sales Tax Invoice"
                         txtLotNo := '';
                         dtExpiry := 0D;
                         dtMfg := 0D;
+                        // recVE.RESET();
+                        // recVE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
+                        // recVE.SETRANGE("Document Line No.", "Sales Invoice Line"."Line No.");
+                        // IF recVE.FIND('-') THEN BEGIN
+                        //     recILE.RESET();
+                        //     recILE.SETRANGE("Entry No.", recVE."Item Ledger Entry No.");
+                        //     IF recILE.FIND('-') THEN BEGIN
+                        //         recLotInfo.RESET();
+                        //         recLotInfo.SETRANGE("Lot No.", recILE."Lot No.");
+                        //         recLotInfo.SETRANGE("Item No.", recILE."Item No.");//acxcp_29072022
+                        //         IF recLotInfo.FIND('-') THEN BEGIN
+                        //             dtExpiry := recLotInfo."Expiration Date";
+                        //             dtMfg := recLotInfo."MFG Date";
+                        //             txtLotNo := recILE."Lot No.";
+                        //         END;
+                        //     END;
+                        // END;
+
                         recVE.RESET();
                         recVE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
                         recVE.SETRANGE("Document Line No.", "Sales Invoice Line"."Line No.");
-                        IF recVE.FIND('-') THEN BEGIN
-                            recILE.RESET();
-                            recILE.SETRANGE("Entry No.", recVE."Item Ledger Entry No.");
-                            IF recILE.FIND('-') THEN BEGIN
-                                recLotInfo.RESET();
-                                recLotInfo.SETRANGE("Lot No.", recILE."Lot No.");
-                                recLotInfo.SETRANGE("Item No.", recILE."Item No.");//acxcp_29072022
-                                IF recLotInfo.FIND('-') THEN BEGIN
-                                    dtExpiry := recLotInfo."Expiration Date";
-                                    dtMfg := recLotInfo."MFG Date";
-                                    txtLotNo := recILE."Lot No.";
+                        IF recVE.FindSet() THEN BEGIN
+                            repeat
+                                recILE.RESET();
+                                recILE.SETRANGE("Entry No.", recVE."Item Ledger Entry No.");
+                                IF recILE.FindFirst() THEN BEGIN
+                                    recLotInfo.RESET();
+                                    recLotInfo.SETRANGE("Lot No.", recILE."Lot No.");
+                                    recLotInfo.SETRANGE("Item No.", recILE."Item No.");//acxcp_29072022
+                                    IF recLotInfo.FindFirst() THEN BEGIN
+                                        dtExpiry := recLotInfo."Expiration Date";
+                                        dtMfg := recLotInfo."MFG Date";
+                                        //->17783
+                                        //txtLotNo := recILE."Lot No.";
+                                        if StrPos(txtLotNo, recILE."Lot No.") = 0 then begin
+                                            if txtLotNo = '' then
+                                                txtLotNo := recILE."Lot No."
+                                            else
+                                                txtLotNo := txtLotNo + ', ' + recILE."Lot No.";
+                                        end;
+                                        //<-17783
+                                    END;
                                 END;
-                            END;
+                            until recVE.Next() = 0;
                         END;
 
                         decQtyper := 0;

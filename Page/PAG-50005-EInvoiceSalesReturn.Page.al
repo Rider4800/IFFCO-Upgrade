@@ -279,9 +279,17 @@ page 50005 "E-Invoice (Sales Return)"
                 // }
                 // action("Calculate Distance (KM)")
                 // {
+                //     Caption = 'Calculate Distance (KM)';
                 //     Promoted = true;
+                //     ApplicationArea = All;
+                //     PromotedCategory = Report;
+                //     PromotedIsBig = true;
+                //     PromotedOnly = true;
+                //     Image = Calculate;
 
                 //     trigger OnAction()
+                //     var
+                //         CU50114: Codeunit 50114;
                 //     begin
                 //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
                 //         CurrPage.UPDATE();
@@ -297,19 +305,12 @@ page 50005 "E-Invoice (Sales Return)"
                 //                 Rec.TESTFIELD("Ship-to Post Code");
                 //         END;
 
-                //         txtMessageDistancepre := 'Do you want to Re-Calculate Distance (KM) for Document No. ' + Rec."No." + ' Current value of Distance (KM) is ' + FORMAT(Rec."Distance (Km)");
-
-                //         // IF Rec."Distance (Km)" <> '' THEN BEGIN
-                //         //     IF CONFIRM(txtMessageDistancepre) THEN
-                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                //         // END; //17783
-
                 //         txtMessageDistance := 'Do you want to Calculate Distance (KM) for Document No. ' + Rec."No.";
 
-                //         // IF Rec."Distance (Km)" = '' THEN BEGIN
-                //         //     IF CONFIRM(txtMessageDistance) THEN
-                //         //         CodeunitEWayBillEInvoice.InitializeCalculateDistance(Rec."No.");
-                //         // END; //17783
+                //         IF Rec."Distance (Km)" = '' THEN BEGIN
+                //             IF CONFIRM(txtMessageDistance) THEN
+                //                 CU50114.CalculateDistanceWithIRN(Rec."No.", 2);
+                //         END;
 
                 //         CurrPage.UPDATE;
                 //         CLEAR(CodeunitEWayBillEInvoice);
@@ -318,11 +319,18 @@ page 50005 "E-Invoice (Sales Return)"
                 // }
                 // action("Generate E-Way Bill By IRN")
                 // {
+                //     Caption = 'Generate E-Way Bill By IRN';
                 //     Promoted = true;
+                //     ApplicationArea = All;
+                //     PromotedCategory = Report;
+                //     PromotedIsBig = true;
+                //     PromotedOnly = true;
+                //     Image = GetEntries;
 
                 //     trigger OnAction()
                 //     var
                 //         txtGenerateEwayBillByIrn: Text;
+                //         CU50114: Codeunit 50114;
                 //     begin
                 //         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
                 //         CurrPage.UPDATE;
@@ -337,9 +345,8 @@ page 50005 "E-Invoice (Sales Return)"
 
                 //         txtGenerateEwayBillByIrn := 'Do you want to Generate E-Way Bill By Irn No. ' + Rec."E-Invoice IRN No";
 
-                //         IF CONFIRM(txtGenerateEwayBillByIrn) THEN BEGIN
-                //             //CodeunitEWayBillEInvoice.InitializeGenerateEwayBillByIRN(Rec."No.", Rec."E-Invoice IRN No");  //17783
-                //         END;
+                //         IF CONFIRM(txtGenerateEwayBillByIrn) THEN
+                //             CU50114.GenerateEWayBillWithIRN(Rec."No.", 2);
 
                 //         CurrPage.UPDATE;
                 //         CLEAR(CodeunitEWayBillEInvoice);
