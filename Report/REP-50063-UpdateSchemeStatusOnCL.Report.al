@@ -1,7 +1,7 @@
 report 50063 UpdateSchemeStatusOnCL
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './UpdateSchemeStatusOnCL.rdlc';
+    RDLCLayout = '.\ReportLayout\UpdateSchemeStatusOnCL.rdlc';
     Permissions = TableData 21 = rm;
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;

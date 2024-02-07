@@ -74,7 +74,7 @@ codeunit 50035 "Cod-80-Event"
         MasterValidation(SalesHeader);//KM
         if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
             if CPGRec.Get(CustRec."Customer Posting Group") then begin
-                if not CPGRec."Multi-Lot Selection Allowed" then
+                if CPGRec."Multi-Lot Selection Allowed" = false then
                     CheckMultiLot(SalesHeader."No.");//KM
             end;
         end;

@@ -37,7 +37,6 @@ codeunit 50053 COD260Event
         Text001: Label 'The quantity on inventory is not sufficient to cover the net change in inventory. Do you still want to record the quantity?';
         Text002: Label 'The update has been interrupted to respect the warning.';
         CustRec: Record Customer;
-        Text003: Label 'The customer %1 has an credit limit of %2. The update has been interrupted to respect the warning.';
     begin
         ILERemQty := 0;
         ILERec.Reset();
@@ -56,10 +55,6 @@ codeunit 50053 COD260Event
                     Error(Text002);
             end;
         end;
-        // if CustRec.Get(SalesLine."Sell-to Customer No.") then begin
-        //     if CustRec.GetTotalAmountLCY + (SalesLine.Quantity * SalesLine."Unit Price") > CustRec."Credit Limit (LCY)" then
-        //         Error(Text003, CustRec."No.", CustRec."Credit Limit (LCY)");
-        // end;
     end;
 
     [EventSubscriber(ObjectType::Table, 37, 'OnBeforeUpdateQuantityFromUOMCode', '', false, false)]

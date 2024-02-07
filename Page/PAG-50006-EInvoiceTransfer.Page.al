@@ -158,7 +158,7 @@ page 50006 "E-Invoice (Transfer)"
                         CLEAR(CodeunitEWayBillEInvoice);
                         IF (Rec."E-Invoice IRN No" <> '') AND (Rec."E-Invoice Cancel Date" = '') THEN
                             ERROR('E-Invoice is already generated');
-                        Rec.CALCFIELDS("Amount to Customer");
+                        //Rec.CALCFIELDS("Amount to Customer");
                         txtMessage := 'Do you want to generate E-Invoice IRN No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Transfer ' + FORMAT(Rec."Amount to Transfer");
 
                         IF CONFIRM(txtMessage) THEN BEGIN

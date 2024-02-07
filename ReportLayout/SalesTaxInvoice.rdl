@@ -81,7 +81,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Contact No.</Value>
+                                          <Value>Contact No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -94,7 +94,6 @@
                                   </Paragraphs>
                                   <rd:DefaultName>Textbox9</rd:DefaultName>
                                   <Top>4.36365cm</Top>
-                                  <Left>0cm</Left>
                                   <Height>0.46771cm</Height>
                                   <Width>1.94437cm</Width>
                                   <Style>
@@ -124,7 +123,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -132,7 +131,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Company_Phone_No.Value</Value>
+                                          <Value>=Fields!Company_Phone_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -176,7 +175,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">E-Mail</Value>
+                                          <Value>E-Mail</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -220,7 +219,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -228,7 +227,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Company_Email.Value</Value>
+                                          <Value>=Fields!Company_Email.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -272,7 +271,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">GSTIN</Value>
+                                          <Value>GSTIN</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -285,7 +284,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">PAN No.</Value>
+                                          <Value>PAN No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -298,7 +297,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">C.I.N.</Value>
+                                          <Value>C.I.N.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -311,7 +310,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Pest LIC. No.</Value>
+                                          <Value>Pest LIC. No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -324,7 +323,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Pest LIC. Valid Upto</Value>
+                                          <Value>Pest LIC. Valid Upto</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -337,7 +336,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">E-Way Bill No.</Value>
+                                          <Value>E-Way Bill No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -350,7 +349,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">E-Way Bill Date</Value>
+                                          <Value>E-Way Bill Date</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -389,7 +388,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -397,28 +396,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Location_GST_No.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Company_PAN.Value</Value>
+                                          <Value>=Fields!Location_GST_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -431,7 +409,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -439,20 +417,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Company_CIN.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">:</Value>
+                                          <Value>=Fields!Company_PAN.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -465,7 +430,15 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">:</Value>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Company_CIN.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -478,15 +451,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!E_Way_No.Value</Value>
+                                          <Value>:</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -499,7 +464,20 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>:</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -507,7 +485,28 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!E_Way_Date.Value</Value>
+                                          <Value>=Fields!E_Way_No.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!E_Way_Date.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -547,7 +546,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Invoice No.</Value>
+                                          <Value>Invoice No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -560,7 +559,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Invoice Date</Value>
+                                          <Value>Invoice Date</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -573,7 +572,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Due Date</Value>
+                                          <Value>Due Date</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -586,7 +585,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Vehicle No.</Value>
+                                          <Value>Vehicle No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -599,7 +598,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">GR. No. &amp; Date</Value>
+                                          <Value>GR. No. &amp; Date</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -612,7 +611,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Customer Ref. No.</Value>
+                                          <Value>Customer Ref. No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -625,7 +624,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Transport Name</Value>
+                                          <Value>Transport Name</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -664,7 +663,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -672,7 +671,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Document_No.Value</Value>
+                                          <Value>=Fields!Document_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -685,7 +684,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -693,7 +692,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Posting_Date.Value</Value>
+                                          <Value>=Fields!Posting_Date.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -707,7 +706,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -715,66 +714,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Due_Date.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                            <Format>dd-MMM-yy</Format>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Vehicle_No.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!LR_No.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto"> / </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!LR_Date.Value</Value>
+                                          <Value>=Fields!Due_Date.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -788,7 +728,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -796,7 +736,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!External_Doc_No.Value</Value>
+                                          <Value>=Fields!Vehicle_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -809,7 +749,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -817,7 +757,66 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Transporter_Name.Value</Value>
+                                          <Value>=Fields!LR_No.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value> / </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!LR_Date.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                            <Format>dd-MMM-yy</Format>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!External_Doc_No.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Transporter_Name.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -856,7 +855,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Details of Receiver (Billed to) :</Value>
+                                          <Value>Details of Receiver (Billed to) :</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -870,7 +869,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_Name.Value</Value>
+                                          <Value>=Fields!Bill_to_Name.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -884,7 +883,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_Address.Value</Value>
+                                          <Value>=Fields!Bill_to_Address.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -893,7 +892,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                          <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -902,57 +901,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_Address2.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_City.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto"> -  </Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_Postcode.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">, </Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_State_Name.Value</Value>
+                                          <Value>=Fields!Bill_to_Address2.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -966,7 +915,43 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_Country.Value</Value>
+                                          <Value>=Fields!Bill_to_City.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value> -  </Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Bill_to_Postcode.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>, </Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Bill_State_Name.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -980,7 +965,21 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Mobile No. :</Value>
+                                          <Value>=Fields!Bill_Country.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Mobile No. :</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -989,7 +988,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                          <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -998,7 +997,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_to_Phone_No.Value</Value>
+                                          <Value>=Fields!Bill_to_Phone_No.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1033,7 +1032,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto" />
+                                          <Value />
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1046,7 +1045,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1054,7 +1053,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_GST_State_Code.Value</Value>
+                                          <Value>=Fields!Bill_GST_State_Code.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1062,7 +1061,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto"> / </Value>
+                                          <Value> / </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1070,28 +1069,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Bill_State_Name.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Cust_GST_No.Value</Value>
+                                          <Value>=Fields!Bill_State_Name.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1104,7 +1082,28 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Cust_GST_No.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1138,7 +1137,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Place Of Supply</Value>
+                                          <Value>Place Of Supply</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1153,7 +1152,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">State Code / Name                   </Value>
+                                          <Value>State Code / Name                   </Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1168,7 +1167,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">GSTIN No.</Value>
+                                          <Value>GSTIN No.</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1183,7 +1182,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Pest LIC. No.</Value>
+                                          <Value>Pest LIC. No.</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1219,7 +1218,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Details of Consignee (Shipped to) :</Value>
+                                          <Value>Details of Consignee (Shipped to) :</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1233,7 +1232,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Name.Value</Value>
+                                          <Value>=Fields!Ship_Name.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1247,7 +1246,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Address.Value</Value>
+                                          <Value>=Fields!Ship_Address.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1256,7 +1255,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                          <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1265,57 +1264,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Address2.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_City_Delivey_At.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto"> - </Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Postcode.Value</Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">, </Value>
-                                          <Style>
-                                            <FontStyle>Normal</FontStyle>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_State_Name.Value</Value>
+                                          <Value>=Fields!Ship_Address2.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1329,7 +1278,43 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Country.Value</Value>
+                                          <Value>=Fields!Ship_City_Delivey_At.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value> - </Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Ship_Postcode.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>, </Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Ship_State_Name.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1343,7 +1328,21 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Mobile No. :</Value>
+                                          <Value>=Fields!Ship_Country.Value</Value>
+                                          <Style>
+                                            <FontStyle>Normal</FontStyle>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Mobile No. :</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1352,7 +1351,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                          <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1361,7 +1360,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_Phone_No.Value</Value>
+                                          <Value>=Fields!Ship_Phone_No.Value</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1396,7 +1395,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto" />
+                                          <Value />
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1409,7 +1408,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1417,7 +1416,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_GST_State_Code.Value</Value>
+                                          <Value>=Fields!Ship_GST_State_Code.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1425,7 +1424,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto"> / </Value>
+                                          <Value> / </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1433,28 +1432,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_State_Name.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style />
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                            <FontSize>8pt</FontSize>
-                                            <FontWeight>Normal</FontWeight>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_GST_No.Value</Value>
+                                          <Value>=Fields!Ship_State_Name.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1467,7 +1445,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1475,7 +1453,28 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Ship_City_Delivey_At.Value</Value>
+                                          <Value>=Fields!Ship_GST_No.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>: </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                            <FontSize>8pt</FontSize>
+                                            <FontWeight>Normal</FontWeight>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Ship_City_Delivey_At.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1509,7 +1508,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Place Of Delivery</Value>
+                                          <Value>Place Of Delivery</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1524,7 +1523,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">State Code / Name</Value>
+                                          <Value>State Code / Name</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1539,7 +1538,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">GSTIN No.</Value>
+                                          <Value>GSTIN No.</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1554,7 +1553,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Delivery At</Value>
+                                          <Value>Delivery At</Value>
                                           <Style>
                                             <FontStyle>Normal</FontStyle>
                                             <FontFamily>Calibri Light</FontFamily>
@@ -1590,7 +1589,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!CompName.Value</Value>
+                                          <Value>=Fields!CompName.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>13pt</FontSize>
@@ -1605,7 +1604,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_Address.Value</Value>
+                                          <Value>=Fields!Loc_Address.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                           </Style>
@@ -1618,68 +1617,19 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                          <Value xml:space="preserve"> </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_Address2.Value</Value>
+                                          <Value>=Fields!Loc_Address2.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">,</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                      </TextRuns>
-                                      <Style>
-                                        <TextAlign>Center</TextAlign>
-                                      </Style>
-                                    </Paragraph>
-                                    <Paragraph>
-                                      <TextRuns>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_City.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto"> - </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_Postcode.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">, </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_State.Value</Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">, </Value>
-                                          <Style>
-                                            <FontFamily>Calibri Light</FontFamily>
-                                          </Style>
-                                        </TextRun>
-                                        <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Loc_Country.Value</Value>
+                                          <Value>,</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                           </Style>
@@ -1692,7 +1642,56 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto" />
+                                          <Value>=Fields!Loc_City.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value> - </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Loc_Postcode.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>, </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Loc_State.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>, </Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Fields!Loc_Country.Value</Value>
+                                          <Style>
+                                            <FontFamily>Calibri Light</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style>
+                                        <TextAlign>Center</TextAlign>
+                                      </Style>
+                                    </Paragraph>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value />
                                           <Style>
                                             <FontFamily>Tahoma</FontFamily>
                                             <FontSize>2pt</FontSize>
@@ -1706,7 +1705,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=IIf(Fields!InvoiceType.Value&lt;&gt;"Debit Note","Tax Invoice",Fields!InvoiceType.Value)</Value>
+                                          <Value>=IIf(Fields!InvoiceType.Value&lt;&gt;"Debit Note","Tax Invoice",Fields!InvoiceType.Value)</Value>
                                           <Style>
                                             <FontFamily>Tahoma</FontFamily>
                                             <FontSize>12pt</FontSize>
@@ -1741,7 +1740,6 @@
                                   <Value>=First(Fields!Company_Picture.Value, "DataSet_Result")</Value>
                                   <MIMEType>image/jpeg</MIMEType>
                                   <Sizing>Fit</Sizing>
-                                  <Top>0cm</Top>
                                   <Left>0.01216cm</Left>
                                   <Height>2cm</Height>
                                   <Width>4cm</Width>
@@ -1759,7 +1757,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">IRN No.</Value>
+                                          <Value>IRN No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1792,7 +1790,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Ack No.</Value>
+                                          <Value>Ack No.</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1825,14 +1823,14 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!E_Invoice_No.Value</Value>
+                                          <Value>=Fields!E_Invoice_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1865,14 +1863,14 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Acknowledge_No.Value</Value>
+                                          <Value>=Fields!Acknowledge_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1905,7 +1903,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">Ack Date</Value>
+                                          <Value>Ack Date</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1938,7 +1936,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">: </Value>
+                                          <Value>: </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1946,7 +1944,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Acknowledge_Date.Value</Value>
+                                          <Value>=Fields!Acknowledge_Date.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -1996,7 +1994,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!text001.Value</Value>
+                                          <Value>=Fields!text001.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -2010,7 +2008,6 @@
                                     </Paragraph>
                                   </Paragraphs>
                                   <rd:DefaultName>text001</rd:DefaultName>
-                                  <Top>0cm</Top>
                                   <Left>13.05417cm</Left>
                                   <Height>0.53297cm</Height>
                                   <Width>6.77408cm</Width>
@@ -2032,7 +2029,7 @@
                                     <Paragraph>
                                       <TextRuns>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">SCHEME : </Value>
+                                          <Value>SCHEME : </Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -2040,7 +2037,7 @@
                                           </Style>
                                         </TextRun>
                                         <TextRun>
-                                          <Value EvaluationMode="Auto">=Fields!Campaign_No.Value</Value>
+                                          <Value>=Fields!Campaign_No.Value</Value>
                                           <Style>
                                             <FontFamily>Calibri Light</FontFamily>
                                             <FontSize>8pt</FontSize>
@@ -2131,7 +2128,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Sr</Value>
+                                  <Value>Sr</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2146,7 +2143,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">No.</Value>
+                                  <Value>No.</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2196,7 +2193,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Description</Value>
+                                  <Value>Description</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2246,7 +2243,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Batch No.</Value>
+                                  <Value>Batch No.</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2296,7 +2293,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">HSN Code</Value>
+                                  <Value>HSN Code</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2346,7 +2343,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Mfg Date</Value>
+                                  <Value>Mfg Date</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2396,7 +2393,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Exp Date</Value>
+                                  <Value>Exp Date</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2446,7 +2443,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Qty CT/Bag</Value>
+                                  <Value>Qty CT/Bag</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2461,7 +2458,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Ltr/Kg</Value>
+                                  <Value>Ltr/Kg</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2511,7 +2508,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Loose Pack</Value>
+                                  <Value>Loose Pack</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2561,7 +2558,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Unit Price</Value>
+                                  <Value>Unit Price</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2576,7 +2573,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">MRP</Value>
+                                  <Value>MRP</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2626,7 +2623,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Amount</Value>
+                                  <Value>Amount</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2676,7 +2673,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Disc%</Value>
+                                  <Value>Disc%</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2726,7 +2723,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">CD%</Value>
+                                  <Value>CD%</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2776,7 +2773,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Taxable</Value>
+                                  <Value>Taxable</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2791,7 +2788,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Amount</Value>
+                                  <Value>Amount</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2841,7 +2838,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">GST %</Value>
+                                  <Value>GST %</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2891,7 +2888,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Net Amount</Value>
+                                  <Value>Net Amount</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2941,7 +2938,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Sno.Value</Value>
+                                  <Value>=Fields!Sno.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -2985,7 +2982,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Description.Value</Value>
+                                  <Value>=Fields!Description.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3029,7 +3026,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Lot_No.Value</Value>
+                                  <Value>=Fields!Lot_No.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3073,7 +3070,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!HSN.Value</Value>
+                                  <Value>=Fields!HSN.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3117,7 +3114,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Mfg.Value</Value>
+                                  <Value>=Fields!Mfg.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3162,7 +3159,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Expiry.Value</Value>
+                                  <Value>=Fields!Expiry.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3207,7 +3204,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Quantity.Value</Value>
+                                  <Value>=Fields!Quantity.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3222,7 +3219,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">(</Value>
+                                  <Value>(</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3230,7 +3227,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!AltQty.Value</Value>
+                                  <Value>=Fields!AltQty.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3238,7 +3235,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">)</Value>
+                                  <Value>)</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3279,7 +3276,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!NoOfLoosePack.Value</Value>
+                                  <Value>=Fields!NoOfLoosePack.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3319,7 +3316,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Rate.Value</Value>
+                                  <Value>=Fields!Rate.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3334,7 +3331,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!MRP.Value</Value>
+                                  <Value>=Fields!MRP.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3375,7 +3372,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Amount.Value</Value>
+                                  <Value>=Fields!Amount.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3416,7 +3413,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Disc_per.Value</Value>
+                                  <Value>=Fields!Disc_per.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3457,7 +3454,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">0.00</Value>
+                                  <Value>0.00</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3498,7 +3495,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!GST_Base_Amt.Value</Value>
+                                  <Value>=Fields!GST_Base_Amt.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3539,7 +3536,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!GST.Value</Value>
+                                  <Value>=Fields!GST.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3584,7 +3581,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!TotalAmt.Value</Value>
+                                  <Value>=Fields!TotalAmt.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>7pt</FontSize>
@@ -3629,7 +3626,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Total Quantity (Case / Bag)</Value>
+                                      <Value>Total Quantity (Case / Bag)</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3641,7 +3638,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox68</rd:DefaultName>
-                              <Top>0cm</Top>
                               <Left>0.02434cm</Left>
                               <Height>0.44125cm</Height>
                               <Width>4.32562cm</Width>
@@ -3662,7 +3658,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Total Net Weight (Ltr / Kgs)</Value>
+                                      <Value>Total Net Weight (Ltr / Kgs)</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3696,7 +3692,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Bank Details</Value>
+                                      <Value>Bank Details</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3710,7 +3706,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">A/C Holder</Value>
+                                      <Value>A/C Holder</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3724,7 +3720,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Bank</Value>
+                                      <Value>Bank</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3738,7 +3734,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">A/C No.</Value>
+                                      <Value>A/C No.</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3752,7 +3748,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Branch &amp; IFSC</Value>
+                                      <Value>Branch &amp; IFSC</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3787,7 +3783,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">: </Value>
+                                      <Value>: </Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3799,7 +3795,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox68</rd:DefaultName>
-                              <Top>0cm</Top>
                               <Left>4.34996cm</Left>
                               <Height>0.44125cm</Height>
                               <Width>0.26458cm</Width>
@@ -3821,7 +3816,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">:</Value>
+                                      <Value>:</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3855,7 +3850,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Total</Value>
+                                      <Value>Total</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3869,7 +3864,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox68</rd:DefaultName>
-                              <Top>0cm</Top>
                               <Left>15.68513cm</Left>
                               <Height>0.43823cm</Height>
                               <Width>1.82623cm</Width>
@@ -3891,7 +3885,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Round Off</Value>
+                                      <Value>Round Off</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3927,7 +3921,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">Grand Total</Value>
+                                      <Value>Grand Total</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3963,7 +3957,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">:</Value>
+                                      <Value>:</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -3977,7 +3971,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox68</rd:DefaultName>
-                              <Top>0cm</Top>
                               <Left>17.51136cm</Left>
                               <Height>0.44125cm</Height>
                               <Width>0.26458cm</Width>
@@ -3999,7 +3992,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">:</Value>
+                                      <Value>:</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4035,7 +4028,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">:</Value>
+                                      <Value>:</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4071,7 +4064,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Total_Net_Wt.Value</Value>
+                                      <Value>=Fields!Total_Net_Wt.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4108,7 +4101,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Last(Fields!Total_Qty.Value)</Value>
+                                      <Value>=Last(Fields!Total_Qty.Value)</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4145,7 +4138,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto" />
+                                      <Value />
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4159,7 +4152,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">: </Value>
+                                      <Value>: </Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4168,30 +4161,7 @@
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Company_Name.Value</Value>
-                                      <Style>
-                                        <FontFamily>Calibri Light</FontFamily>
-                                        <FontSize>8pt</FontSize>
-                                        <FontWeight>Normal</FontWeight>
-                                        <Format>f2</Format>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style />
-                                </Paragraph>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value EvaluationMode="Auto">: </Value>
-                                      <Style>
-                                        <FontFamily>Calibri Light</FontFamily>
-                                        <FontSize>8pt</FontSize>
-                                        <FontWeight>Normal</FontWeight>
-                                        <Format>f2</Format>
-                                      </Style>
-                                    </TextRun>
-                                    <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Company_Bank_Name.Value</Value>
+                                      <Value>=Fields!Company_Name.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4205,7 +4175,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">: </Value>
+                                      <Value>: </Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4214,7 +4184,7 @@
                                       </Style>
                                     </TextRun>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Company_Bank_Acc_No.Value</Value>
+                                      <Value>=Fields!Company_Bank_Name.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4228,7 +4198,30 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">: Saket, New Delhi &amp; HDFC0000043</Value>
+                                      <Value>: </Value>
+                                      <Style>
+                                        <FontFamily>Calibri Light</FontFamily>
+                                        <FontSize>8pt</FontSize>
+                                        <FontWeight>Normal</FontWeight>
+                                        <Format>f2</Format>
+                                      </Style>
+                                    </TextRun>
+                                    <TextRun>
+                                      <Value>=Fields!Company_Bank_Acc_No.Value</Value>
+                                      <Style>
+                                        <FontFamily>Calibri Light</FontFamily>
+                                        <FontSize>8pt</FontSize>
+                                        <FontWeight>Normal</FontWeight>
+                                        <Format>f2</Format>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style />
+                                </Paragraph>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>: Saket, New Delhi &amp; HDFC0000043</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4263,7 +4256,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!AmounttoCust.Value-Fields!Round_Off.Value</Value>
+                                      <Value>=Fields!AmounttoCust.Value-Fields!Round_Off.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4278,7 +4271,6 @@
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox68</rd:DefaultName>
-                              <Top>0cm</Top>
                               <Left>17.77594cm</Left>
                               <Height>0.44125cm</Height>
                               <Width>2.07665cm</Width>
@@ -4300,7 +4292,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!Round_Off.Value</Value>
+                                      <Value>=Fields!Round_Off.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4337,7 +4329,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value EvaluationMode="Auto">=Fields!AmounttoCust.Value</Value>
+                                      <Value>=Fields!AmounttoCust.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4405,7 +4397,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">GST Rate</Value>
+                                                    <Value>GST Rate</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -4450,7 +4442,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">CGST</Value>
+                                                    <Value>CGST</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -4502,7 +4494,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">SGST</Value>
+                                                    <Value>SGST</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -4554,7 +4546,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">IGST</Value>
+                                                    <Value>IGST</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -4611,7 +4603,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto" />
+                                                    <Value />
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4654,7 +4646,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Taxable Amount</Value>
+                                                    <Value>Taxable Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4704,7 +4696,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Tax Amount</Value>
+                                                    <Value>Tax Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4754,7 +4746,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Taxable Amount</Value>
+                                                    <Value>Taxable Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4804,7 +4796,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Tax Amount</Value>
+                                                    <Value>Tax Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4854,7 +4846,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Taxable Amount</Value>
+                                                    <Value>Taxable Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4904,7 +4896,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Tax Amount</Value>
+                                                    <Value>Tax Amount</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>7pt</FontSize>
@@ -4959,7 +4951,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!GST_per.Value</Value>
+                                                    <Value>=Fields!GST_per.Value</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5003,7 +4995,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5053,7 +5045,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!CGST.Value)</Value>
+                                                    <Value>=Sum(Fields!CGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5103,7 +5095,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5153,7 +5145,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!SGST.Value)</Value>
+                                                    <Value>=Sum(Fields!SGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5203,7 +5195,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5253,7 +5245,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!IGST.Value)</Value>
+                                                    <Value>=Sum(Fields!IGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5308,7 +5300,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Fields!GST_per.Value</Value>
+                                                    <Value>=Fields!GST_per.Value</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5353,7 +5345,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5403,7 +5395,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!CGST.Value)</Value>
+                                                    <Value>=Sum(Fields!CGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5453,7 +5445,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5503,7 +5495,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!SGST.Value)</Value>
+                                                    <Value>=Sum(Fields!SGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5553,7 +5545,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5603,7 +5595,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!IGST.Value)</Value>
+                                                    <Value>=Sum(Fields!IGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5658,7 +5650,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">Total</Value>
+                                                    <Value>Total</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5708,7 +5700,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5763,7 +5755,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!CGST.Value)</Value>
+                                                    <Value>=Sum(Fields!CGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5819,7 +5811,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5874,7 +5866,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!SGST.Value)</Value>
+                                                    <Value>=Sum(Fields!SGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5930,7 +5922,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!GST_Base_Amt.Value)</Value>
+                                                    <Value>=Sum(Fields!GST_Base_Amt.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -5985,7 +5977,7 @@
                                               <Paragraph>
                                                 <TextRuns>
                                                   <TextRun>
-                                                    <Value EvaluationMode="Auto">=Sum(Fields!IGST.Value)</Value>
+                                                    <Value>=Sum(Fields!IGST.Value)</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -6102,7 +6094,6 @@
                                 </TablixMembers>
                               </TablixRowHierarchy>
                               <DataSetName>DataSet_Result</DataSetName>
-                              <Top>0cm</Top>
                               <Left>7.21029cm</Left>
                               <Height>2.45269cm</Height>
                               <Width>10.93076cm</Width>
@@ -6157,7 +6148,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">AMOUNT IN WORDS : </Value>
+                                  <Value>AMOUNT IN WORDS : </Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6165,7 +6156,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Curr_Code.Value</Value>
+                                  <Value>=Fields!Curr_Code.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6173,7 +6164,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                                  <Value xml:space="preserve"> </Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6181,7 +6172,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Amount_In_Words_Total.Value</Value>
+                                  <Value>=Fields!Amount_In_Words_Total.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6238,7 +6229,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Declaration : </Value>
+                                  <Value>Declaration : </Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6251,7 +6242,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</Value>
+                                  <Value>We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</Value>
                                   <Style>
                                     <FontStyle>Normal</FontStyle>
                                     <FontFamily>Calibri Light</FontFamily>
@@ -6311,7 +6302,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">TERMS AND CONDITIONS:</Value>
+                                  <Value>TERMS AND CONDITIONS:</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6319,7 +6310,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">
+                                  <Value>
 1. Goods once sold will not be returned/exchanged.
 2. IFFCO MC shall not be responsible for the agrochemical stock damaged due to improper handling storage at sale point.
 3. All the agrochemicals shall be sold to the farmers under valid and proper invoice and all the invoices shall be countersigned by the farmers having accepted all the terms
@@ -6386,7 +6377,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">E.&amp; O.E.</Value>
+                                  <Value>E.&amp; O.E.</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6399,7 +6390,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">For </Value>
+                                  <Value>For </Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -6407,22 +6398,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">=Fields!Company_Name.Value</Value>
-                                  <Style>
-                                    <FontFamily>Calibri Light</FontFamily>
-                                    <FontSize>9pt</FontSize>
-                                    <FontWeight>Normal</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Right</TextAlign>
-                              </Style>
-                            </Paragraph>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value EvaluationMode="Auto" />
+                                  <Value>=Fields!Company_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -6437,7 +6413,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto" />
+                                  <Value />
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -6452,7 +6428,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto" />
+                                  <Value />
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -6467,7 +6443,22 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value EvaluationMode="Auto">Authorised Signatory</Value>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Calibri Light</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Normal</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Authorised Signatory</Value>
                                   <Style>
                                     <FontFamily>Calibri Light</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -6633,7 +6624,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">Page No. </Value>
+                      <Value>Page No. </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6641,7 +6632,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Globals!PageNumber</Value>
+                      <Value>=Globals!PageNumber</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6649,7 +6640,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto"> of </Value>
+                      <Value> of </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6657,7 +6648,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Globals!TotalPages</Value>
+                      <Value>=Globals!TotalPages</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6671,7 +6662,6 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox7</rd:DefaultName>
-              <Top>0cm</Top>
               <Left>13.06634cm</Left>
               <Height>0.44097cm</Height>
               <Width>6.77408cm</Width>
@@ -6704,7 +6694,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=IIF(Globals!PageNumber=Globals!TotalPages,"","To Be Continue...")</Value>
+                      <Value>=IIF(Globals!PageNumber=Globals!TotalPages,"","To Be Continue...")</Value>
                       <Style>
                         <FontStyle>Italic</FontStyle>
                         <FontFamily>Calibri Light</FontFamily>
@@ -6719,7 +6709,6 @@
               </Paragraphs>
               <rd:DefaultName>Textbox36</rd:DefaultName>
               <Top>1.2326cm</Top>
-              <Left>0cm</Left>
               <Height>0.508cm</Height>
               <Width>19.81611cm</Width>
               <Style>
@@ -6739,168 +6728,84 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">Registered Office : </Value>
+                      <Value>Registered Office : </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Reg_Address.Value</Value>
+                      <Value>=Fields!Reg_Address.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value xml:space="preserve" EvaluationMode="Auto"> </Value>
+                      <Value xml:space="preserve"> </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Reg_Address2.Value</Value>
+                      <Value>=Fields!Reg_Address2.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
+                      <Value>, </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Reg_City.Value</Value>
+                      <Value>=Fields!Reg_City.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto"> - </Value>
+                      <Value> - </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Reg_Postcode.Value</Value>
+                      <Value>=Fields!Reg_Postcode.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
+                      <Value>, </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!vy.Value</Value>
+                      <Value>=Fields!vy.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
+                      <Value>, </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Company_Country.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Center</TextAlign>
-                  </Style>
-                </Paragraph>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">Corporate Office : </Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!CompAdd.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!CompAdd2.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!CompCity.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto"> - </Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!CompPC.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">, </Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!CompState.Value</Value>
-                      <Style>
-                        <FontFamily>Calibri Light</FontFamily>
-                        <FontSize>8pt</FontSize>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value EvaluationMode="Auto">,India</Value>
+                      <Value>=Fields!Company_Country.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6914,42 +6819,126 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value EvaluationMode="Auto">Phone : </Value>
+                      <Value>Corporate Office : </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Company_Phone_No.Value</Value>
+                      <Value>=Fields!CompAdd.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">,  Email : </Value>
+                      <Value>, </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Company_Email.Value</Value>
+                      <Value>=Fields!CompAdd2.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">, Website : </Value>
+                      <Value>, </Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value EvaluationMode="Auto">=Fields!Website.Value</Value>
+                      <Value>=Fields!CompCity.Value</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value> - </Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Fields!CompPC.Value</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>, </Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Fields!CompState.Value</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>,India</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Phone : </Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Fields!Company_Phone_No.Value</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>,  Email : </Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Fields!Company_Email.Value</Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>, Website : </Value>
+                      <Style>
+                        <FontFamily>Calibri Light</FontFamily>
+                        <FontSize>8pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Fields!Website.Value</Value>
                       <Style>
                         <FontFamily>Calibri Light</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -6962,7 +6951,6 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox36</rd:DefaultName>
-              <Top>0cm</Top>
               <Left>0.03648cm</Left>
               <Height>1.2326cm</Height>
               <Width>19.82826cm</Width>

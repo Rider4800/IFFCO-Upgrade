@@ -125,7 +125,10 @@ report 50004 "Sales Tax Invoice"
                 column(Company_Bank_Acc_No; "Sales Invoice Header"."Bill-to Customer No.")
                 {
                 }
-                column(QR_Code; recEwayEinvoice."QR Code")
+                // column(QR_Code; recEwayEinvoice."QR Code")
+                // {
+                // }
+                column(QR_Code; "Sales Invoice Header"."QR Code")
                 {
                 }
                 column(E_Invoice_No; txtEwayEinvoice[1])
@@ -333,7 +336,7 @@ report 50004 "Sales Tax Invoice"
                     column(TotalAmt; AmtToCust.GetAmttoCustomerPostedLine("Document No.", "Line No.")) //16767 "Sales Invoice Line"."Amount To Customer"
                     {
                     }
-                    column(GST_per; FORMAT(ROUND(decGSTper, 1)))
+                    column(GST_per; FORMAT(ROUND(decGSTper, 1)) + '%')
                     {
                     }
                     column(GST; FORMAT(ROUND(GstPer, 1))) //16767 "Sales Invoice Line"."GST %"
@@ -482,6 +485,7 @@ report 50004 "Sales Tax Invoice"
 
                 trigger OnAfterGetRecord()
                 begin
+                    "Sales Invoice Header".CalcFields("QR Code");
                     recState.RESET();
                     recState.SETRANGE(Code, recCompanyInfo."Registration State");
                     IF recState.FIND('-') THEN
@@ -514,7 +518,7 @@ report 50004 "Sales Tax Invoice"
                     CLEAR(txtEwayEinvoice);
                     recEwayEinvoice.RESET();
                     recEwayEinvoice.SETRANGE("No.", "Sales Invoice Header"."No.");
-                    IF recEwayEinvoice.FIND('-') THEN BEGIN
+                    IF recEwayEinvoice.FindFirst() THEN BEGIN
                         recEwayEinvoice.CALCFIELDS("QR Code");
                         txtEwayEinvoice[1] := recEwayEinvoice."E-Invoice IRN No";
                         txtEwayEinvoice[2] := recEwayEinvoice."E-Invoice Acknowledge No.";

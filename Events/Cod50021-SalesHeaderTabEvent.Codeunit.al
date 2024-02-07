@@ -117,29 +117,32 @@ codeunit 50021 SalesHeaderTabEvent
     procedure OnBeforeTestStatusOpen(xSalesHeader: Record "Sales Header"; var SalesHeader: Record "Sales Header"; CallingFieldNo: Integer; sender: Record "Sales Header")
     var
         CLERec: Record "Cust. Ledger Entry";
-        Text001: Label 'The customer %1 has an overdue balance of %2. The update has been interrupted to respect the warning.';
-        Text002: Label 'The customer %1 has an credit limit of %2. The update has been interrupted to respect the warning.';
+        Text001: Label 'The customer %1 has an overdue balance of %2.';
+        Text002: Label 'The customer %1 has an credit limit of %2.';
         CLEOverdueAmt: Decimal;
         CustRec: Record Customer;
     begin
-        CLEOverdueAmt := 0;
-        CLERec.Reset();
-        CLERec.SetCurrentKey("Document Type", "Customer No.", Open, "Due Date");
-        CLERec.SetRange("Customer No.", SalesHeader."Sell-to Customer No.");
-        CLERec.SetRange(Open, true);
-        CLERec.SetFilter("Due Date", '<%1', Today);
-        if CLERec.FindFirst() then begin
-            repeat
-                CLERec.CalcFields("Remaining Amount");
-                CLEOverdueAmt := CLEOverdueAmt + CLERec."Remaining Amount"
-            until CLERec.Next() = 0;
-            if CLEOverdueAmt > 0 then
-                Error(Text001, CLERec."Customer No.", CLEOverdueAmt);
-        end;
         if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
-            CustRec.CalcFields("Balance (LCY)");
-            if CustRec."Balance (LCY)" > CustRec."Credit Limit (LCY)" then
-                Error(Text002, CustRec."No.", CustRec."Credit Limit (LCY)");
+            if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
+                CLEOverdueAmt := 0;
+                CLERec.Reset();
+                CLERec.SetCurrentKey("Document Type", "Customer No.", Open, "Due Date");
+                CLERec.SetRange("Customer No.", SalesHeader."Sell-to Customer No.");
+                CLERec.SetRange(Open, true);
+                CLERec.SetFilter("Due Date", '<%1', Today);
+                if CLERec.FindFirst() then begin
+                    repeat
+                        CLERec.CalcFields("Remaining Amount");
+                        CLEOverdueAmt := CLEOverdueAmt + CLERec."Remaining Amount"
+                    until CLERec.Next() = 0;
+                    if CLEOverdueAmt > 0 then
+                        Error(Text001, CLERec."Customer No.", CLEOverdueAmt);
+                end;
+
+                CustRec.CalcFields("Balance (LCY)");
+                if CustRec."Balance (LCY)" > CustRec."Credit Limit (LCY)" then
+                    Error(Text002, CustRec."No.", CustRec."Credit Limit (LCY)");
+            end;
         end;
     end;
 }

@@ -274,7 +274,8 @@ report 50015 "Branch transfer"
                     column(GSTBaseAmt; GSTBaseAmt)
                     {
                     }
-                    column(GST_per; ROUND(GSTper("Document No.", "Line No."), 1))
+                    //column(GST_per; GSTper("Document No.", "Line No.") + '%')
+                    column(totgstpercentage; totgstpercentage + '%')
                     {
                     }
                     column(NetAmt; "Transfer Shipment Line".Amount + TotalBaseAmt)
@@ -385,6 +386,7 @@ report 50015 "Branch transfer"
                     begin
                         //Serial No. for Number of Items
                         SrNo += 1;
+                        totgstpercentage := 0;
 
                         //Batch Details
                         LotNo := '';
@@ -409,7 +411,6 @@ report 50015 "Branch transfer"
                         END;
 
                         //
-
                         IGSTamt := 0;
                         IGSTper := 0;
                         IgstBaseAmt := 0;
@@ -417,7 +418,7 @@ report 50015 "Branch transfer"
                         recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
                         recDetGSTLedAntry.SETFILTER("GST Component Code", 'IGST');
                         recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
-                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                        IF recDetGSTLedAntry.FindFirst() THEN BEGIN
                             IGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             IGSTper := recDetGSTLedAntry."GST %";
                             IgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
@@ -430,7 +431,7 @@ report 50015 "Branch transfer"
                         recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
                         recDetGSTLedAntry.SETFILTER("GST Component Code", 'CGST');
                         recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
-                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                        IF recDetGSTLedAntry.FindFirst() THEN BEGIN
                             CGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             CGSTper := recDetGSTLedAntry."GST %";
                             CgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
@@ -443,7 +444,7 @@ report 50015 "Branch transfer"
                         recDetGSTLedAntry.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
                         recDetGSTLedAntry.SETFILTER("GST Component Code", 'SGST');
                         recDetGSTLedAntry.SETRANGE("Document Line No.", "Transfer Shipment Line"."Line No.");
-                        IF recDetGSTLedAntry.FIND('-') THEN BEGIN
+                        IF recDetGSTLedAntry.FindFirst() THEN BEGIN
                             SGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             SGSTper := recDetGSTLedAntry."GST %";
                             SgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
@@ -451,6 +452,7 @@ report 50015 "Branch transfer"
 
                         Clear(TotalBaseAmt);
                         Clear(GstBaseAmt);
+                        totgstpercentage := IGSTper + CGSTper + SGSTper;
                         TotalBaseAmt := IgstBaseAmt + CgstBaseAmt + SgstBaseAmt;
                         GstBaseAmt := IGSTamt + CGSTamt + SGSTamt;
                         //
@@ -788,5 +790,6 @@ report 50015 "Branch transfer"
         CgstBaseAmt: Decimal;
         TotalBaseAmt: Decimal;
         GstBaseAmt: Decimal;
+        totgstpercentage: Decimal;
 }
 

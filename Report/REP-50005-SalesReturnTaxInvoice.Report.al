@@ -131,7 +131,7 @@ report 50005 "Sales Return Tax Invoice"
                 column(Company_Bank_Acc_No; "Sales Cr.Memo Header"."Bill-to Customer No.")
                 {
                 }
-                column(QR_Code; recEwayEinvoice."QR Code")
+                column(QR_Code; "Sales Cr.Memo Header"."QR Code")
                 {
                 }
                 column(E_Invoice_No; txtEwayEinvoice[1])
@@ -511,6 +511,7 @@ report 50005 "Sales Return Tax Invoice"
 
                 trigger OnAfterGetRecord()
                 begin
+                    "Sales Cr.Memo Header".CalcFields("QR Code");
                     recState.RESET();
                     recState.SETRANGE(Code, recCompanyInfo."Registration State");
                     IF recState.FIND('-') THEN

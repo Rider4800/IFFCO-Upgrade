@@ -25,12 +25,14 @@ codeunit 50055 ItemTrackingDataCollection
                     recCPG.RESET;
                     recCPG.SETRANGE(Code, recCust."Customer Posting Group");
                     IF recCPG.FINDFIRST THEN BEGIN  //team
-                        IF NOT recCPG.ExcludeFIFOExpiry THEN
-                            IF TrackingSpecification."Expiration Date" > TODAY THEN
+                        IF NOT recCPG.ExcludeFIFOExpiry THEN begin
+                            IF TrackingSpecification."Expiration Date" > TODAY THEN begin
                                 if recCPG."Multi-Lot Selection Allowed" then
                                     NewMultiSelectionLot(TrackingSpecification)
                                 else
                                     CheckNearExp(TrackingSpecification."Item No.", TrackingSpecification."Location Code", TrackingSpecification."Expiration Date", TrackingSpecification."Source ID"); //ACXCP_18052022 //Near Expiry Check uncommented
+                            end;
+                        end;
                         IF Expire = TRUE THEN BEGIN //ACXCP_18052022
                             //TempItemTrackLineInsert.DELETE();//ACXCP_18052022
                             TrackingSpecification.DELETE();//ACXCP_18052022
@@ -63,12 +65,14 @@ codeunit 50055 ItemTrackingDataCollection
                     recCPG.RESET;
                     recCPG.SETRANGE(Code, recCust."Customer Posting Group");
                     IF recCPG.FINDFIRST THEN BEGIN  //team
-                        IF NOT recCPG.ExcludeFIFOExpiry THEN
-                            IF TempTrackingSpecification."Expiration Date" > TODAY THEN
+                        IF NOT recCPG.ExcludeFIFOExpiry THEN begin
+                            IF TempTrackingSpecification."Expiration Date" > TODAY THEN begin
                                 if recCPG."Multi-Lot Selection Allowed" then
                                     NewMultiSelectionLot(TempTrackingSpecification)
                                 else
                                     CheckNearExp(TempTrackingSpecification."Item No.", TempTrackingSpecification."Location Code", TempTrackingSpecification."Expiration Date", TempTrackingSpecification."Source ID"); //ACXCP_18052022 //Near Expiry Check uncommented
+                            end;
+                        end;
                         IF Expire = TRUE THEN BEGIN //ACXCP_18052022
                             //TempItemTrackLineInsert.DELETE();//ACXCP_18052022
                             TempTrackingSpecification.DELETE();//ACXCP_18052022
@@ -99,13 +103,14 @@ codeunit 50055 ItemTrackingDataCollection
                     recCPG.RESET;
                     recCPG.SETRANGE(Code, recCust."Customer Posting Group");
                     IF recCPG.FINDFIRST THEN BEGIN  //team
-                        IF NOT recCPG.ExcludeFIFOExpiry THEN
+                        IF NOT recCPG.ExcludeFIFOExpiry THEN begin
                             IF TempTrackingSpecification."Expiration Date" > TODAY THEN begin
                                 if recCPG."Multi-Lot Selection Allowed" then
                                     NewMultiSelectionLot(TempTrackingSpecification)
                                 else
                                     CheckNearExp(TempTrackingSpecification."Item No.", TempTrackingSpecification."Location Code", TempTrackingSpecification."Expiration Date", TempTrackingSpecification."Source ID"); //ACXCP_18052022 //Near Expiry Check uncommented
                             end;
+                        end;
                         IF Expire = TRUE THEN BEGIN //ACXCP_18052022
                             //TempItemTrackLineInsert.DELETE();//ACXCP_18052022
                             TempTrackingSpecification.DELETE();//ACXCP_18052022

@@ -43,6 +43,7 @@ pageextension 50023 pageextension50023 extends "Posted Sales Invoices"
                 Promoted = true;
                 PromotedCategory = "Report";
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 var

@@ -8369,11 +8369,11 @@ End Function
         <Field Name="GSTBaseAmtFormat">
           <DataField>GSTBaseAmtFormat</DataField>
         </Field>
-        <Field Name="GST_per">
-          <DataField>GST_per</DataField>
+        <Field Name="totgstpercentage">
+          <DataField>totgstpercentage</DataField>
         </Field>
-        <Field Name="GST_perFormat">
-          <DataField>GST_perFormat</DataField>
+        <Field Name="totgstpercentageFormat">
+          <DataField>totgstpercentageFormat</DataField>
         </Field>
         <Field Name="NetAmt">
           <DataField>NetAmt</DataField>

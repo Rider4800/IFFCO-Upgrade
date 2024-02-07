@@ -239,8 +239,8 @@ codeunit 50009 CalculatedSchemes
                     REPEAT
                         SIL.RESET();
                         SIL.SETRANGE("Document No.", SIH."No.");
-                        // IF SchemeItem.Type = SchemeItem.Type::"Product Group" THEN
-                        //SIL.SETRANGE("Product Group Code", SchemeItem.Code);  //17783
+                        // IF SchemeItem.Type = SchemeItem.Type::"Product Group" THEN                           
+                        SIL.SETRANGE("Item Category Code", SchemeItem.Code);  //17783
                         // IF SchemeItem.Type = SchemeItem.Type::Item THEN
                         // SIL.SETRANGE("No.",SchemeItem.Code);
                         IF SIL.FINDFIRST THEN BEGIN
