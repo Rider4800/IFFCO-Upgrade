@@ -162,7 +162,7 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     var
-        SHRec1: Record "Sales Header";
+        SHRec2: Record "Sales Header";
         CustRec: Record Customer;
         SLRec1: Record "Sales Line";
         Text003: Label 'The customer %1 has an credit limit of %2. The update has been interrupted to respect the warning.';
@@ -171,42 +171,44 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         SHRec: Record "Sales Header";
     begin
         if (Rec."Lot No." <> '') then begin
-            SHRec1.Reset();
-            SHRec1.SetRange("No.", Rec."Source ID");
-            if SHRec1.FindFirst() then begin
-                if CustRec.Get(SHRec1."Sell-to Customer No.") then begin
-                    if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
-                        SLRec1.Reset();
-                        SLRec1.SetRange("Document No.", SHRec1."No.");
-                        SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
-                        SLRec1.SetRange("No.", Rec."Item No.");
-                        if SLRec1.FindFirst() then begin
-                            PriceListLine.Reset();
-                            PriceListLine.SetRange("Product No.", Rec."Item No.");
-                            PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
-                            PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
-                            PriceListLine.SetRange(Status, PriceListLine.Status::Active);
-                            SHRec.Reset();
-                            SHRec.SetRange("No.", Rec."Source ID");
-                            if SHRec.FindFirst() then begin
-                                IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
-                                    PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
-                                    PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
-                                end ELSE begin
-                                    PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
-                                    PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+            SHRec2.Reset();
+            SHRec2.SetRange("No.", Rec."Source ID");
+            if SHRec2.FindFirst() then begin
+                if (SHRec2."Parent Customer" <> '') and (SHRec2."Campaign No." <> '') then begin
+                end else begin
+                    if CustRec.Get(SHRec2."Sell-to Customer No.") then begin
+                        if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
+                            SLRec1.Reset();
+                            SLRec1.SetRange("Document No.", SHRec2."No.");
+                            SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
+                            SLRec1.SetRange("No.", Rec."Item No.");
+                            if SLRec1.FindFirst() then begin
+                                PriceListLine.Reset();
+                                PriceListLine.SetRange("Product No.", Rec."Item No.");
+                                PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
+                                PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+                                PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+                                SHRec.Reset();
+                                SHRec.SetRange("No.", Rec."Source ID");
+                                if SHRec.FindFirst() then begin
+                                    IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
+                                    end ELSE begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+                                    end;
+                                END;
+                                if SHRec."Campaign No." = '' then
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
+                                else begin
+                                    PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
                                 end;
-                            END;
-                            if SHRec."Campaign No." = '' then
-                                PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
-                            else begin
-                                PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
-                                PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
-                            end;
-
-                            if PriceListLine.FindLast() then begin
-                                if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price") > CustRec."Credit Limit (LCY)" then
-                                    Error(Text003 + '\' + Text004, CustRec."No.", CustRec."Credit Limit (LCY)");
+                                if PriceListLine.FindLast() then begin
+                                    if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price") > CustRec."Credit Limit (LCY)" then
+                                        Error(Text003 + '\' + Text004, CustRec."No.", CustRec."Credit Limit (LCY)");
+                                end;
                             end;
                         end;
                     end;
@@ -215,54 +217,59 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         end;
     end;
 
-    trigger OnClosePage()   //pp
+    trigger OnClosePage()
     var
         Count: Integer;
         PriceListLine: Record "Price List Line";
         SHRec: Record "Sales Header";
-        SHRec1: Record "Sales Header";
+        SHRec2: Record "Sales Header";
         CustRec: Record Customer;
         SLRec1: Record "Sales Line";
         Text003: Label 'The customer %1 has an credit limit of %2.';
         Text004: Label 'Please delete the existing Batch Line.';
     begin
         if (Rec."Lot No." <> '') then begin
-            SHRec1.Reset();
-            SHRec1.SetRange("No.", Rec."Source ID");
-            if SHRec1.FindFirst() then begin
-                if CustRec.Get(SHRec1."Sell-to Customer No.") then begin
-                    if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
-                        SLRec1.Reset();
-                        SLRec1.SetRange("Document No.", SHRec1."No.");
-                        SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
-                        SLRec1.SetRange("No.", Rec."Item No.");
-                        if SLRec1.FindFirst() then begin
-                            PriceListLine.Reset();
-                            PriceListLine.SetRange("Product No.", Rec."Item No.");
-                            PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
-                            PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
-                            PriceListLine.SetRange(Status, PriceListLine.Status::Active);
-                            SHRec.Reset();
-                            SHRec.SetRange("No.", Rec."Source ID");
-                            if SHRec.FindFirst() then begin
-                                IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
-                                    PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
-                                    PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
-                                end ELSE begin
-                                    PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
-                                    PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+            SHRec2.Reset();
+            SHRec2.SetRange("No.", Rec."Source ID");
+            SHRec2.SetRange("Parent Customer", '');
+            SHRec2.SetRange("Campaign No.", '');
+            if SHRec2.FindFirst() then begin
+                if (SHRec2."Parent Customer" <> '') and (SHRec2."Campaign No." <> '') then begin
+                end else begin
+                    if CustRec.Get(SHRec2."Sell-to Customer No.") then begin
+                        if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
+                            SLRec1.Reset();
+                            SLRec1.SetRange("Document No.", SHRec2."No.");
+                            SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
+                            SLRec1.SetRange("No.", Rec."Item No.");
+                            if SLRec1.FindFirst() then begin
+                                PriceListLine.Reset();
+                                PriceListLine.SetRange("Product No.", Rec."Item No.");
+                                PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
+                                PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+                                PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+                                SHRec.Reset();
+                                SHRec.SetRange("No.", Rec."Source ID");
+                                if SHRec.FindFirst() then begin
+                                    IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
+                                    end ELSE begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+                                    end;
+                                END;
+                                if SHRec."Campaign No." = '' then
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
+                                else begin
+                                    PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
                                 end;
-                            END;
-                            if SHRec."Campaign No." = '' then
-                                PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
-                            else begin
-                                PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
-                                PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
-                            end;
 
-                            if PriceListLine.FindLast() then begin
-                                if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price") > CustRec."Credit Limit (LCY)" then
-                                    Error(Text003 + '\' + Text004, CustRec."No.", CustRec."Credit Limit (LCY)");
+                                if PriceListLine.FindLast() then begin
+                                    if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price") > CustRec."Credit Limit (LCY)" then
+                                        Error(Text003 + '\' + Text004, CustRec."No.", CustRec."Credit Limit (LCY)");
+                                end;
                             end;
                         end;
                     end;

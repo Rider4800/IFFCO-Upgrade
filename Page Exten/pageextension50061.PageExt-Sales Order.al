@@ -39,6 +39,8 @@ pageextension 50061 pageextension50061 extends "Sales Order"
         {
             field("Parent Customer"; Rec."Parent Customer")
             {
+                ApplicationArea = All;
+                Editable = false;
             }
         }
         addafter("Customer Disc. Group")
@@ -53,16 +55,19 @@ pageextension 50061 pageextension50061 extends "Sales Order"
             Visible = false;
         }
 
-        addafter("LR/RR Date")
+        addafter("Vehicle No.")
         {
             field("Transporter Code"; Rec."Transporter Code")
             {
+                ApplicationArea = All;
             }
             field("Transporter Name"; Rec."Transporter Name")
             {
+                ApplicationArea = All;
             }
             field("Transporter GSTIN"; Rec."Transporter GSTIN")
             {
+                ApplicationArea = All;
             }
         }
         addafter("Tax Info")
