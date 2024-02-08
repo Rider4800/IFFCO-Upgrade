@@ -36,7 +36,5 @@ pageextension 50001 pageextension50001 extends "Company Information"
             }
         }
     }
-    var
-        c: Codeunit 12;
 }
 

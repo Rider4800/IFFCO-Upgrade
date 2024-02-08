@@ -7,8 +7,6 @@ codeunit 50200 CalcAmttoVendor
     end;
 
     procedure SelectFile()
-    var
-        d: Page "User Settings";
     begin
         UploadIntoStream('Please choose the excel file.', '', '', FromFile, IStream);
         if FromFile <> '' then begin
