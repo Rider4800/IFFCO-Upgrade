@@ -245,7 +245,24 @@ pageextension 50061 pageextension50061 extends "Sales Order"
                     VouNaration: Text;
                     VouNaration1: Text;
                     InsertJournalNara2: Record "Gen. Journal Narration";
+                    TaxTransactionValue: Record "Tax Transaction Value";
+                    SLRec4: Record "Sales Line";
+                    Text004: Label 'GST not calculated for Line No. %1.';
                 begin
+                    //Validation for checking before Post, whether GST generated for current order
+                    SLRec4.Reset();
+                    SLRec4.SetRange("Document No.", Rec."No.");
+                    if SLRec4.FindFirst() then begin
+                        repeat
+                            TaxTransactionValue.Reset();
+                            TaxTransactionValue.SetRange("Tax Record ID", SLRec4.RecordId);
+                            TaxTransactionValue.SetRange("Value Type", TaxTransactionValue."Value Type"::COMPONENT);
+                            TaxTransactionValue.SetFilter(Percent, '<>%1', 0);
+                            if not TaxTransactionValue.FindFirst() then
+                                Error(Text004, SLRec4."Line No.");
+                        until SLRec4.Next() = 0;
+                    end;
+
                     //acxcp_300622_CampaignCode +
                     Clear(Cu50200);
 

@@ -6,6 +6,7 @@ pageextension 50124 pageextension50124 extends "Released Prod. Order Lines"
         {
             Visible = true;
         }
+        moveafter(Quantity; "Production BOM Version Code")
     }
 }
 

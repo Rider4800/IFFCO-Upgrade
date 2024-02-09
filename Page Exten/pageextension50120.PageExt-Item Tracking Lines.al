@@ -169,6 +169,8 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         Text004: Label 'Please delete the existing Batch Line.';
         PriceListLine: Record "Price List Line";
         SHRec: Record "Sales Header";
+        SumVar: Decimal;
+        Text005: Label 'Customer %1 do not have Credit Balance. Short by amount %2.';
     begin
         if (Rec."Lot No." <> '') then begin
             SHRec2.Reset();
@@ -213,6 +215,48 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                         end;
                     end;
                 end;
+                if (SHRec2."Parent Customer" = '') and (SHRec2."Campaign No." <> '') then begin
+                    if CustRec.Get(SHRec2."Sell-to Customer No.") then begin
+                        CustRec.CalcFields("Balance (LCY)");
+                        if (CustRec."Balance (LCY)") > 0 then
+                            Error('Customer do not have Credit Balance.')
+                        else begin
+                            SLRec1.Reset();
+                            SLRec1.SetRange("Document No.", SHRec2."No.");
+                            SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
+                            SLRec1.SetRange("No.", Rec."Item No.");
+                            if SLRec1.FindFirst() then begin
+                                PriceListLine.Reset();
+                                PriceListLine.SetRange("Product No.", Rec."Item No.");
+                                PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
+                                PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+                                PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+                                SHRec.Reset();
+                                SHRec.SetRange("No.", Rec."Source ID");
+                                if SHRec.FindFirst() then begin
+                                    IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
+                                    end ELSE begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+                                    end;
+                                END;
+                                if SHRec."Campaign No." = '' then
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
+                                else begin
+                                    PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
+                                end;
+                                if PriceListLine.FindLast() then begin
+                                    SumVar := ((CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price"));
+                                    if SumVar > 0 then
+                                        Error(Text005, CustRec."No.", SumVar);
+                                end;
+                            end;
+                        end;
+                    end;
+                end;
             end;
         end;
     end;
@@ -227,6 +271,8 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
         SLRec1: Record "Sales Line";
         Text003: Label 'The customer %1 has an credit limit of %2.';
         Text004: Label 'Please delete the existing Batch Line.';
+        SumVar: Decimal;
+        Text005: Label 'Customer %1 do not have Credit Balance. Short by amount %2.';
     begin
         if (Rec."Lot No." <> '') then begin
             SHRec2.Reset();
@@ -269,6 +315,48 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                                 if PriceListLine.FindLast() then begin
                                     if (CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price") > CustRec."Credit Limit (LCY)" then
                                         Error(Text003 + '\' + Text004, CustRec."No.", CustRec."Credit Limit (LCY)");
+                                end;
+                            end;
+                        end;
+                    end;
+                end;
+                if (SHRec2."Parent Customer" = '') and (SHRec2."Campaign No." <> '') then begin
+                    if CustRec.Get(SHRec2."Sell-to Customer No.") then begin
+                        CustRec.CalcFields("Balance (LCY)");
+                        if (CustRec."Balance (LCY)") > 0 then
+                            Error('Customer do not have Credit Balance.')
+                        else begin
+                            SLRec1.Reset();
+                            SLRec1.SetRange("Document No.", SHRec2."No.");
+                            SLRec1.SetRange("Line No.", Rec."Source Ref. No.");
+                            SLRec1.SetRange("No.", Rec."Item No.");
+                            if SLRec1.FindFirst() then begin
+                                PriceListLine.Reset();
+                                PriceListLine.SetRange("Product No.", Rec."Item No.");
+                                PriceListLine.SetRange("MRP Price", Rec."Batch MRP");
+                                PriceListLine.SetRange("Asset Type", PriceListLine."Asset Type"::Item);
+                                PriceListLine.SetRange(Status, PriceListLine.Status::Active);
+                                SHRec.Reset();
+                                SHRec.SetRange("No.", Rec."Source ID");
+                                if SHRec.FindFirst() then begin
+                                    IF SHRec."Document Type" IN [SHRec."Document Type"::Invoice, SHRec."Document Type"::"Credit Memo"] THEN begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Posting Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Posting Date");
+                                    end ELSE begin
+                                        PriceListLine.SETFILTER("Ending Date", '%1|>=%2', 0D, SHRec."Order Date");
+                                        PriceListLine.SETRANGE("Starting Date", 0D, SHRec."Order Date");
+                                    end;
+                                END;
+                                if SHRec."Campaign No." = '' then
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::"All Customers")
+                                else begin
+                                    PriceListLine.SetRange("Assign-to No.", SHRec."Campaign No.");
+                                    PriceListLine.SetRange("Source Type", PriceListLine."Source Type"::Campaign);
+                                end;
+                                if PriceListLine.FindLast() then begin
+                                    SumVar := ((CustRec.GetTotalAmountLCY - SLRec1."Line Amount") + (SLRec1.Quantity * PriceListLine."Unit Price"));
+                                    if SumVar > 0 then
+                                        Error(Text005, CustRec."No.", SumVar);
                                 end;
                             end;
                         end;

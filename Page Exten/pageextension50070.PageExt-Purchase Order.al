@@ -12,6 +12,16 @@ pageextension 50070 pageextension50070 extends "Purchase Order"
                     VisiblityBool := true;
             end;
         }
+        modify("Buy-from Vendor Name")
+        {
+            trigger OnAfterValidate()
+            begin
+                VisiblityBool := false;
+                ShipToOptions := ShipToOptions::Location;
+                if ShipToOptions = ShipToOptions::Location then
+                    VisiblityBool := true;
+            end;
+        }
         modify("Location Code")
         {
             Editable = VisiblityBool;

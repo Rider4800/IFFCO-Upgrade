@@ -6,6 +6,7 @@ pageextension 50053 pageextension50053 extends "Ship-to Address List"
         {
             field(Disable; Rec.Disable)
             {
+                ApplicationArea = All;
             }
         }
     }

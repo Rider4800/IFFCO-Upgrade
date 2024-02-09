@@ -65,6 +65,28 @@ pageextension 50044 pageextension50044 extends "Customer List"
                     END;
                 end;
             }
+            // action("Update Ship-to Address")
+            // {
+            //     ApplicationArea = All;
+            //     Promoted = true;
+            //     PromotedCategory = Process;
+            //     Image = UpdateUnitCost;
+            //     trigger OnAction()
+            //     var
+            //         STAddr: Record "Ship-to Address";
+            //     begin
+            //         STAddr.Reset();
+            //         if STAddr.FindFirst() then begin
+            //             repeat
+            //                 if StrLen(STAddr."GST Registration No.") = 15 then begin
+            //                     STAddr.Validate("Ship-to GST Customer Type", STAddr."Ship-to GST Customer Type"::Registered);
+            //                     STAddr.Modify(true);
+            //                 end;
+            //             until STAddr.Next() = 0;
+            //             Message('Data Updated');
+            //         end;
+            //     end;
+            // }
         }
         addbefore("Item &Tracking Entries")
         {

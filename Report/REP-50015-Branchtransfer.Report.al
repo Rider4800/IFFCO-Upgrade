@@ -218,6 +218,9 @@ report 50015 "Branch transfer"
                 column(TransporterName; TransporterName)
                 {
                 }
+                column(AmountinWord; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
+                {
+                }
                 dataitem("Transfer Shipment Line"; 5745)
                 {
                     DataItemLink = "Document No." = FIELD("No.");
@@ -271,14 +274,12 @@ report 50015 "Branch transfer"
                     column(SchemeDate; '')
                     {
                     }
-                    column(TotalBaseAmt; TotalBaseAmt)
-                    {
-                    }
                     column(GSTBaseAmt; GSTBaseAmt)
                     {
                     }
                     column(GST_per; totgstpercentage)
                     {
+
                     }
                     // column(totgstpercentage; totgstpercentage + '%')
                     // {
@@ -322,12 +323,12 @@ report 50015 "Branch transfer"
                     // column(TotalInvvalue; TotalInvvalue)
                     // {
                     // }
-                    column(TotalInvvalue; TotalInvvalue)
+                    column(TotalInvvalue1; totinvval1)
                     {
                     }
-                    column(AmountinWord; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
-                    {
-                    }
+                    // column(AmountinWord; UpperCase(NotoWord[1] + ' ' + NotoWord[2]))
+                    // {
+                    // }
                     column(TotlQtyBag; TotlQtyBag)
                     {
                     }
@@ -343,14 +344,21 @@ report 50015 "Branch transfer"
                     column(DocNo; "Transfer Shipment Line"."Document No.")
                     {
                     }
-                    column(GSTGrpCode; GSTGrpCode)
+                    column(IgstBaseAmt; IgstBaseAmt)
+                    {
+                    }
+                    column(SgstBaseAmt; SgstBaseAmt)
+                    {
+                    }
+                    column(CgstBaseAmt; CgstBaseAmt)
                     {
                     }
                     dataitem("Item Ledger Entry"; 32)
                     {
                         DataItemLink = "Document No." = FIELD("Document No."),
                                        "Document Line No." = FIELD("Line No.");
-                        DataItemTableView = SORTING("Entry No.");
+                        DataItemTableView = SORTING("Entry No.") where(Positive = filter(true));
+                        //PrintOnlyIfDetail = true;
                         column(Lot; "Item Ledger Entry"."Lot No.")
                         {
                         }
@@ -372,6 +380,14 @@ report 50015 "Branch transfer"
 
                         trigger OnAfterGetRecord()
                         begin
+                            if j > 1 then begin
+                                IgstBaseAmt := 0;
+                                IGSTamt := 0;
+                                SgstBaseAmt := 0;
+                                SGSTamt := 0;
+                                CgstBaseAmt := 0;
+                                CGSTamt := 0;
+                            end;
                             //Unit of Measure Conversion
                             AlternateQty := 0;
                             recItemUOM.RESET();
@@ -393,24 +409,29 @@ report 50015 "Branch transfer"
                                 dtMfgDate := recLotNoInfo."MFG Date";
                                 BMRP := recLotNoInfo."Batch MRP";
                             END;
+                            j := j + 1;
                         end;
                     }
-
                     trigger OnAfterGetRecord()
                     begin
                         //Serial No. for Number of Items
                         SrNo += 1;
-
+                        j := 1;
                         totgstpercentage := 0;
                         DGLERec.Reset();
                         DGLERec.SetRange("Document No.", "Transfer Shipment Line"."Document No.");
                         DGLERec.SetRange("Document Line No.", "Transfer Shipment Line"."Line No.");
                         DGLERec.SetRange("No.", "Transfer Shipment Line"."Item No.");
                         if DGLERec.FindFirst() then begin
-                            totgstpercentage := DGLERec."GST %";
-                            netamt := "Transfer Shipment Line".Amount + (("Transfer Shipment Line".Amount) * ((DGLERec."GST %") / 100));
-                            GSTGrpCode := DGLERec."GST Group Code";
-                            //totinvval1 := totinvval1 + netamt;
+                            //netamt := "Transfer Shipment Line".Amount + (("Transfer Shipment Line".Amount) * ((DGLERec."GST %") / 100));
+                            if DGLERec."GST Component Code" <> 'IGST' then
+                                netamt := ABS(DGLERec."GST Amount") + ABS(DGLERec."GST Amount") + ABS(DGLERec."GST Base Amount")
+                            ELSE
+                                netamt := ABS(DGLERec."GST Amount") + ABS(DGLERec."GST Base Amount");
+                            totinvval1 := totinvval1 + netamt;
+                            repeat
+                                totgstpercentage := totgstpercentage + DGLERec."GST %";
+                            until DGLERec.Next() = 0;
                         end;
 
                         //Batch Details
@@ -447,7 +468,7 @@ report 50015 "Branch transfer"
                             IGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             IGSTper := recDetGSTLedAntry."GST %";
                             IgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
-                            IGSTTax := Abs(recDetGSTLedAntry."GST Base Amount");
+                            //IGSTAmt1 := Abs(recDetGSTLedAntry."GST Base Amount");
                         END;
 
                         CGSTamt := 0;
@@ -461,7 +482,7 @@ report 50015 "Branch transfer"
                             CGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             CGSTper := recDetGSTLedAntry."GST %";
                             CgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
-                            CGSTTax := Abs(recDetGSTLedAntry."GST Base Amount");
+                            //CGSTAmt1 := Abs(recDetGSTLedAntry."GST Base Amount");
                         END;
 
                         SGSTamt := 0;
@@ -475,7 +496,7 @@ report 50015 "Branch transfer"
                             SGSTamt := ABS(recDetGSTLedAntry."GST Amount");
                             SGSTper := recDetGSTLedAntry."GST %";
                             SgstBaseAmt := Abs(recDetGSTLedAntry."GST Base Amount");
-                            SGSTTax := Abs(recDetGSTLedAntry."GST Base Amount");
+                            //SGSTAmt1 := Abs(recDetGSTLedAntry."GST Base Amount");
                         END;
 
                         Clear(TotalBaseAmt);
@@ -487,12 +508,10 @@ report 50015 "Branch transfer"
                         //Total Invoic value
                         recTransShipLine.RESET();
                         recTransShipLine.SETRANGE("Document No.", "Transfer Shipment Line"."Document No.");
-                        recTransShipLine.SETRANGE("Line No.", "Transfer Shipment Line"."Line No.");
-                        recTransShipLine.SetRange("Item No.", "Transfer Shipment Line"."Item No.");
                         IF recTransShipLine.FINDFIRST THEN BEGIN
                             REPEAT
                                 //TotalInvvalue += recTransShipLine."Total GST Amount" + recTransShipLine.Amount;
-                                TotalInvvalue += GstBaseAmt + recTransShipLine.Amount;
+                                TotalInvvalue += TotalBaseAmt + recTransShipLine.Amount;
                                 TotLineQty += recTransShipLine.Quantity;
                             UNTIL recTransShipLine.NEXT = 0;
                         END;
@@ -500,29 +519,40 @@ report 50015 "Branch transfer"
                         //Round of Calculation
                         TotalInvvalueRoundOff := ROUND(TotalInvvalue, 1);
                         RoundOffValue := TotalInvvalue - TotalInvvalueRoundOff;
-                        //repCheck.InitTextVariable();
-                        //repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
-                        //repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
+                        // repCheck.InitTextVariable();
+                        // repCheck.FormatNoText(NotoWord, TotalInvvalue, '');
                         //16767 NotoWord[1] := UpperCase(NotoWord[1])
 
                     end;
-
-
                 }
+
                 trigger OnAfterGetRecord()
                 var
-                    DFLERec1: Record "Detailed GST Ledger Entry";
+                    DGLERec1: Record "Detailed GST Ledger Entry";
+                    TSLRec1: Record "Transfer Shipment Line";
+                    TSLAmt_Sum: Decimal;
+                    GSTAmtDGLE_Sum: Decimal;
                 begin
-                    DFLERec1.RESET();
-                    DFLERec1.SETRANGE("Document No.", "Transfer Shipment Header"."No.");
-                    IF DFLERec1.FINDFIRST THEN BEGIN
-                        REPEAT
-                            toinvvalueinword := toinvvalueinword + Abs(DFLERec1."GST Base Amount") + Abs(DFLERec1."GST Amount");
-                        UNTIL DFLERec1.NEXT = 0;
-                    END;
+                    totinvvalInWord := 0;
+                    TSLAmt_Sum := 0;
+                    GSTAmtDGLE_Sum := 0;
+                    TSLRec1.Reset();
+                    TSLRec1.SetRange("Document No.", "Transfer Shipment Header"."No.");
+                    if TSLRec1.FindFirst() then begin
+                        repeat
+                            TSLAmt_Sum := TSLAmt_Sum + TSLRec1.Amount;
+                        until TSLRec1.Next() = 0;
+                    end;
+                    DGLERec1.Reset();
+                    DGLERec1.SetRange("Document No.", "Transfer Shipment Header"."No.");
+                    if DGLERec1.FindFirst() then begin
+                        repeat
+                            GSTAmtDGLE_Sum := GSTAmtDGLE_Sum + Abs(DGLERec1."GST Amount");
+                        until DGLERec1.Next() = 0;
+                    end;
+                    totinvvalInWord := TSLAmt_Sum + GSTAmtDGLE_Sum;
                     repCheck.InitTextVariable();
-                    repCheck.FormatNoText(NotoWord, toinvvalueinword, '');
-
+                    repCheck.FormatNoText(NotoWord, totinvvalInWord, '');
                     //Transfer From Location Details
                     TotalInvvalue := 0;
                     recLoc.RESET();
@@ -835,6 +865,14 @@ report 50015 "Branch transfer"
         DGLERec: Record "Detailed GST Ledger Entry";
         netamt: Decimal;
         totinvval1: Decimal;
-        toinvvalueinword: Decimal;
-        GSTGrpCode: Code[20];
+        totinvvalInWord: Decimal;
+        totgstpercentage1: Decimal;
+        IGSTAmt1: Decimal;
+        SGSTAmt1: Decimal;
+        CGSTAmt1: Decimal;
+        IGSTAmt2: Decimal;
+        SGSTAmt2: Decimal;
+        CGSTAmt2: Decimal;
+        j: Integer;
 }
+
