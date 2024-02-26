@@ -432,6 +432,9 @@ report 50015 "Branch transfer"
                             repeat
                                 totgstpercentage := totgstpercentage + DGLERec."GST %";
                             until DGLERec.Next() = 0;
+                        end else begin
+                            netamt := netamt + "Transfer Shipment Line".Amount;
+                            totinvval1 := totinvval1 + netamt;
                         end;
 
                         //Batch Details

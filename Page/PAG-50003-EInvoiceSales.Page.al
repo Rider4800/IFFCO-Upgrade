@@ -199,7 +199,7 @@ page 50003 "E-Invoice (Sales)"
                     Caption = 'Generate E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = CreateDocument;
@@ -232,7 +232,7 @@ page 50003 "E-Invoice (Sales)"
                     Caption = 'Cancel E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Cancel;
@@ -283,7 +283,7 @@ page 50003 "E-Invoice (Sales)"
                     Caption = 'Calculate Distance (KM)';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Calculate;
@@ -330,7 +330,7 @@ page 50003 "E-Invoice (Sales)"
                     Caption = 'Generate E-Way Bill By IRN';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = GetEntries;

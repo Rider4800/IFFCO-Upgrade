@@ -186,7 +186,7 @@ page 50007 "E-Way Bill (Transfer)"
                     Caption = 'Calculate Distance (KM)';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Calculate;
@@ -219,7 +219,7 @@ page 50007 "E-Way Bill (Transfer)"
                     Caption = 'Generate E-Way Bill No.';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = GetEntries;
@@ -229,6 +229,9 @@ page 50007 "E-Way Bill (Transfer)"
                         CU50114: Codeunit 50114;
                     begin
                         CurrPage.UPDATE();
+
+                        if Rec."Document Type" = Rec."Document Type"::"Tax Invoice" then
+                            Rec.TestField("Transporter GSTIN");
 
                         Rec.TESTFIELD("Sell-to Post Code");
 
@@ -255,7 +258,7 @@ page 50007 "E-Way Bill (Transfer)"
                     Caption = 'Update Vehicle No.';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = UpdateDescription;

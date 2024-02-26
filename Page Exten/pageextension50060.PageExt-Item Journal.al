@@ -6,6 +6,7 @@ pageextension 50060 pageextension50060 extends "Item Journal"
         {
             field("Opening Balance Qty. in KG"; Rec."Opening Balance Qty. in KG")
             {
+                ApplicationArea = All;
                 Caption = 'Quantity in KG/CTN';
             }
         }
@@ -13,6 +14,7 @@ pageextension 50060 pageextension50060 extends "Item Journal"
         {
             field(Narration; Rec.Narration)
             {
+                ApplicationArea = All;
             }
         }
     }

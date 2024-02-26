@@ -263,6 +263,12 @@ report 50004 "Sales Tax Invoice"
                 column(Campaign_No; "Sales Invoice Header"."Campaign No.")
                 {
                 }
+                column(TotalAmtVar; TotalAmtVar)
+                {
+                }
+                column(TotRoundOFFAmt; TotRoundOFFAmt)
+                {
+                }
                 dataitem("Sales Invoice Line"; "Sales Invoice Line")
                 {
                     DataItemLink = "Document No." = FIELD("No.");
@@ -336,7 +342,10 @@ report 50004 "Sales Tax Invoice"
                     column(TotalAmt; AmtToCust.GetAmttoCustomerPostedLine("Document No.", "Line No.")) //16767 "Sales Invoice Line"."Amount To Customer"
                     {
                     }
-                    column(GST_per; FORMAT(ROUND(decGSTper, 1)) + '%')
+                    // column(GST_per; FORMAT(ROUND(decGSTper, 1)) + '%')
+                    // {
+                    // }
+                    column(GST_per; totgstpercentage)
                     {
                     }
                     column(GST; FORMAT(ROUND(GstPer, 1))) //16767 "Sales Invoice Line"."GST %"
@@ -360,6 +369,18 @@ report 50004 "Sales Tax Invoice"
                         txtLotNo := '';
                         dtExpiry := 0D;
                         dtMfg := 0D;
+
+                        totgstpercentage := 0;
+                        DGLERec.Reset();
+                        DGLERec.SetRange("Document No.", "Sales Invoice Line"."Document No.");
+                        DGLERec.SetRange("Document Line No.", "Sales Invoice Line"."Line No.");
+                        DGLERec.SetRange("No.", "Sales Invoice Line"."No.");
+                        if DGLERec.FindFirst() then begin
+                            //netamt := "Transfer Shipment Line".Amount + (("Transfer Shipment Line".Amount) * ((DGLERec."GST %") / 100));
+                            repeat
+                                totgstpercentage := totgstpercentage + DGLERec."GST %";
+                            until DGLERec.Next() = 0;
+                        end;
                         // recVE.RESET();
                         // recVE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
                         // recVE.SETRANGE("Document Line No.", "Sales Invoice Line"."Line No.");
@@ -485,6 +506,19 @@ report 50004 "Sales Tax Invoice"
 
                 trigger OnAfterGetRecord()
                 begin
+                    TotalAmtVar := 0;
+                    TotRoundOFFAmt := 0;
+                    SILRec.Reset();
+                    SILRec.SetRange("Document No.", "Sales Invoice Header"."No.");
+                    if SILRec.FindFirst() then begin
+                        repeat
+                            if SILRec."No." <> '427000210' then
+                                TotalAmtVar := TotalAmtVar + AmtToCust.GetAmttoCustomerPostedLine(SILRec."Document No.", SILRec."Line No.")
+                            else
+                                TotRoundOFFAmt := TotRoundOFFAmt + SILRec."Line Amount";
+                        until SILRec.Next() = 0;
+                    end;
+
                     "Sales Invoice Header".CalcFields("QR Code");
                     recState.RESET();
                     recState.SETRANGE(Code, recCompanyInfo."Registration State");
@@ -666,10 +700,10 @@ report 50004 "Sales Tax Invoice"
                     END;
 
                     RecCheck.InitTextVariable;
-                    RecCheck.FormatNoText(Numbertxt, (decAmounttoCust), "Sales Invoice Header"."Currency Code");//ACXCP_250822
-                                                                                                                //  Numbertxt[1] := UpperCase(Numbertxt[1]);
-                                                                                                                //RecCheck.FormatNoText(Numbertxt,(decAmounttoCust+decRoundOff),"Sales Invoice Header"."Currency Code");
-                                                                                                                //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
+                    RecCheck.FormatNoText(Numbertxt, (TotalAmtVar + TotRoundOFFAmt), "Sales Invoice Header"."Currency Code");//ACXCP_250822
+                                                                                                                             //  Numbertxt[1] := UpperCase(Numbertxt[1]);
+                                                                                                                             //RecCheck.FormatNoText(Numbertxt,(decAmounttoCust+decRoundOff),"Sales Invoice Header"."Currency Code");
+                                                                                                                             //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
 
                     txtCurrCode := '';
                     IF "Sales Invoice Header"."Currency Code" = '' THEN
@@ -845,4 +879,9 @@ report 50004 "Sales Tax Invoice"
         CompState: Text;
         decAltQty: Decimal;
         dcRoundoffQty: Decimal;
+        TotalAmtVar: Decimal;
+        TotRoundOFFAmt: Decimal;
+        SILRec: Record "Sales Invoice Line";
+        totgstpercentage: Decimal;
+        DGLERec: Record "Detailed GST Ledger Entry";
 }

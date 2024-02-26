@@ -109,6 +109,11 @@ tableextension 50065 tableextension50065 extends "Transfer Header"
             DataClassification = ToBeClassified;
             Description = 'AcxVG';
         }
+        field(50009; "GST Applicable"; Boolean)
+        {
+            DataClassification = ToBeClassified;
+            Editable = false;
+        }
     }
 
 

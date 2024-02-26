@@ -122,26 +122,28 @@ codeunit 50021 SalesHeaderTabEvent
         CLEOverdueAmt: Decimal;
         CustRec: Record Customer;
     begin
-        if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
-            if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
-                CLEOverdueAmt := 0;
-                CLERec.Reset();
-                CLERec.SetCurrentKey("Document Type", "Customer No.", Open, "Due Date");
-                CLERec.SetRange("Customer No.", SalesHeader."Sell-to Customer No.");
-                CLERec.SetRange(Open, true);
-                CLERec.SetFilter("Due Date", '<%1', Today);
-                if CLERec.FindFirst() then begin
-                    repeat
-                        CLERec.CalcFields("Remaining Amount");
-                        CLEOverdueAmt := CLEOverdueAmt + CLERec."Remaining Amount"
-                    until CLERec.Next() = 0;
-                    if CLEOverdueAmt > 0 then
-                        Error(Text001, CLERec."Customer No.", CLEOverdueAmt);
-                end;
+        if SalesHeader."Document Type" <> SalesHeader."Document Type"::"Credit Memo" then begin
+            if CustRec.Get(SalesHeader."Sell-to Customer No.") then begin
+                if (CustRec."One Time Credit Pass Allow" = false) and (CustRec."Excludes Credit Limit Allow" = false) then begin
+                    CLEOverdueAmt := 0;
+                    CLERec.Reset();
+                    CLERec.SetCurrentKey("Document Type", "Customer No.", Open, "Due Date");
+                    CLERec.SetRange("Customer No.", SalesHeader."Sell-to Customer No.");
+                    CLERec.SetRange(Open, true);
+                    CLERec.SetFilter("Due Date", '<%1', Today);
+                    if CLERec.FindFirst() then begin
+                        repeat
+                            CLERec.CalcFields("Remaining Amount");
+                            CLEOverdueAmt := CLEOverdueAmt + CLERec."Remaining Amount"
+                        until CLERec.Next() = 0;
+                        if CLEOverdueAmt > 0 then
+                            Error(Text001, CLERec."Customer No.", CLEOverdueAmt);
+                    end;
 
-                CustRec.CalcFields("Balance (LCY)");
-                if CustRec."Balance (LCY)" > CustRec."Credit Limit (LCY)" then
-                    Error(Text002, CustRec."No.", CustRec."Credit Limit (LCY)");
+                    CustRec.CalcFields("Balance (LCY)");
+                    if CustRec."Balance (LCY)" > CustRec."Credit Limit (LCY)" then
+                        Error(Text002, CustRec."No.", CustRec."Credit Limit (LCY)");
+                end;
             end;
         end;
     end;

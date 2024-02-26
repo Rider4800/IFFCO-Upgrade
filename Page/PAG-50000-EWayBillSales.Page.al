@@ -273,7 +273,7 @@ page 50000 "E- Way Bill (Sales)"
                 // }
                 //<-Team-17783  Commented
             }
-            group("E-Way Bill") //pp
+            group("E-Way Bill")
             {
                 Caption = 'E-Way Bill';
                 Image = Administration;
@@ -282,7 +282,7 @@ page 50000 "E- Way Bill (Sales)"
                     Caption = 'Calculate Distance (KM)';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Calculate;
@@ -309,7 +309,7 @@ page 50000 "E- Way Bill (Sales)"
                     Caption = 'Generate E-Way Bill No.';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = GetEntries;
@@ -320,6 +320,9 @@ page 50000 "E- Way Bill (Sales)"
                     begin
                         IF (Rec."E-Way Bill No." <> '') AND (Rec."Cancel E-Way Bill Date" = '') THEN
                             ERROR('E-Way Bill is already generated');
+
+                        if Rec."Document Type" = Rec."Document Type"::"Tax Invoice" then
+                            Rec.TestField("Transporter GSTIN");
 
                         //Rec.TESTFIELD("Distance (Km)");   //to be open in production
                         txtMessage := 'Do you want to generate E-Way Bill No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Customer ' + FORMAT(CU50200.GetAmttoCustomerPostedDoc(Rec."No.")); //Team-17783
@@ -333,7 +336,7 @@ page 50000 "E- Way Bill (Sales)"
                     Caption = 'Update Vehicle No.';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = UpdateDescription;
@@ -387,6 +390,31 @@ page 50000 "E- Way Bill (Sales)"
 
                     end;
                 }
+                // action("Update Structure")
+                // {
+                //     Caption = 'Update Structure';
+                //     Promoted = true;
+                //     ApplicationArea = All;
+                //     PromotedCategory = New;
+                //     PromotedIsBig = true;
+                //     PromotedOnly = true;
+                //     Image = UpdateXML;
+
+                //     trigger OnAction()
+                //     var
+                //         TransRoute: Record "Transfer Route";
+                //     begin
+                //         TransRoute.Reset();
+                //         if TransRoute.FindFirst() then begin
+                //             repeat
+                //                 if TransRoute.Structure <> '' then begin
+                //                     TransRoute."GST Applicable" := true;
+                //                     TransRoute.Modify();
+                //                 end;
+                //             until TransRoute.Next() = 0;
+                //         end;
+                //     end;
+                // }
             }
             group("&Line")
             {

@@ -9,6 +9,10 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
             Editable = false;
         }
         //<---12887
+        modify("Direct Transfer")
+        {
+            Editable = false;
+        }
         addafter("Transfer-from Code")
         {
             field("Transfer-from Bin Code"; Rec."Transfer-from Bin Code")
@@ -24,6 +28,36 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
             {
                 ApplicationArea = All;
             }
+        }
+        modify("Transfer-to Code")
+        {
+            trigger OnAfterValidate()
+            var
+                TRouteRec: Record "Transfer Route";
+                TLRec: Record "Transfer Line";
+                Text001: Label 'Transfer route not exist from location %1 to location %2';
+            begin
+                if TRouteRec.Get(Rec."Transfer-from Code", Rec."Transfer-to Code") then begin
+                    //if TRouteRec."GST Applicable" then begin
+                    Rec."GST Applicable" := TRouteRec."GST Applicable";
+                    Rec.Modify();
+                    //end;
+                end else
+                    Error(Text001, Rec."Transfer-from Code", Rec."Transfer-to Code");
+
+                TLRec.Reset();
+                TLRec.SetRange("Document No.", Rec."No.");
+                if TLRec.FindFirst() then
+                    Error('Transfer Lines are exixting. Please delete them first.');
+            end;
+        }
+        modify("Transfer-from Code")
+        {
+            trigger OnBeforeValidate()
+            begin
+                if Rec."Transfer-to Code" <> '' then
+                    Error('Transfer-To Code should be blank if you want to update Transfer-from Code.');
+            end;
         }
         moveafter("Transfer-To Bin Code"; "Transfer-to Name")
         addafter(Status)
@@ -52,6 +86,10 @@ pageextension 50090 pageextension50090 extends "Transfer Order"
                         ERROR('You can not modify please reopen ')
                     END;
                 end;
+            }
+            field("GST Applicable"; Rec."GST Applicable")
+            {
+                ApplicationArea = All;
             }
         }
         addafter("LR/RR Date")

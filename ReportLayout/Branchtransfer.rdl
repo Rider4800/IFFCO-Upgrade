@@ -6789,7 +6789,11 @@
                               </TablixBody>
                               <TablixColumnHierarchy>
                                 <TablixMembers>
-                                  <TablixMember />
+                                  <TablixMember>
+                                    <Visibility>
+                                      <Hidden>=IIF ((SUM(Fields!IgstBaseAmt.Value)  &lt;&gt; 0) OR ((SUM(Fields!SgstBaseAmt.Value) &lt;&gt; 0) AND (SUM(Fields!CgstBaseAmt.Value) &lt;&gt; 0)), FALSE, TRUE)</Hidden>
+                                    </Visibility>
+                                  </TablixMember>
                                   <TablixMember>
                                     <Visibility>
                                       <Hidden>=IIF (SUM(Fields!IgstBaseAmt.Value)  &lt;&gt; 0, FALSE, TRUE)</Hidden>

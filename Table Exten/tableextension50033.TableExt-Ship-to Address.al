@@ -23,6 +23,10 @@ tableextension 50033 tableextension50033 extends "Ship-to Address"
             DataClassification = ToBeClassified;
             Description = 'ACXVG';
         }
+        field(50004; "MAssist Code"; Code[15])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
 

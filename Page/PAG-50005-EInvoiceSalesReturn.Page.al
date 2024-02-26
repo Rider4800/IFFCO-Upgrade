@@ -192,7 +192,7 @@ page 50005 "E-Invoice (Sales Return)"
                     Caption = 'Generate E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = CreateDocument;
@@ -228,7 +228,7 @@ page 50005 "E-Invoice (Sales Return)"
                     Caption = 'Cancel E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Cancel;
@@ -398,18 +398,18 @@ page 50005 "E-Invoice (Sales Return)"
                 //     RunObject = Page "Response Logs";
                 //     RunPageLink = "Document No." = FIELD("No.");
                 // }
-                action(Statistics)
-                {
-                    Caption = 'Statistics';
-                    Image = Statistics;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-                    PromotedIsBig = true;
-                    RunObject = Page "Sales Invoice Statistics";
-                    RunPageLink = "No." = FIELD("No.");
-                    ShortCutKey = 'F7';
-                    Visible = false;
-                }
+                // action(Statistics)
+                // {
+                //     Caption = 'Statistics';
+                //     Image = Statistics;
+                //     Promoted = true;
+                //     PromotedCategory = Category4;
+                //     PromotedIsBig = true;
+                //     RunObject = Page "Sales Invoice Statistics";
+                //     RunPageLink = "No." = FIELD("No.");
+                //     ShortCutKey = 'F7';
+                //     Visible = false;
+                // }
             }
         }
     }

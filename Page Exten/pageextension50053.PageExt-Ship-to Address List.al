@@ -8,6 +8,10 @@ pageextension 50053 pageextension50053 extends "Ship-to Address List"
             {
                 ApplicationArea = All;
             }
+            field("MAssist Code"; Rec."MAssist Code")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 

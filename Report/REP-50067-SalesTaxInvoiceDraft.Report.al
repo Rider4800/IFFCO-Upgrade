@@ -29,7 +29,7 @@ report 50067 "Sales Tax Invoice Draft"
             column(Counter; Counter)
             {
             }
-            dataitem("Sales Invoice Header"; "Sales Invoice Header")
+            dataitem("Sales Header"; "Sales Header")
             {
                 RequestFilterFields = "No.";
                 column(Loc_Address; txtLocation[1])
@@ -122,7 +122,7 @@ report 50067 "Sales Tax Invoice Draft"
                 column(Company_Bank_Name; recCompanyInfo."Bank Name")
                 {
                 }
-                column(Company_Bank_Acc_No; "Sales Invoice Header"."Bill-to Customer No.")
+                column(Company_Bank_Acc_No; "Sales Header"."Bill-to Customer No.")
                 {
                 }
                 column(QR_Code; recEwayEinvoice."QR Code")
@@ -137,34 +137,34 @@ report 50067 "Sales Tax Invoice Draft"
                 column(Acknowledge_Date; AckDate)
                 {
                 }
-                column(Location_GST_No; "Sales Invoice Header"."Location GST Reg. No.")
+                column(Location_GST_No; "Sales Header"."Location GST Reg. No.")
                 {
                 }
-                column(Document_No; "Sales Invoice Header"."No.")
+                column(Document_No; "Sales Header"."No.")
                 {
                 }
-                column(Posting_Date; "Sales Invoice Header"."Posting Date")
+                column(Posting_Date; "Sales Header"."Posting Date")
                 {
                 }
-                column(Due_Date; "Sales Invoice Header"."Due Date")
+                column(Due_Date; "Sales Header"."Due Date")
                 {
                 }
-                column(Vehicle_No; "Sales Invoice Header"."Vehicle No.")
+                column(Vehicle_No; "Sales Header"."Vehicle No.")
                 {
                 }
-                column(LR_No; "Sales Invoice Header"."LR/RR No.")
+                column(LR_No; "Sales Header"."LR/RR No.")
                 {
                 }
-                column(LR_Date; "Sales Invoice Header"."LR/RR Date")
+                column(LR_Date; "Sales Header"."LR/RR Date")
                 {
                 }
-                column(Transporter_Name; "Sales Invoice Header"."Transporter Name")
+                column(Transporter_Name; "Sales Header"."Transporter Name")
                 {
                 }
-                column(E_Way_No; "Sales Invoice Header"."E-Way Bill No.")
+                column(E_Way_No; "Sales Header"."E-Way Bill No.")
                 {
                 }
-                column(External_Doc_No; "Sales Invoice Header"."External Document No.")
+                column(External_Doc_No; "Sales Header"."External Document No.")
                 {
                 }
                 column(Ship_Name; txtConsignee[1])
@@ -203,22 +203,22 @@ report 50067 "Sales Tax Invoice Draft"
                 column(Amount_In_Words_Total; UpperCase(Numbertxt[1] + ' ' + Numbertxt[2]))
                 {
                 }
-                column(Bill_to_Name; "Sales Invoice Header"."Bill-to Name")
+                column(Bill_to_Name; "Sales Header"."Bill-to Name")
                 {
                 }
-                column(Bill_to_Address; "Sales Invoice Header"."Bill-to Address")
+                column(Bill_to_Address; "Sales Header"."Bill-to Address")
                 {
                 }
-                column(Bill_to_Address2; "Sales Invoice Header"."Bill-to Address 2")
+                column(Bill_to_Address2; "Sales Header"."Bill-to Address 2")
                 {
                 }
-                column(Bill_to_City; "Sales Invoice Header"."Bill-to City")
+                column(Bill_to_City; "Sales Header"."Bill-to City")
                 {
                 }
-                column(Bill_to_Postcode; "Sales Invoice Header"."Bill-to Post Code")
+                column(Bill_to_Postcode; "Sales Header"."Bill-to Post Code")
                 {
                 }
-                column(Bill_to_Country; "Sales Invoice Header"."Bill-to County")
+                column(Bill_to_Country; "Sales Header"."Bill-to County")
                 {
                 }
                 column(Bill_to_Phone_No; txtBillInfo[1])
@@ -233,7 +233,7 @@ report 50067 "Sales Tax Invoice Draft"
                 column(Bill_GST_State_Code; txtBillInfo[4])
                 {
                 }
-                column(Cust_GST_No; "Sales Invoice Header"."Customer GST Reg. No.")
+                column(Cust_GST_No; "Sales Header"."Customer GST Reg. No.")
                 {
                 }
                 column(Round_Off; decRoundOff)
@@ -251,35 +251,35 @@ report 50067 "Sales Tax Invoice Draft"
                 column(Curr_Code; txtCurrCode)
                 {
                 }
-                column(InvoiceType; "Sales Invoice Header"."Invoice Type")
+                column(InvoiceType; "Sales Header"."Invoice Type")
                 {
                 }
-                column(Campaign_No; "Sales Invoice Header"."Campaign No.")
+                column(Campaign_No; "Sales Header"."Campaign No.")
                 {
                 }
-                dataitem("Sales Invoice Line"; "Sales Invoice Line")
+                dataitem("Sales Line"; "Sales Line")
                 {
                     DataItemLink = "Document No." = FIELD("No.");
                     DataItemTableView = WHERE(Quantity = FILTER(<> 0));
-                    column(LineNo; "Sales Invoice Line"."Line No.")
+                    column(LineNo; "Sales Line"."Line No.")
                     {
                     }
-                    column(LineDoc; "Sales Invoice Line"."Document No.")
+                    column(LineDoc; "Sales Line"."Document No.")
                     {
                     }
                     column(Sno; Sno)
                     {
                     }
-                    column(Item_No; "Sales Invoice Line"."No.")
+                    column(Item_No; "Sales Line"."No.")
                     {
                     }
-                    column(Description; "Sales Invoice Line".Description)
+                    column(Description; "Sales Line".Description)
                     {
                     }
                     column(Lot_No; txtLotNo)
                     {
                     }
-                    column(HSN; "Sales Invoice Line"."HSN/SAC Code")
+                    column(HSN; "Sales Line"."HSN/SAC Code")
                     {
                     }
                     column(Mfg; dtMfg)
@@ -288,22 +288,22 @@ report 50067 "Sales Tax Invoice Draft"
                     column(Expiry; dtExpiry)
                     {
                     }
-                    column(Quantity; "Sales Invoice Line".Quantity)
+                    column(Quantity; "Sales Line".Quantity)
                     {
                     }
-                    column(Rate; "Sales Invoice Line"."Unit Price")
+                    column(Rate; "Sales Line"."Unit Price")
                     {
                     }
-                    column(MRP; "Sales Invoice Line"."MRP Price New")
+                    column(MRP; "Sales Line"."MRP Price New")
                     {
                     }
-                    column(Amount; "Sales Invoice Line"."Line Amount")
+                    column(Amount; "Sales Line"."Line Amount")
                     {
                     }
-                    column(Disc_per; ROUND("Sales Invoice Line"."Line Discount %", 0.01))
+                    column(Disc_per; ROUND("Sales Line"."Line Discount %", 0.01))
                     {
                     }
-                    column(GST_Base_Amt; Codunit50200.GetGSTBaseAmtLine("Sales Invoice Line".RECORDID))
+                    column(GST_Base_Amt; Codunit50200.GetGSTBaseAmtLine("Sales Line".RECORDID))
                     {
                     }
                     column(CGST; ABS(decCGST))
@@ -324,7 +324,7 @@ report 50067 "Sales Tax Invoice Draft"
                     column(IGST_Per; decIGSTper)
                     {
                     }
-                    column(TotalAmt; Codunit50200.GetAmttoCustomerPostedLine("Sales Invoice Line"."Document No.", "Sales Invoice Line"."Line No."))
+                    column(TotalAmt; Codunit50200.GetAmttoCustomerPostedLine("Sales Line"."Document No.", "Sales Line"."Line No."))
                     {
                     }
                     column(GST_per; FORMAT(ROUND(decGSTper, 1)))
@@ -339,7 +339,7 @@ report 50067 "Sales Tax Invoice Draft"
                     column(AltQty; decAltQty)
                     {
                     }
-                    column(NoOfLoosePack; "Sales Invoice Line"."No. of Loose Pack")
+                    column(NoOfLoosePack; "Sales Line"."No. of Loose Pack")
                     {
                     }
 
@@ -354,9 +354,9 @@ report 50067 "Sales Tax Invoice Draft"
 
                         //17144>>
                         Clear("GST %");
-                        IGSTPer := Codunit50200.GetIGSTAmount("Sales Invoice Line".RecordId, 1);
-                        CGSTPer := Codunit50200.GetCGSTAmount("Sales Invoice Line".RecordId, 1);
-                        SGSTPer := Codunit50200.GetSGSTAmount("Sales Invoice Line".RecordId, 1);
+                        IGSTPer := Codunit50200.GetIGSTAmount("Sales Line".RecordId, 1);
+                        CGSTPer := Codunit50200.GetCGSTAmount("Sales Line".RecordId, 1);
+                        SGSTPer := Codunit50200.GetSGSTAmount("Sales Line".RecordId, 1);
 
                         if IGSTPer <> 0 then
                             "GST %" := IGSTPer
@@ -401,16 +401,16 @@ report 50067 "Sales Tax Invoice Draft"
                         ////ACXAAK
                         decQtyper := 0;
                         recItemUOM.RESET();
-                        recItemUOM.SETRANGE("Item No.", "Sales Invoice Line"."No.");
+                        recItemUOM.SETRANGE("Item No.", "Sales Line"."No.");
                         recItemUOM.SETFILTER(Code, '%1', 'CTN');
                         IF recItemUOM.FIND('-') THEN
                             decQtyper := recItemUOM."Qty. per Unit of Measure";
                         decCGST := 0;
                         decCGSTper := 0;
                         recDGLE.RESET();
-                        recDGLE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
+                        recDGLE.SETRANGE("Document No.", "Sales Line"."Document No.");
                         //recDGLE.SETRANGE("Entry Type",recDGLE."Entry Type"::"Initial Entry");
-                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Invoice Line"."HSN/SAC Code");
+                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Line"."HSN/SAC Code");
                         //recDGLE.SETRANGE("Document No.","Sales Invoice Line"."Line No.");
                         recDGLE.SETRANGE("GST Component Code", 'CGST');
                         IF recDGLE.FIND('-') THEN BEGIN
@@ -423,9 +423,9 @@ report 50067 "Sales Tax Invoice Draft"
                         decSGST := 0;
                         decSGSTper := 0;
                         recDGLE.RESET();
-                        recDGLE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
+                        recDGLE.SETRANGE("Document No.", "Sales Line"."Document No.");
                         //recDGLE.SETRANGE("Entry Type",recDGLE."Entry Type"::"Initial Entry");
-                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Invoice Line"."HSN/SAC Code");
+                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Line"."HSN/SAC Code");
                         //recDGLE.SETRANGE("Document Line No.","Sales Invoice Line"."Line No.");
                         recDGLE.SETRANGE("GST Component Code", 'SGST');
                         IF recDGLE.FIND('-') THEN BEGIN
@@ -438,9 +438,9 @@ report 50067 "Sales Tax Invoice Draft"
                         decIGST := 0;
                         decIGSTper := 0;
                         recDGLE.RESET();
-                        recDGLE.SETRANGE("Document No.", "Sales Invoice Line"."Document No.");
+                        recDGLE.SETRANGE("Document No.", "Sales Line"."Document No.");
                         //recDGLE.SETRANGE("Entry Type",recDGLE."Entry Type"::"Initial Entry");
-                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Invoice Line"."HSN/SAC Code");
+                        recDGLE.SETRANGE("HSN/SAC Code", "Sales Line"."HSN/SAC Code");
                         //recDGLE.SETRANGE("Document Line No.","Sales Invoice Line"."Line No.");
                         recDGLE.SETRANGE("GST Component Code", 'IGST');
                         IF recDGLE.FIND('-') THEN BEGIN
@@ -453,11 +453,11 @@ report 50067 "Sales Tax Invoice Draft"
 
                         //ACX-RK 0507201
                         recItemUOM.RESET();
-                        recItemUOM.SETRANGE("Item No.", "Sales Invoice Line"."No.");
-                        recItemUOM.SETFILTER(Code, '<>%1', "Sales Invoice Line"."Unit of Measure Code");
+                        recItemUOM.SETRANGE("Item No.", "Sales Line"."No.");
+                        recItemUOM.SETFILTER(Code, '<>%1', "Sales Line"."Unit of Measure Code");
                         IF recItemUOM.FIND('-') THEN BEGIN
-                            decTotalQty += recItemUOM."Qty. per Unit of Measure" * "Sales Invoice Line".Quantity;
-                            decAltQty := recItemUOM."Qty. per Unit of Measure" * "Sales Invoice Line".Quantity; //acxcp_090821
+                            decTotalQty += recItemUOM."Qty. per Unit of Measure" * "Sales Line".Quantity;
+                            decAltQty := recItemUOM."Qty. per Unit of Measure" * "Sales Line".Quantity; //acxcp_090821
                         END;
                     end;
                 }
@@ -476,7 +476,7 @@ report 50067 "Sales Tax Invoice Draft"
 
                     CLEAR(txtLocation);
                     recLocation.RESET();
-                    recLocation.SETRANGE(Code, "Sales Invoice Header"."Location Code");
+                    recLocation.SETRANGE(Code, "Sales Header"."Location Code");
                     IF recLocation.FIND('-') THEN BEGIN
                         txtLocation[1] := recLocation.Address;
                         txtLocation[2] := recLocation."Address 2";
@@ -495,7 +495,7 @@ report 50067 "Sales Tax Invoice Draft"
                     AckDate := 0D;
                     CLEAR(txtEwayEinvoice);
                     recEwayEinvoice.RESET();
-                    recEwayEinvoice.SETRANGE("No.", "Sales Invoice Header"."No.");
+                    recEwayEinvoice.SETRANGE("No.", "Sales Header"."No.");
                     IF recEwayEinvoice.FIND('-') THEN BEGIN
                         recEwayEinvoice.CALCFIELDS("QR Code");
                         txtEwayEinvoice[1] := recEwayEinvoice."E-Invoice IRN No";
@@ -535,26 +535,26 @@ report 50067 "Sales Tax Invoice Draft"
 
                     CLEAR(txtBillInfo);
                     recCust.RESET();
-                    recCust.SETRANGE("No.", "Sales Invoice Header"."Bill-to Customer No.");
+                    recCust.SETRANGE("No.", "Sales Header"."Bill-to Customer No.");
                     IF recCust.FIND('-') THEN BEGIN
                         txtBillInfo[1] := recCust."Phone No.";
                     END;
                     recState.RESET();
-                    recState.SETRANGE(Code, "Sales Invoice Header"."GST Bill-to State Code");
+                    recState.SETRANGE(Code, "Sales Header"."GST Bill-to State Code");
                     IF recState.FIND('-') THEN BEGIN
                         txtBillInfo[2] := recState.Description;
                         txtBillInfo[4] := recState."State Code (GST Reg. No.)";
                     END;
                     recCountry.RESET();
-                    recCountry.SETRANGE(Code, "Sales Invoice Header"."Bill-to Country/Region Code");
+                    recCountry.SETRANGE(Code, "Sales Header"."Bill-to Country/Region Code");
                     IF recCountry.FIND('-') THEN
                         txtBillInfo[3] := recCountry.Name;
 
                     CLEAR(txtConsignee);
-                    IF "Sales Invoice Header"."Ship-to Code" <> '' THEN BEGIN
+                    IF "Sales Header"."Ship-to Code" <> '' THEN BEGIN
                         recShiptoAddress.RESET();
-                        recShiptoAddress.SETRANGE(Code, "Sales Invoice Header"."Ship-to Code");
-                        recShiptoAddress.SETRANGE("Customer No.", "Sales Invoice Header"."Sell-to Customer No.");
+                        recShiptoAddress.SETRANGE(Code, "Sales Header"."Ship-to Code");
+                        recShiptoAddress.SETRANGE("Customer No.", "Sales Header"."Sell-to Customer No.");
                         IF recShiptoAddress.FIND('-') THEN BEGIN
                             txtConsignee[1] := recShiptoAddress.Name;
                             txtConsignee[2] := recShiptoAddress.Address;
@@ -570,8 +570,8 @@ report 50067 "Sales Tax Invoice Draft"
                                 txtConsignee[6] := recCust."Phone No.";
                             *///Acxcp15122021_Code Blocked - Bill to Phone No. in Shipping detial
 
-                            txtConsignee[7] := "Sales Invoice Header"."GST Ship-to State Code";
-                            txtConsignee[8] := "Sales Invoice Header"."Ship-to GST Reg. No.";
+                            txtConsignee[7] := "Sales Header"."GST Ship-to State Code";
+                            txtConsignee[8] := "Sales Header"."Ship-to GST Reg. No.";
                             recState.RESET();
                             recState.SETRANGE(Code, recShiptoAddress.State);
                             IF recState.FIND('-') THEN BEGIN
@@ -585,26 +585,26 @@ report 50067 "Sales Tax Invoice Draft"
                         END;
                     END
                     ELSE
-                        IF "Sales Invoice Header"."Ship-to Code" = '' THEN BEGIN
-                            txtConsignee[1] := "Sales Invoice Header"."Bill-to Name";
-                            txtConsignee[2] := "Sales Invoice Header"."Bill-to Address";
-                            txtConsignee[3] := "Sales Invoice Header"."Bill-to Address 2";
-                            txtConsignee[4] := "Sales Invoice Header"."Bill-to City";
-                            txtConsignee[5] := "Sales Invoice Header"."Bill-to Post Code";
+                        IF "Sales Header"."Ship-to Code" = '' THEN BEGIN
+                            txtConsignee[1] := "Sales Header"."Bill-to Name";
+                            txtConsignee[2] := "Sales Header"."Bill-to Address";
+                            txtConsignee[3] := "Sales Header"."Bill-to Address 2";
+                            txtConsignee[4] := "Sales Header"."Bill-to City";
+                            txtConsignee[5] := "Sales Header"."Bill-to Post Code";
                             recCust.RESET();
-                            recCust.SETRANGE("No.", "Sales Invoice Header"."Bill-to Customer No.");
+                            recCust.SETRANGE("No.", "Sales Header"."Bill-to Customer No.");
                             IF recCust.FIND('-') THEN
                                 txtConsignee[6] := recCust."Phone No.";
-                            txtConsignee[7] := "Sales Invoice Header"."GST Bill-to State Code";
-                            txtConsignee[8] := "Sales Invoice Header"."Customer GST Reg. No.";
+                            txtConsignee[7] := "Sales Header"."GST Bill-to State Code";
+                            txtConsignee[8] := "Sales Header"."Customer GST Reg. No.";
                             recState.RESET();
-                            recState.SETRANGE(Code, "Sales Invoice Header"."GST Bill-to State Code");
+                            recState.SETRANGE(Code, "Sales Header"."GST Bill-to State Code");
                             IF recState.FIND('-') THEN BEGIN
                                 txtConsignee[9] := recState.Description;
                                 txtConsignee[11] := recState."State Code (GST Reg. No.)";
                             END;
                             recCountry.RESET();
-                            recCountry.SETRANGE(Code, "Sales Invoice Header"."Bill-to Country/Region Code");
+                            recCountry.SETRANGE(Code, "Sales Header"."Bill-to Country/Region Code");
                             IF recCountry.FIND('-') THEN
                                 txtConsignee[10] := recCountry.Name;
                         END;
@@ -612,7 +612,7 @@ report 50067 "Sales Tax Invoice Draft"
                     decRoundOff := 0;
                     dcRoundoffQty := 0;
                     SalesLine.RESET();
-                    SalesLine.SETRANGE("Document No.", "Sales Invoice Header"."No.");
+                    SalesLine.SETRANGE("Document No.", "Sales Header"."No.");
                     SalesLine.SETRANGE("No.", '427000210');
                     IF SalesLine.FIND('-') THEN BEGIN
                         DGLERec1.Reset();
@@ -628,7 +628,7 @@ report 50067 "Sales Tax Invoice Draft"
                     // decTotalQty := 0;
                     decTotalNetWt := 0;
                     SalesLine.RESET();
-                    SalesLine.SETRANGE("Document No.", "Sales Invoice Header"."No.");
+                    SalesLine.SETRANGE("Document No.", "Sales Header"."No.");
                     //SalesLine.SETRANGE(Type,SalesLine.Type::Item);//KM
                     SalesLine.SETFILTER(Quantity, '<>%1', 0);
                     IF SalesLine.FIND('-') THEN BEGIN
@@ -639,8 +639,8 @@ report 50067 "Sales Tax Invoice Draft"
                             recItemUOM.SETFILTER(Code, '%1', 'CTN');
                             IF recItemUOM.FIND('-') THEN
                                 decUOMQtyper := recItemUOM."Qty. per Unit of Measure";
-                            decTotalAmount += Codunit50200.GetAmttoCustomerPostedLine("Sales Invoice Line"."Document No.", "Sales Invoice Line"."Line No.") + decRoundOff;
-                            decAmounttoCust += Codunit50200.GetAmttoCustomerPostedLine("Sales Invoice Line"."Document No.", "Sales Invoice Line"."Line No.");
+                            decTotalAmount += Codunit50200.GetAmttoCustomerPostedLine("Sales Line"."Document No.", "Sales Line"."Line No.") + decRoundOff;
+                            decAmounttoCust += Codunit50200.GetAmttoCustomerPostedLine("Sales Line"."Document No.", "Sales Line"."Line No.");
                             //      decTotalQty += SalesLine.Quantity;
                             decTotalNetWt += SalesLine.Quantity;//km * decUOMQtyper;
                         UNTIL
@@ -648,15 +648,15 @@ report 50067 "Sales Tax Invoice Draft"
                     END;
 
                     RecCheck.InitTextVariable;
-                    RecCheck.FormatNoText(Numbertxt, (decAmounttoCust), "Sales Invoice Header"."Currency Code");//ACXCP_250822
-                                                                                                                //RecCheck.FormatNoText(Numbertxt,(decAmounttoCust+decRoundOff),"Sales Invoice Header"."Currency Code");
-                                                                                                                //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
+                    RecCheck.FormatNoText(Numbertxt, (decAmounttoCust), "Sales Header"."Currency Code");//ACXCP_250822
+                                                                                                        //RecCheck.FormatNoText(Numbertxt,(decAmounttoCust+decRoundOff),"Sales Invoice Header"."Currency Code");
+                                                                                                        //RecCheck.FormatNoText(Numbertxt,decTotalAmount,"Sales Invoice Header"."Currency Code");//acxcp //Amount+Roundoff
 
                     txtCurrCode := '';
-                    IF "Sales Invoice Header"."Currency Code" = '' THEN
+                    IF "Sales Header"."Currency Code" = '' THEN
                         txtCurrCode := 'INR'
                     ELSE
-                        txtCurrCode := "Sales Invoice Header"."Currency Code";
+                        txtCurrCode := "Sales Header"."Currency Code";
 
                 end;
 

@@ -4256,7 +4256,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!AmounttoCust.Value-Fields!Round_Off.Value</Value>
+                                      <Value>=Fields!TotalAmtVar.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4329,7 +4329,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!AmounttoCust.Value</Value>
+                                      <Value>=Fields!TotalAmtVar.Value + Fields!TotRoundOFFAmt.Value</Value>
                                       <Style>
                                         <FontFamily>Calibri Light</FontFamily>
                                         <FontSize>8pt</FontSize>
@@ -4957,6 +4957,13 @@
                                                       <FontSize>8pt</FontSize>
                                                     </Style>
                                                   </TextRun>
+                                                  <TextRun>
+                                                    <Value>%</Value>
+                                                    <Style>
+                                                      <FontFamily>Calibri Light</FontFamily>
+                                                      <FontSize>8pt</FontSize>
+                                                    </Style>
+                                                  </TextRun>
                                                 </TextRuns>
                                                 <Style>
                                                   <TextAlign>Center</TextAlign>
@@ -5301,6 +5308,14 @@
                                                 <TextRuns>
                                                   <TextRun>
                                                     <Value>=Fields!GST_per.Value</Value>
+                                                    <Style>
+                                                      <FontFamily>Calibri Light</FontFamily>
+                                                      <FontSize>8pt</FontSize>
+                                                      <Format>f0</Format>
+                                                    </Style>
+                                                  </TextRun>
+                                                  <TextRun>
+                                                    <Value>%</Value>
                                                     <Style>
                                                       <FontFamily>Calibri Light</FontFamily>
                                                       <FontSize>8pt</FontSize>
@@ -7286,6 +7301,18 @@ End Function
         <Field Name="Campaign_No">
           <DataField>Campaign_No</DataField>
         </Field>
+        <Field Name="TotalAmtVar">
+          <DataField>TotalAmtVar</DataField>
+        </Field>
+        <Field Name="TotalAmtVarFormat">
+          <DataField>TotalAmtVarFormat</DataField>
+        </Field>
+        <Field Name="TotRoundOFFAmt">
+          <DataField>TotRoundOFFAmt</DataField>
+        </Field>
+        <Field Name="TotRoundOFFAmtFormat">
+          <DataField>TotRoundOFFAmtFormat</DataField>
+        </Field>
         <Field Name="LineNo">
           <DataField>LineNo</DataField>
         </Field>
@@ -7399,6 +7426,9 @@ End Function
         </Field>
         <Field Name="GST_per">
           <DataField>GST_per</DataField>
+        </Field>
+        <Field Name="GST_perFormat">
+          <DataField>GST_perFormat</DataField>
         </Field>
         <Field Name="GST">
           <DataField>GST</DataField>

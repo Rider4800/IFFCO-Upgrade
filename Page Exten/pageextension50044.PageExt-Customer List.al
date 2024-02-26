@@ -98,7 +98,7 @@ pageextension 50044 pageextension50044 extends "Customer List"
                 Promoted = true;
                 PromotedIsBig = true;
                 RunObject = Page 50011;
-                PromotedCategory = New;
+                PromotedCategory = Report;
             }
         }
         addafter(ReportCustomerPaymentReceipt)

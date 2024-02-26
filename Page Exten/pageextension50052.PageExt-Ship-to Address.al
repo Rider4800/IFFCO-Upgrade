@@ -19,6 +19,10 @@ pageextension 50052 pageextension50052 extends "Ship-to Address"
             {
                 ApplicationArea = All;
             }
+            field("MAssist Code"; Rec."MAssist Code")
+            {
+                ApplicationArea = All;
+            }
         }
     }
 }

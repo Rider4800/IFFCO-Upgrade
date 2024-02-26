@@ -2,13 +2,13 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
 {
     layout
     {
-        modify("Expiration Date")
-        {
-            trigger OnAfterValidate()
-            begin
-                ModifyLot;
-            end;
-        }
+        // modify("Expiration Date")
+        // {
+        //     trigger OnAfterValidate()
+        //     begin
+        //         ModifyLot;
+        //     end;
+        // }
         modify("Appl.-from Item Entry")
         {
             Caption = 'Appl.-from Item Entry';
@@ -59,8 +59,16 @@ pageextension 50120 ItemTrackingline extends "Item Tracking Lines"
                     ModifyLot;
                 end;
             }
-
-
+            field(ExpDate; Rec."Expiration Date")
+            {
+                ApplicationArea = All;
+                Caption = 'Expiration Date';
+                Visible = true;
+                trigger OnValidate()
+                begin
+                    ModifyLot();
+                end;
+            }
         }
     }
 

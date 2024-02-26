@@ -145,7 +145,7 @@ page 50006 "E-Invoice (Transfer)"
                     Caption = 'Generate E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = CreateDocument;
@@ -158,6 +158,8 @@ page 50006 "E-Invoice (Transfer)"
                         CLEAR(CodeunitEWayBillEInvoice);
                         IF (Rec."E-Invoice IRN No" <> '') AND (Rec."E-Invoice Cancel Date" = '') THEN
                             ERROR('E-Invoice is already generated');
+                        if Rec."Location GST Reg. No." = Rec."Customer GST Reg. No." then
+                            Error('E-Invoice is not required as GST on both location is same.');
                         //Rec.CALCFIELDS("Amount to Customer");
                         txtMessage := 'Do you want to generate E-Invoice IRN No. for Document No. ' + Rec."No." + ', Posting Date ' + FORMAT(Rec."Posting Date") + ', Amount to Transfer ' + FORMAT(Rec."Amount to Transfer");
 
@@ -176,7 +178,7 @@ page 50006 "E-Invoice (Transfer)"
                     Caption = 'Cancel E-Invoice';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Cancel;
@@ -231,7 +233,7 @@ page 50006 "E-Invoice (Transfer)"
                     Caption = 'Calculate Distance (KM)';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Calculate;
@@ -261,7 +263,7 @@ page 50006 "E-Invoice (Transfer)"
                     Caption = 'Generate E-Way Bill By IRN';
                     Promoted = true;
                     ApplicationArea = All;
-                    PromotedCategory = Report;
+                    PromotedCategory = New;
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     Image = Create;
@@ -274,6 +276,7 @@ page 50006 "E-Invoice (Transfer)"
                         //HT 24082020 (For E-Way Bill and E-Invoice Integration)-
                         CurrPage.UPDATE;
                         CLEAR(CodeunitEWayBillEInvoice);
+
                         Rec.TESTFIELD("Transporter Code");
                         Rec.TESTFIELD("Location GST Reg. No.");
                         Rec.TESTFIELD("Distance (Km)");
@@ -340,18 +343,18 @@ page 50006 "E-Invoice (Transfer)"
                 //     RunObject = Page "Response Logs";
                 //     RunPageLink = "Document No." = FIELD("No.");
                 // }
-                action(Statistics)
-                {
-                    Caption = 'Statistics';
-                    Image = Statistics;
-                    Promoted = true;
-                    PromotedCategory = Category4;
-                    PromotedIsBig = true;
-                    RunObject = Page "Sales Invoice Statistics";
-                    RunPageLink = "No." = FIELD("No.");
-                    ShortCutKey = 'F7';
-                    Visible = false;
-                }
+                // action(Statistics)
+                // {
+                //     Caption = 'Statistics';
+                //     Image = Statistics;
+                //     Promoted = true;
+                //     PromotedCategory = Category4;
+                //     PromotedIsBig = true;
+                //     RunObject = Page "Sales Invoice Statistics";
+                //     RunPageLink = "No." = FIELD("No.");
+                //     ShortCutKey = 'F7';
+                //     Visible = false;
+                // }
             }
         }
     }
