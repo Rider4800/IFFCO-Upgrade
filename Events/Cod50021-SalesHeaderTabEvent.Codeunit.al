@@ -27,6 +27,7 @@ codeunit 50021 SalesHeaderTabEvent
         //recShipTo.RESET;
         RecShipto.RESET;
         RecShipto.SETRANGE(Code, SalesHeader."Ship-to Code");
+        RecShipto.SETRANGE("Customer No.", SalesHeader."Sell-to Customer No."); //TM9509 Code Rectified 27022024
         IF RecShipto.FINDFIRST THEN BEGIN
             IF RecShipto.Disable = TRUE THEN BEGIN
                 ERROR('This Ship to code has been disable');
